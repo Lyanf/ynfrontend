@@ -1,25 +1,25 @@
 <template>
   <div>
-    <DataCRUDTable></DataCRUDTable>
+<!--    <DataCRUDTable></DataCRUDTable>-->
     <ChangeMetaDataTree></ChangeMetaDataTree>
-    <MetaDataTree></MetaDataTree>
-    <MixPredictSelectForm></MixPredictSelectForm>
+<!--    <MetaDataTree></MetaDataTree>-->
+<!--    <MixPredictSelectForm></MixPredictSelectForm>-->
   </div>
 </template>
 
 <script>
-import DataCRUDTable from '@/components/DataCRUDTable.vue';
+// import DataCRUDTable from '@/components/DataCRUDTable.vue';
 import ChangeMetaDataTree from '@/components/ChangeMetaDataTree.vue';
-import MetaDataTree from '@/components/MetaDataTree.vue';
-import MixPredictSelectForm from '@/components/MixPredictSelectForm.vue';
+// import MetaDataTree from '@/components/MetaDataTree.vue';
+// import MixPredictSelectForm from '@/components/MixPredictSelectForm.vue';
 
 export default {
   name: 'test',
   components: {
-    MixPredictSelectForm,
-    MetaDataTree,
+    // MixPredictSelectForm,
+    // MetaDataTree,
     ChangeMetaDataTree,
-    DataCRUDTable,
+    // DataCRUDTable,
   },
 };
 </script>
