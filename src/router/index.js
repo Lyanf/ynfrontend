@@ -107,11 +107,11 @@ const routes = [
     name: 'FuHeTeXingPredict',
     component: () => import('../views/FuHeTeXingPredict.vue'),
   },
-  // {
-  //   path: '*',
-  //   redirect: '/404',
-  //   hidden: true
-  // },
+  {
+    path: '*',
+    redirect: '/logIn',
+    hidden: true,
+  },
 
 ];
 
