@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import MixPredictSelectForm from '@/components/MixPredictSelectForm.vue';
+import MixPredictSelectForm from '@/components/SelectForm/MixPredictSelectForm.vue';
 import ResultChart from '@/components/ResultChart.vue';
 import ResultTable from '@/components/ResultTable.vue';
 

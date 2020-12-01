@@ -48,6 +48,11 @@ const routes = [
     component: () => import('../views/LongTermMiduPredict'),
   },
   {
+    path: '/BigUserPredict',
+    name: 'BigUserPredict',
+    component: () => import('../views/BigUserPrediction'),
+  },
+  {
     path: '/dataMining',
     name: 'dataMining',
     component: () => import('../views/DataMining'),
@@ -96,6 +101,11 @@ const routes = [
     path: '/dataBaseCRUD',
     name: 'dataBaseCRUD',
     component: () => import('../views/DataBaseCRUD.vue'),
+  },
+  {
+    path: '/dataCheck',
+    name: 'dataCheck',
+    component: () => import('../views/dataCheck.vue'),
   },
   {
     path: '/FuHeTeXingCompute',

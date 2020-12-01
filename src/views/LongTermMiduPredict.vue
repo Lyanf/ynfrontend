@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import PredictSelectForm from '@/components/SinglePredictSelectForm.vue';
+import PredictSelectForm from '@/components/SelectForm/SinglePredictSelectForm.vue';
 import ResultChart from '@/components/ResultChart.vue';
 import ResultTable from '@/components/ResultTable.vue';
 

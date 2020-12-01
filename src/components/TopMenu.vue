@@ -16,6 +16,7 @@
         <el-menu-item index="2-2">电力电量数据</el-menu-item>
         <el-menu-item index="2-3">地理气象数据</el-menu-item>
         <el-menu-item index="2-4">全部数据</el-menu-item>
+        <el-menu-item index="2-5">数据监测与更正</el-menu-item>
       </el-submenu>
 
       <el-submenu index="3">
@@ -48,12 +49,12 @@
           </el-submenu>
           <el-menu-item index="5-1-3">省市总分协调预测</el-menu-item>
         </el-submenu>
-
         <el-submenu index="5-2">
           <template slot="title">远期预测</template>
           <el-menu-item index="5-2-1">饱和曲线预测</el-menu-item>
           <el-menu-item index="5-2-3">负荷密度预测</el-menu-item>
         </el-submenu>
+        <el-menu-item index="5-3">大用户预测</el-menu-item>
       </el-submenu>
 
       <el-submenu index="6">
@@ -78,16 +79,16 @@
     <el-dialog title="方案设置" :visible.sync="dialogFormVisible">
       <el-tabs v-model="activeName" type="card">
         <el-tab-pane label="新建方案" name="3-1">
-          <CreateNewSchema></CreateNewSchema>
+          <CreateNewSchema/>
         </el-tab-pane>
         <el-tab-pane label="查看方案" name="3-2">
-          <ReadSchema></ReadSchema>
+          <ReadSchema/>
         </el-tab-pane>
         <el-tab-pane label="修改方案名称" name="3-3">
-          <UpdateSchema></UpdateSchema>
+          <UpdateSchema/>
         </el-tab-pane>
         <el-tab-pane label="删除方案" name="3-4">
-          <DeleteSchema></DeleteSchema>
+          <DeleteSchema/>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
@@ -126,6 +127,8 @@ export default {
       if (keyPath[0] === '2') {
         if (keyPath[1] === '2-4') {
           window.location = '/#/dataBaseCRUD';
+        } else if (keyPath[1] === '2-5') {
+          window.location = '/#/dataCheck';
         } else {
           window.location = '/#/tempData';
         }
@@ -161,6 +164,9 @@ export default {
         }
         if (key === '5-2-2') {
           window.location = '/#/LongTermMiduPredict';
+        }
+        if (key === '5-3') {
+          window.location = '/#/BigUserPredict';
         }
       }
       if (keyPath[0] === '6') {

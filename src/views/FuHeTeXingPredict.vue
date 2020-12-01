@@ -10,22 +10,22 @@
                           end-placeholder="结束年份"
                           v-model="selectedDate"
                           format="yyyy"
-          ></el-date-picker>
+          />
         </el-form-item>
         <el-form-item label="季节：">
-          <el-select value=""></el-select>
+          <el-select value=""/>
         </el-form-item>
         <el-form-item label="预测最大负荷：">
-          <el-input placeholder="请输入"></el-input>
+          <el-input placeholder="请输入"/>
         </el-form-item>
         <el-form-item label="预测日电量：">
-          <el-input placeholder="请输入"></el-input>
+          <el-input placeholder="请输入"/>
         </el-form-item>
         <el-form-item label="gamma：">
-          <el-input placeholder="请输入"></el-input>
+          <el-input placeholder="请输入"/>
         </el-form-item>
         <el-form-item label="beta：">
-          <el-input placeholder="请输入"></el-input>
+          <el-input placeholder="请输入"/>
         </el-form-item>
         <el-form-item>
           <el-button>计算</el-button>
@@ -33,15 +33,15 @@
       </el-form>
       <el-row>
         <el-table>
-          <el-table-column label="日最大负荷"></el-table-column>
-          <el-table-column label="日平均负荷"></el-table-column>
-          <el-table-column label="日负荷率"></el-table-column>
-          <el-table-column label="日最小负荷率"></el-table-column>
-          <el-table-column label="日峰谷差"></el-table-column>
-          <el-table-column label="日峰谷差率"></el-table-column>
+          <el-table-column label="日最大负荷"/>
+          <el-table-column label="日平均负荷"/>
+          <el-table-column label="日负荷率"/>
+          <el-table-column label="日最小负荷率"/>
+          <el-table-column label="日峰谷差"/>
+          <el-table-column label="日峰谷差率"/>
         </el-table>
       </el-row>
-      <ResultChart></ResultChart>
+      <ResultChart/>
     </el-tab-pane>
 
     <el-tab-pane label="双向夹逼法">
