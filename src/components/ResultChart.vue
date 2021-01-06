@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <div id="chart1" style="width: 800px;height: 300px"></div>
+      <div id="chart1" style="width: 680px;height: 300px"></div>
     </el-row>
     <el-row>
       <el-col :span="2">
