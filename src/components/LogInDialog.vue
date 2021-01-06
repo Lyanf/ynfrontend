@@ -5,7 +5,9 @@
         <span>登录状态</span>
       </span>
       <el-row type="flex" justify="center">
-        <span style="color: red">{{logInStatus}}</span>
+        <span :style="{'color': logInStatus ? 'green' : 'red'}">
+          {{logInStatus ? "已登录" : "未登录"}}
+        </span>
       </el-row>
       <el-row type="flex" justify="space-around">
         <el-button v-on:click="dialogVisible=true">登录</el-button>
@@ -38,12 +40,14 @@ export default {
       dialogVisible: false,
       username: '',
       password: '',
-      logInStatus: '未登录',
+      logInStatus: false,
     };
   },
   methods: {
     realLogInClicked() {
       this.dialogVisible = false;
+      // TEST: always login success
+      this.logInStatus = true;
     },
   },
 };
