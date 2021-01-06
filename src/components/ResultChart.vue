@@ -13,6 +13,7 @@
 
 <script>
 import * as echarts from 'echarts';
+import { saveAs } from 'file-saver';
 
 function base64ToBlob(code) {
   const parts = code.split(';base64,');
@@ -61,15 +62,8 @@ export default {
         return;
       }
       const content = this.currentChart.getDataURL();
-
-      const aLink = document.createElement('a');
       const blob = base64ToBlob(content);
-
-      const evt = document.createEvent('HTMLEvents');
-      evt.initEvent('click', true, true);
-      aLink.download = 'charts.png';
-      aLink.href = URL.createObjectURL(blob);
-      aLink.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+      saveAs(blob, 'chart.png');
     },
   },
   mounted() {
