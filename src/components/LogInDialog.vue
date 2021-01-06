@@ -9,7 +9,8 @@
       </el-row>
       <el-row type="flex" justify="space-around">
         <el-button v-on:click="dialogVisible=true">登录</el-button>
-        <el-button v-on:click="$store.commit('logout')">注销</el-button>
+        <el-button v-on:click="$store.commit('logout')"
+                   :disabled="logoutButtonDisabled">注销</el-button>
       </el-row>
     </el-card>
     <el-dialog
@@ -24,7 +25,8 @@
       </el-input>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="realLogInClicked">确 定</el-button>
+    <el-button type="primary" @click="realLogInClicked"
+               :disabled="username.length === 0 || password.length === 0">确 定</el-button>
   </span>
     </el-dialog>
   </div>
@@ -46,6 +48,9 @@ export default {
     },
     loginStateStyle() {
       return `color: ${this.$store.state.isLogin ? 'green' : 'red'}`;
+    },
+    logoutButtonDisabled() {
+      return !this.$store.state.isLogin;
     },
   },
   methods: {
