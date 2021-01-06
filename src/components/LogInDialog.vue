@@ -20,7 +20,7 @@
       <el-input v-model="username">
       </el-input>
       <span>密码</span>
-      <el-input v-model="password">
+      <el-input v-model="password" type="password">
       </el-input>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
