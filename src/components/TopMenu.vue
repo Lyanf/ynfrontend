@@ -6,11 +6,11 @@
       <el-submenu index="1">
         <template slot="title">开始</template>
         <el-menu-item index="1-1">登录</el-menu-item>
-        <el-menu-item index="1-2">最近保存文件</el-menu-item>
+        <el-menu-item index="1-2" :disabled="menuDisabled">最近保存文件</el-menu-item>
         <el-menu-item index="1-3">退出</el-menu-item>
       </el-submenu>
 
-      <el-submenu index="2">
+      <el-submenu index="2" :disabled="menuDisabled">
         <template slot="title">数据库</template>
         <el-menu-item index="2-1">社会经济数据</el-menu-item>
         <el-menu-item index="2-2">电力电量数据</el-menu-item>
@@ -19,7 +19,7 @@
         <el-menu-item index="2-5">数据监测与更正</el-menu-item>
       </el-submenu>
 
-      <el-submenu index="3">
+      <el-submenu index="3" :disabled="menuDisabled">
         <template slot="title">方案设置</template>
         <el-menu-item index="3-1">新建方案</el-menu-item>
         <el-menu-item index="3-2">查看方案</el-menu-item>
@@ -27,13 +27,13 @@
         <el-menu-item index="3-4">删除方案</el-menu-item>
       </el-submenu>
 
-      <el-submenu index="4">
+      <el-submenu index="4" :disabled="menuDisabled">
         <template slot="title">关联因素挖掘</template>
         <el-menu-item index="4-1">数据挖掘</el-menu-item>
         <el-menu-item index="4-2">结果展示</el-menu-item>
       </el-submenu>
 
-      <el-submenu index="5">
+      <el-submenu index="5" :disabled="menuDisabled">
         <template slot="title">电力电量预测</template>
         <el-submenu index="5-1">
           <template slot="title">近中期预测</template>
@@ -57,19 +57,19 @@
         <el-menu-item index="5-3">大用户预测</el-menu-item>
       </el-submenu>
 
-      <el-submenu index="6">
+      <el-submenu index="6" :disabled="menuDisabled">
         <template slot="title">负荷特性预测</template>
         <el-menu-item index="6-1">负荷特性指标计算</el-menu-item>
         <el-menu-item index="6-2">负荷特性指标预测</el-menu-item>
       </el-submenu>
 
-      <el-submenu index="7">
+      <el-submenu index="7" :disabled="menuDisabled">
         <template slot="title">预测结果</template>
         <el-menu-item index="7-1">预测结果查询</el-menu-item>
         <el-menu-item index="7-2">预测结果展示</el-menu-item>
       </el-submenu>
 
-      <el-submenu index="8">
+      <el-submenu index="8" :disabled="menuDisabled">
         <template slot="title">帮助</template>
         <el-menu-item index="8-1">用户手册</el-menu-item>
         <el-menu-item index="8-2">技术支持</el-menu-item>
@@ -116,6 +116,11 @@ export default {
       activeName: '',
       dialogFormVisible: false,
     };
+  },
+  computed: {
+    menuDisabled() {
+      return !this.$store.state.isLogin;
+    },
   },
   methods: {
     handleSelect(key, keyPath) {

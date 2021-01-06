@@ -5,13 +5,11 @@
         <span>登录状态</span>
       </span>
       <el-row type="flex" justify="center">
-        <span :style="{'color': logInStatus ? 'green' : 'red'}">
-          {{logInStatus ? "已登录" : "未登录"}}
-        </span>
+        <span :style=loginStateStyle>{{loginStateText}}</span>
       </el-row>
       <el-row type="flex" justify="space-around">
         <el-button v-on:click="dialogVisible=true">登录</el-button>
-        <el-button>注销</el-button>
+        <el-button v-on:click="$store.commit('logout')">注销</el-button>
       </el-row>
     </el-card>
     <el-dialog
@@ -40,14 +38,21 @@ export default {
       dialogVisible: false,
       username: '',
       password: '',
-      logInStatus: false,
     };
+  },
+  computed: {
+    loginStateText() {
+      return this.$store.state.isLogin ? '已登录' : '未登录';
+    },
+    loginStateStyle() {
+      return `color: ${this.$store.state.isLogin ? 'green' : 'red'}`;
+    },
   },
   methods: {
     realLogInClicked() {
       this.dialogVisible = false;
       // TEST: always login success
-      this.logInStatus = true;
+      this.$store.commit('login');
     },
   },
 };
