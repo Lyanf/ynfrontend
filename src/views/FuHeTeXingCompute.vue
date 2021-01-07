@@ -14,7 +14,7 @@
         <el-button>计算</el-button>
       </el-row>
       <el-row>
-        <el-table>
+        <el-table title='日负荷特性指标表'>
           <el-table-column label="日期"></el-table-column>
           <el-table-column label="日最大负荷"></el-table-column>
           <el-table-column label="日平均负荷"></el-table-column>
@@ -60,7 +60,7 @@
         <el-button>计算</el-button>
       </el-row>
       <el-row>
-        <el-table>
+        <el-table title='月负荷特性指标表'>
           <el-table-column label="年份"></el-table-column>
           <el-table-column label="月份"></el-table-column>
           <el-table-column label="月平均负荷"></el-table-column>
@@ -94,7 +94,7 @@
         <el-button>计算</el-button>
       </el-row>
       <el-row>
-        <el-table>
+        <el-table title='年负荷特性指标表'>
           <el-table-column label="年份"></el-table-column>
           <el-table-column label="年最大负荷"></el-table-column>
           <el-table-column label="年平均日负荷率"></el-table-column>

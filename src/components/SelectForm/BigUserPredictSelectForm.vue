@@ -52,7 +52,7 @@
       <el-button size="mini" type="primary">保存修改「数据项」</el-button>
     </el-form-item>
     <el-form-item>
-      <el-table>
+      <el-table title='预定修改'>
         <el-table-column label="修改数据类型"></el-table-column>
         <el-table-column label="修改值"></el-table-column>
       </el-table>
