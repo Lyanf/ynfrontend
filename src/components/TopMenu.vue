@@ -1,7 +1,10 @@
 <template>
   <div>
+    <div class="top-warning" :hidden="bannerHidden" align="center">未登录
+      <a style="color: lightgray" href="/#/logIn">立即登录</a>
+    </div>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
-             style="display: flex;justify-content: space-between"
+             style="display: flex; justify-content: space-between; margin-bottom: 3em"
              @select="handleSelect">
       <el-submenu index="1">
         <template slot="title">开始</template>
@@ -121,6 +124,9 @@ export default {
     menuDisabled() {
       return !this.$store.state.isLogin;
     },
+    bannerHidden() {
+      return this.$store.state.isLogin;
+    },
   },
   methods: {
     handleSelect(key, keyPath) {
@@ -143,13 +149,13 @@ export default {
         // 数据库
         if (keyPath[1] === '2-1') {
           // 社会经济数据
-          window.location = '';
+          window.location = '/#/SocialEcoData';
         } else if (keyPath[1] === '2-2') {
           // 电力电量数据
-          window.location = '';
+          window.location = '/#/ElectricityPowerData';
         } else if (keyPath[1] === '2-3') {
           // 地理气象数据
-          window.location = '';
+          window.location = '/#/GeoWeatherData';
         } else if (keyPath[1] === '2-4') {
           // 全部数据
           window.location = '/#/dataBaseCRUD';
@@ -247,5 +253,9 @@ export default {
 </script>
 
 <style scoped>
-
+.top-warning {
+  padding: 5px;
+  color: white;
+  background-color: darkred;
+}
 </style>

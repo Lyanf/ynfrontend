@@ -103,9 +103,24 @@ const routes = [
     component: () => import('../views/DataBaseCRUD.vue'),
   },
   {
+    path: '/SocialEcoData',
+    name: 'SocialEcoData',
+    component: () => import('../views/SocialEcoData.vue'),
+  },
+  {
+    path: '/ElectricityPowerData',
+    name: 'ElectricityPowerData',
+    component: () => import('../views/ElectricityPowerData.vue'),
+  },
+  {
+    path: '/GeoWeatherData',
+    name: 'GeoWeatherData',
+    component: () => import('../views/GeoWeatherData.vue'),
+  },
+  {
     path: '/dataCheck',
     name: 'dataCheck',
-    component: () => import('../views/dataCheck.vue'),
+    component: () => import('../views/DataCheck.vue'),
   },
   {
     path: '/FuHeTeXingCompute',

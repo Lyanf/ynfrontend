@@ -2,9 +2,9 @@
   <div>
     <el-card>
       <span slot="header">
-        <span>全部数据</span>
+        <span>社会经济数据</span>
       </span>
-      <el-row justify="center">
+      <el-row justify="space-around">
         <MetaDataTree></MetaDataTree>
       </el-row>
       <el-row>
@@ -13,19 +13,16 @@
     </el-card>
   </div>
 </template>
+
 <script>
 import MetaDataTree from '@/components/MetaDataTree.vue';
 import DataCRUDTable from '@/components/DataCRUDTable.vue';
 
 export default {
-  name: 'DataBaseCRUD',
+  name: 'SocialEcoData',
   components: {
     DataCRUDTable,
     MetaDataTree,
   },
 };
 </script>
-
-<style scoped>
-
-</style>

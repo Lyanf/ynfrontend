@@ -1,11 +1,11 @@
 <template>
   <div>
     <el-row style="margin-bottom: 5em">
-      <el-col :span="5" :offset="3">
+      <el-col :span="4" :offset="8">
         <el-cascader id="cascader" :options="metaDataTree"
                      ref="cascader" v-model="selectedMetaData"></el-cascader>
       </el-col>
-      <el-col :span="5" :offset="3">
+      <el-col :span="1" :offset="1">
         <el-button>查找</el-button>
       </el-col>
     </el-row>

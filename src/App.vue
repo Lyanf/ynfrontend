@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <LoadingView v-if="$store.state.isLoading"></LoadingView>
-    <TopMenu style="margin-bottom: 5em"></TopMenu>
+    <TopMenu style="margin-bottom: 1em"></TopMenu>
 <!--    <div id="nav">-->
 <!--      <router-link to="/">Home</router-link> |-->
 <!--      <router-link to="/about">About</router-link>-->
