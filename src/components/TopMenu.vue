@@ -125,62 +125,120 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       if (keyPath[0] === '1') {
+        // 开始
         if (keyPath[1] === '1-1') {
+          // 登录
           window.location = '/#/logIn';
+        } else if (keyPath[1] === '1-2') {
+          // 最近保存文件
+          window.location = '/#/';
+        } else if (keyPath[1] === '1-3') {
+          // 退出
+          window.location = '/#/logIn';
+          this.$store.commit('logout');
+        } else {
+          console.assert(false);
         }
-      }
-      if (keyPath[0] === '2') {
-        if (keyPath[1] === '2-4') {
+      } else if (keyPath[0] === '2') {
+        // 数据库
+        if (keyPath[1] === '2-1') {
+          // 社会经济数据
+          window.location = '';
+        } else if (keyPath[1] === '2-2') {
+          // 电力电量数据
+          window.location = '';
+        } else if (keyPath[1] === '2-3') {
+          // 地理气象数据
+          window.location = '';
+        } else if (keyPath[1] === '2-4') {
+          // 全部数据
           window.location = '/#/dataBaseCRUD';
         } else if (keyPath[1] === '2-5') {
+          // 数据监测与更正
           window.location = '/#/dataCheck';
         } else {
-          window.location = '/#/tempData';
+          console.assert(false);
         }
-      }
-      if (keyPath[0] === '3') {
+      } else if (keyPath[0] === '3') {
+        // 方案设置，共用一个 View
         // eslint-disable-next-line prefer-destructuring
         this.activeName = keyPath[1];
         this.dialogFormVisible = true;
-      }
-      if (keyPath[0] === '4') {
+      } else if (keyPath[0] === '4') {
+        // 关联因素挖掘
         if (keyPath[1] === '4-1') {
+          // 数据挖掘
           window.location = '/#/dataMining';
-        }
-        if (keyPath[1] === '4-2') {
+        } else if (keyPath[1] === '4-2') {
+          // 结果展示
           window.location = '/#/miningResult';
+        } else {
+          console.assert(false);
         }
-      }
-      if (keyPath[0] === '5') {
+      } else if (keyPath[0] === '5') {
+        // 电力电量预测
         if (key === '5-1-1-1') {
+          // 近中期预测、地区预测、单预测模型
           window.location = '/#/PlaceSinglePrediction';
-        }
-        if (key === '5-1-2-1') {
+        } else if (key === '5-1-2-1') {
+          // 近中期预测、行业预测、单预测模型
           window.location = '/#/IndustrySinglePrediction';
-        }
-        if (key === '5-1-1-2') {
+        } else if (key === '5-1-1-2') {
+          // 近中期预测、地区预测、组合预测模型
           window.location = '/#/PlaceMixPrediction';
-        }
-        if (key === '5-1-2-2') {
+        } else if (key === '5-1-2-2') {
+          // 近中期预测、行业预测、组合预测模型
           window.location = '/#/IndustryMixPrediction';
-        }
-        if (key === '5-2-1') {
+        } else if (key === '5-2-1') {
+          // 远期预测，饱和曲线预测
           window.location = '/#/LongTermBaohePredict';
-        }
-        if (key === '5-2-2') {
+        } else if (key === '5-2-2') {
+          // 远期预测，负荷密度预测
           window.location = '/#/LongTermMiduPredict';
-        }
-        if (key === '5-3') {
+        } else if (key === '5-3') {
+          // 大用户预测
           window.location = '/#/BigUserPredict';
+        } else {
+          console.assert(false);
         }
-      }
-      if (keyPath[0] === '6') {
+      } else if (keyPath[0] === '6') {
+        // 负荷特性预测
         if (key === '6-1') {
+          // 负荷特性指标计算
           window.location = '/#/FuHeTeXingCompute';
-        }
-        if (key === '6-2') {
+        } else if (key === '6-2') {
+          // 负荷特性指标预测
           window.location = '/#/FuHeTeXingPredict';
+        } else {
+          console.assert(false);
         }
+      } else if (keyPath[0] === '7') {
+        // 预测结果
+        if (keyPath[1] === '7-1') {
+          // 预测结果查询
+          window.location = '/#/';
+        } else if (keyPath[1] === '7-2') {
+          // 预测结果展示
+          window.location = '/#/';
+        } else {
+          console.assert(false);
+        }
+      } else if (keyPath[0] === '8') {
+        // 帮助
+        if (keyPath[1] === '8-1') {
+          // 用户手册
+          window.location = '';
+        } else if (keyPath[1] === '8-2') {
+          // 技术支持
+          window.location = '';
+        } else if (keyPath[1] === '8-3') {
+          // 关于
+          window.location = '/#/About';
+        } else {
+          console.assert(false);
+        }
+      } else {
+        console.assert(false);
       }
       console.log(key, keyPath);
     },

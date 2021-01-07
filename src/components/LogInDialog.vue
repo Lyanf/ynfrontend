@@ -13,7 +13,7 @@
                    :disabled="logoutButtonDisabled">注销</el-button>
       </el-row>
     </el-card>
-    <el-dialog
+    <el-dialog @close="clearInput"
       title="登录"
       :visible.sync="dialogVisible"
       width="30%">
@@ -57,7 +57,19 @@ export default {
     realLogInClicked() {
       this.dialogVisible = false;
       // TEST: always login success
-      this.$store.commit('login');
+      this.$axios.post('login', {
+        username: this.$data.username,
+        password: this.$data.password,
+      }).then((response) => {
+        console.log(response);
+        this.$store.commit('login');
+      }).catch((error) => {
+        console.log(error);
+      });
+    },
+    clearInput() {
+      this.$data.username = '';
+      this.$data.password = '';
     },
   },
 };
