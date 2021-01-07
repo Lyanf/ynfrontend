@@ -10,12 +10,28 @@ const routes = [
     redirect: '/logIn',
   },
   {
-    path: '/about',
+    path: '/About',
     name: 'About',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue'),
+  },
+  {
+    path: '/Manual',
+    name: 'Manual',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/Manual.vue'),
+  },
+  {
+    path: '/TechSupport',
+    name: 'TechSupport',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/TechSupport.vue'),
   },
   {
     path: '/PlaceSinglePrediction',
@@ -133,11 +149,25 @@ const routes = [
     component: () => import('../views/FuHeTeXingPredict.vue'),
   },
   {
+    path: '/PredictResultQuery',
+    name: 'PredictResultQuery',
+    component: () => import('../views/PredictResultQuery.vue'),
+  },
+  {
+    path: '/PredictResultDisplay',
+    name: 'PredictResultDisplay',
+    component: () => import('../views/PredictResultDisplay.vue'),
+  },
+  {
+    path: '/ProvMuniCoordPredict',
+    name: 'ProvMuniCoordPredict',
+    component: () => import('../views/ProvMuniCoordPredict.vue'),
+  },
+  {
     path: '*',
     redirect: '/logIn',
     hidden: true,
   },
-
 ];
 
 const router = new VueRouter({

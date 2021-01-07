@@ -195,6 +195,9 @@ export default {
         } else if (key === '5-1-2-2') {
           // 近中期预测、行业预测、组合预测模型
           window.location = '/#/IndustryMixPrediction';
+        } else if (key === '5-1-3') {
+          // 省、市总分协调预测
+          window.location = '/#/ProvMuniCoordPredict';
         } else if (key === '5-2-1') {
           // 远期预测，饱和曲线预测
           window.location = '/#/LongTermBaohePredict';
@@ -222,10 +225,10 @@ export default {
         // 预测结果
         if (keyPath[1] === '7-1') {
           // 预测结果查询
-          window.location = '/#/';
+          window.location = '/#/PredictResultQuery';
         } else if (keyPath[1] === '7-2') {
           // 预测结果展示
-          window.location = '/#/';
+          window.location = '/#/PredictResultDisplay';
         } else {
           console.assert(false);
         }
@@ -233,10 +236,10 @@ export default {
         // 帮助
         if (keyPath[1] === '8-1') {
           // 用户手册
-          window.location = '';
+          window.location = '/#/Manual';
         } else if (keyPath[1] === '8-2') {
           // 技术支持
-          window.location = '';
+          window.location = '/#/TechSupport';
         } else if (keyPath[1] === '8-3') {
           // 关于
           window.location = '/#/About';

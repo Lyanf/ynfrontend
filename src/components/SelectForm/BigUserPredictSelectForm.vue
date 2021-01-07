@@ -15,44 +15,24 @@
     </el-select>
     </el-form-item>
     <el-form-item label="历史年份：">
-      <el-select placeholder="起始年份" value="">
-        <el-option
-          v-for="item in selectItems"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item>
-      <el-select placeholder="终止年份" value="">
-        <el-option
-          v-for="item in selectItems"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
+      <el-date-picker
+        v-model="historyYear"
+        type="yearrange"
+        range-separator="至"
+        start-placeholder="开始年份"
+        end-placeholder="结束年份"
+        format="yyyy">
+      </el-date-picker>
     </el-form-item>
     <el-form-item label="预测年份：">
-      <el-select placeholder="起始年份" value="">
-        <el-option
-          v-for="item in selectItems"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item>
-      <el-select placeholder="终止年份" value="">
-        <el-option
-          v-for="item in selectItems"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
+      <el-date-picker
+        v-model="predictYear"
+        type="yearrange"
+        range-separator="至"
+        start-placeholder="开始年份"
+        end-placeholder="结束年份"
+        format="yyyy">
+      </el-date-picker>
     </el-form-item>
     <el-form-item v-if="longTerm === false" label="预测模型：">
       <el-select placeholder="请选择" v-model="selectedMethod">
@@ -77,7 +57,7 @@
         <el-table-column label="修改值"></el-table-column>
       </el-table>
     </el-form-item>
-    <el-form-item label="展示曲线类型:">
+    <el-form-item label="展示曲线类型：">
       <el-select placeholder="请选择" value="">
         <el-option
           v-for="item in selectItems"
@@ -88,7 +68,7 @@
       </el-select>
     </el-form-item>
     <el-form-item >
-      <el-button type="primary" >预测</el-button>
+      <el-button type="primary">预测</el-button>
     </el-form-item>
   </el-form>
 

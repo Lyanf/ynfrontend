@@ -1,14 +1,14 @@
 <template>
      <el-form label-position="right" v-model="formData" label-width="auto">
-        <el-form-item v-if="placeOrIndustry === 'place'" label="预测地区:">
+        <el-form-item v-if="placeOrIndustry === 'place'" label="预测地区：">
           <el-select value="" placeholder="请选择">
           </el-select>
         </el-form-item>
-       <el-form-item v-if="placeOrIndustry === 'industry'" label="预测行业:">
+       <el-form-item v-if="placeOrIndustry === 'industry'" label="预测行业：">
          <el-select value="" placeholder="请选择">
          </el-select>
        </el-form-item>
-        <el-form-item v-if="longTerm === false" label="预测方法:">
+        <el-form-item v-if="longTerm === false" label="预测方法：">
           <el-select placeholder="请选择" v-model="selectedMethod">
             <el-option
               v-for="item in allMethods"
@@ -18,7 +18,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-      <el-form-item label="数据起始年份:">
+      <el-form-item label="数据起始年份：">
         <el-select placeholder="请选择" value="">
           <el-option
             v-for="item in selectItems"
@@ -28,7 +28,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="数据中止年份:">
+      <el-form-item label="数据中止年份：">
         <el-select placeholder="请选择" value="">
           <el-option
             v-for="item in selectItems"
@@ -38,7 +38,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="预测年限:">
+      <el-form-item label="预测年限：">
         <el-select placeholder="请选择" value="">
           <el-option
             v-for="item in selectItems"
@@ -48,7 +48,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="自变量1:">
+      <el-form-item label="自变量1：">
         <el-select placeholder="请选择" value="">
           <el-option
             v-for="item in selectItems"
@@ -58,7 +58,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="自变量是否有规划值:">
+      <el-form-item label="自变量是否有规划值：">
         <el-select placeholder="请选择" value="">
           <el-option
             v-for="item in selectItems"
@@ -68,7 +68,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="自变量2:">
+      <el-form-item label="自变量2：">
         <el-select placeholder="请选择" value="">
           <el-option
             v-for="item in selectItems"
@@ -78,7 +78,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="自变量2是否有规划值:">
+      <el-form-item label="自变量2是否有规划值：">
         <el-select placeholder="请选择" value="">
           <el-option
             v-for="item in selectItems"
@@ -88,10 +88,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="自变量2规划值:">
+      <el-form-item label="自变量2规划值：">
         <el-input placeholder="请输入" value=""></el-input>
       </el-form-item>
-      <el-form-item label="展示曲线类型:">
+      <el-form-item label="展示曲线类型：">
         <el-select placeholder="请选择" value="">
           <el-option
             v-for="item in selectItems"

@@ -1,5 +1,5 @@
 <template>
-  <el-form>
+  <el-form label-position="right" label-width="auto">
     <el-form-item v-if="placeOrIndustry === 'industry'" label="预测行业">
       <el-select value=""></el-select>
     </el-form-item>
@@ -9,7 +9,7 @@
     <el-form-item label="历史年份">
       <el-date-picker
         v-model="historyYear"
-        type="monthrange"
+        type="yearrange"
         range-separator="至"
         start-placeholder="开始年份"
         end-placeholder="结束年份"
@@ -20,7 +20,7 @@
     <el-form-item label="预测年份">
       <el-date-picker
         v-model="predictYear"
-        type="monthrange"
+        type="yearrange"
         range-separator="至"
         start-placeholder="开始年份"
         end-placeholder="结束年份"
@@ -45,7 +45,7 @@
       <el-select v-model="showChartType"></el-select>
     </el-form-item>
     <el-form-item>
-      <el-button>预测</el-button>
+      <el-button type="primary">预测</el-button>
     </el-form-item>
   </el-form>
 </template>

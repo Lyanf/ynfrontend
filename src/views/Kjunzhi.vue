@@ -2,10 +2,10 @@
   <el-row>
     <el-col :span="3">
       <el-form label-position="top">
-        <el-form-item label="推荐最佳分类数:">
+        <el-form-item label="推荐最佳分类数：">
           <el-input></el-input>
         </el-form-item>
-        <el-form-item label="分类数:">
+        <el-form-item label="分类数：">
           <el-input></el-input>
         </el-form-item>
         <el-form-item >
