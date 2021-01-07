@@ -17,12 +17,15 @@
       title="登录"
       :visible.sync="dialogVisible"
       width="30%">
-      <span>用户名</span>
-      <el-input v-model="username">
-      </el-input>
-      <span>密码</span>
-      <el-input v-model="password" type="password" @keyup.enter.native="realLogInClicked">
-      </el-input>
+      <el-form>
+        <el-form-item label="用户名">
+          <el-input v-model="username"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="password" type="password" @keyup.enter.native="realLogInClicked">
+          </el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="realLogInClicked"
@@ -86,7 +89,7 @@ export default {
 </script>
 
 <style scoped>
-.el-row{
+.el-row {
   margin-top: 40px;
 }
 </style>
