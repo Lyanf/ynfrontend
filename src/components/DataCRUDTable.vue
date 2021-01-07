@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-button @click="addRow">新增</el-button>
+    <el-button @click="exportTableSheet">表格导出</el-button>
     <d2-crud
       ref="d2Crud"
       :columns="columns"
@@ -23,6 +24,9 @@
 </template>
 
 <script>
+import * as json2csv from 'json2csv';
+import { saveAs } from 'file-saver';
+
 export default {
   name: 'DataCRUDTable',
   data() {
@@ -111,6 +115,18 @@ export default {
           this.$refs.d2Crud.showDialog({
             mode: 'add',
           });
+        },
+        exportTableSheet() {
+          const fields = [];
+          this.$data.columns.forEach((item) => {
+            fields.push(item.key);
+          });
+          console.log(fields);
+          const data = json2csv.parse(this.$data.tableData, {
+            fields,
+          });
+          const blob = new Blob([data], { type: 'text/csv' });
+          saveAs(blob, 'database.csv');
         },
         handleRowAdd(row, done) {
           console.log(row.date, row.value);

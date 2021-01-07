@@ -55,7 +55,7 @@
         <el-submenu index="5-2">
           <template slot="title">远期预测</template>
           <el-menu-item index="5-2-1">饱和曲线预测</el-menu-item>
-          <el-menu-item index="5-2-3">负荷密度预测</el-menu-item>
+          <el-menu-item index="5-2-2">负荷密度预测</el-menu-item>
         </el-submenu>
         <el-menu-item index="5-3">大用户预测</el-menu-item>
       </el-submenu>

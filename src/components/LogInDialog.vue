@@ -8,8 +8,8 @@
         <span :style=loginStateStyle>{{loginStateText}}</span>
       </el-row>
       <el-row type="flex" justify="space-around">
-        <el-button v-on:click="dialogVisible=true">登录</el-button>
-        <el-button v-on:click="$store.commit('logout')"
+        <el-button type="primary" v-on:click="dialogVisible=true">{{loginButtonText}}</el-button>
+        <el-button type="danger" v-on:click="$store.commit('logout')"
                    :disabled="logoutButtonDisabled">注销</el-button>
       </el-row>
     </el-card>
@@ -21,7 +21,7 @@
       <el-input v-model="username">
       </el-input>
       <span>密码</span>
-      <el-input v-model="password" type="password">
+      <el-input v-model="password" type="password" @keyup.enter.native="realLogInClicked">
       </el-input>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import ElementUI from 'element-ui';
+
 export default {
   name: 'LogInDialog',
   data() {
@@ -52,9 +54,15 @@ export default {
     logoutButtonDisabled() {
       return !this.$store.state.isLogin;
     },
+    loginButtonText() {
+      return this.$store.state.isLogin ? '切换用户' : '登录';
+    },
   },
   methods: {
     realLogInClicked() {
+      if (this.$data.username.length === 0 || this.$data.password.length === 0) {
+        return;
+      }
       this.dialogVisible = false;
       // TEST: always login success
       this.$axios.post('login', {
@@ -62,9 +70,11 @@ export default {
         password: this.$data.password,
       }).then((response) => {
         console.log(response);
+        ElementUI.Message.success('登录成功。');
         this.$store.commit('login');
       }).catch((error) => {
         console.log(error);
+        this.$store.commit('logout');
       });
     },
     clearInput() {
