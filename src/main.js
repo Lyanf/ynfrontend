@@ -39,6 +39,30 @@ const store = new Vuex.Store({
   },
 });
 
+const messenger = {
+  success(msg) {
+    ElementUI.Message({
+      message: msg,
+      type: 'success',
+      showClose: true,
+    });
+  },
+  warning(msg) {
+    ElementUI.Message({
+      message: msg,
+      type: 'warning',
+      showClose: true,
+    });
+  },
+  error(msg) {
+    ElementUI.Message({
+      message: msg,
+      type: 'error',
+      showClose: true,
+    });
+  },
+};
+
 const axios = axiosApi.create({
   baseURL: 'http://localhost:5000/api/',
 });
@@ -57,17 +81,18 @@ axios.interceptors.response.use(
     if (response.data.code === 200) {
       return response;
     }
-    ElementUI.Message.error(`请求失败！服务器报告了一个 ${response.data.msg} 错误。`);
+    this.$messenger.error(`请求失败！服务器报告了一个 ${response.data.msg} 错误。`);
     return Promise.reject(response);
   },
   (error) => {
     store.commit('finishLoad');
-    ElementUI.Message.error('请求失败！无法连接到服务器。');
+    this.$messenger.error('请求失败！无法连接到服务器。');
     return Promise.reject(error);
   },
 );
 
 Vue.prototype.$axios = axios;
+Vue.prototype.$messenger = messenger;
 
 new Vue({
   router,

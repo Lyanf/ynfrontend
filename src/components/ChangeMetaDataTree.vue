@@ -273,7 +273,7 @@ export default {
           !== this.selectedMetaData[this.selectedMetaData.length - 1]);
         this.metaDataTree = changeMetaDataTree;
       } catch (e) {
-        this.$message.warning('不允许删除根节点！');
+        this.$messenger.warning('不允许删除根节点！');
       }
     },
     edit() {

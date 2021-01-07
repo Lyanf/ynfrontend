@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import ElementUI from 'element-ui';
 
 export default {
   name: 'LogInDialog',
@@ -73,7 +72,7 @@ export default {
         password: this.$data.password,
       }).then((response) => {
         console.log(response);
-        ElementUI.Message.success('登录成功。');
+        this.$messenger.success('登录成功。');
         this.$store.commit('login');
       }).catch((error) => {
         console.log(error);
