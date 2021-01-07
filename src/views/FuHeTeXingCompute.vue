@@ -32,7 +32,7 @@
           <el-button @click="dialog2Visible=true">典型日负荷曲线</el-button>
         </el-col>
         <el-col :span="4">
-          <el-button>打印</el-button>
+          <el-button v-print>打印</el-button>
         </el-col>
       </el-row>
       <el-dialog
@@ -75,7 +75,7 @@
           <el-button>负荷特性曲线</el-button>
         </el-col>
         <el-col :span="4">
-          <el-button>打印</el-button>
+          <el-button v-print>打印</el-button>
         </el-col>
       </el-row>
     </el-tab-pane>
@@ -108,7 +108,7 @@
           <el-button>负荷曲线</el-button>
         </el-col>
         <el-col :span="4">
-          <el-button>打印</el-button>
+          <el-button v-print>打印</el-button>
         </el-col>
       </el-row>
     </el-tab-pane>

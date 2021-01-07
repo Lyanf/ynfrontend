@@ -5,11 +5,12 @@
         <span>登录状态</span>
       </span>
       <el-row type="flex" justify="center">
-        <span style="color: red">{{logInStatus}}</span>
+        <span :style=loginStateStyle>{{loginStateText}}</span>
       </el-row>
       <el-row type="flex" justify="space-around">
         <el-button v-on:click="dialogVisible=true">登录</el-button>
-        <el-button>注销</el-button>
+        <el-button v-on:click="$store.commit('logout')"
+                   :disabled="logoutButtonDisabled">注销</el-button>
       </el-row>
     </el-card>
     <el-dialog
@@ -20,11 +21,12 @@
       <el-input v-model="username">
       </el-input>
       <span>密码</span>
-      <el-input v-model="password">
+      <el-input v-model="password" type="password">
       </el-input>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="realLogInClicked">确 定</el-button>
+    <el-button type="primary" @click="realLogInClicked"
+               :disabled="username.length === 0 || password.length === 0">确 定</el-button>
   </span>
     </el-dialog>
   </div>
@@ -38,12 +40,24 @@ export default {
       dialogVisible: false,
       username: '',
       password: '',
-      logInStatus: '未登录',
     };
+  },
+  computed: {
+    loginStateText() {
+      return this.$store.state.isLogin ? '已登录' : '未登录';
+    },
+    loginStateStyle() {
+      return `color: ${this.$store.state.isLogin ? 'green' : 'red'}`;
+    },
+    logoutButtonDisabled() {
+      return !this.$store.state.isLogin;
+    },
   },
   methods: {
     realLogInClicked() {
       this.dialogVisible = false;
+      // TEST: always login success
+      this.$store.commit('login');
     },
   },
 };
