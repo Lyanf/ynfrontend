@@ -24,15 +24,19 @@
       <el-submenu index="1">
         <template slot="title">开始</template>
         <el-menu-item index="1-1">登录</el-menu-item>
-        <el-submenu :disabled="menuDisabled">
+        <el-submenu :disabled="menuDisabled" index="1-loadVersion">
           <template slot="title" @click="refreshVersion">加载版本…</template>
-          <el-menu-item v-if="knownVersions.length === 0" disabled=true>无可用版本</el-menu-item>
-          <el-menu-item v-for="item in knownVersions"
-                        :key="item" :index="item"
-                        :is-active="item === $store.state.currentVersion">
-            {{ item }}
-          </el-menu-item>
-          <el-divider></el-divider>
+          <el-menu-item index="1-placeholder"
+                        v-if="knownVersions.length === 0"
+                        :disabled=true>无可用版本</el-menu-item>
+          <div index="placeholder" v-if="knownVersions.length !== 0">
+            <el-menu-item v-for="item in knownVersions"
+                          :key="item" :index="item"
+                          :is-active="item === $store.state.currentVersion">
+              {{ item }}
+            </el-menu-item>
+          </div>
+          <el-divider index="1-split"></el-divider>
           <el-menu-item index="1-2-1">刷新</el-menu-item>
         </el-submenu>
         <el-menu-item index="1-2-2" :disabled="menuDisabled">储存版本</el-menu-item>
