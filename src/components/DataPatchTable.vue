@@ -64,7 +64,7 @@ export default {
           confirm: false,
         },
         edit: {
-          text: '编辑',
+          text: '更正',
           size: 'small',
           fixed: 'right',
         },

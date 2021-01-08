@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="12">
+      <el-col :span="7">
         <ProvMuniPredictSelectForm></ProvMuniPredictSelectForm>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="16" :offset="1">
         <el-form>
           <el-form-item>
             <el-table title="历史年份协调预测误差校核">
