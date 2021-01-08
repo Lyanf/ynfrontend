@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button @click="addRow">新增</el-button>
-    <el-button @click="exportTableSheet">表格导出</el-button>
+    <el-button @click="exportTableSheet" :disabled="dataEntryLength === 0">表格导出</el-button>
     <d2-crud
       ref="d2Crud"
       :columns="columns"
