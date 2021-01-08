@@ -18,25 +18,9 @@
             </el-option>
           </el-select>
         </el-form-item>
-      <el-form-item label="数据起始年份：">
-        <el-select placeholder="请选择" value="">
-          <el-option
-            v-for="item in selectItems"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="数据中止年份：">
-        <el-select placeholder="请选择" value="">
-          <el-option
-            v-for="item in selectItems"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+      <el-form-item label="年份范围：">
+        <year-range-selector :begin-year.sync='predictYear.begin' :end-year.sync="predictYear.end">
+      </year-range-selector>
       </el-form-item>
       <el-form-item label="预测年限：">
         <el-select placeholder="请选择" value="">
@@ -110,11 +94,17 @@
 
 <script>
 import { generateLabelAndValueObjsByArray } from '@/tool';
+import YearRangeSelector from '@/components/YearRangeSelector.vue';
 
 export default {
   name: 'SinglePredictSelectForm',
+  components: { YearRangeSelector },
   data() {
     return {
+      predictYear: {
+        begin: undefined,
+        end: undefined,
+      },
       test: '123',
       selectItems: '',
       formData: '',
@@ -154,7 +144,7 @@ export default {
 };
 </script>
 <style scoped>
-  .el-form-item .el-select,.el-input{
+  .el-form-item .el-select,.el-input {
     width: 80%;
   }
 </style>

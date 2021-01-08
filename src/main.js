@@ -15,7 +15,6 @@ Vue.use(ElementUI);
 Vue.use(D2Crud);
 Vue.use(Vuex);
 Vue.use(Print);
-
 Vue.component('LoadingView', LoadingView);
 
 const store = new Vuex.Store({
@@ -81,12 +80,12 @@ axios.interceptors.response.use(
     if (response.data.code === 200) {
       return response;
     }
-    this.$messenger.error(`请求失败！服务器报告了一个 ${response.data.msg} 错误。`);
+    messenger.error(`请求失败！服务器报告了一个 ${response.data.msg} 错误。`);
     return Promise.reject(response);
   },
   (error) => {
     store.commit('finishLoad');
-    this.$messenger.error('请求失败！无法连接到服务器。');
+    messenger.error('请求失败！无法连接到服务器。');
     return Promise.reject(error);
   },
 );

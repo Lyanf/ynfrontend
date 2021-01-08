@@ -82,14 +82,9 @@
 
     <el-tab-pane label="年负荷特性指标计算">
       <el-row>
-        <el-col :span="8">
-          <el-date-picker type="monthrange"
-                          range-separator="至"
-                          start-placeholder="开始年份"
-                          end-placeholder="结束年份"
-                          v-model="selectedDate"
-                          format="yyyy"
-          ></el-date-picker>
+        <el-col :span="10">
+          <year-range-selector>
+          </year-range-selector>
         </el-col>
         <el-button>计算</el-button>
       </el-row>
@@ -117,10 +112,11 @@
 
 <script>
 import ResultChart from '@/components/ResultChart.vue';
+import YearRangeSelector from '../components/YearRangeSelector.vue';
 
 export default {
   name: 'FuHeTeXingCompute',
-  components: { ResultChart },
+  components: { ResultChart, YearRangeSelector },
   data() {
     return {
       selectedDate: '',

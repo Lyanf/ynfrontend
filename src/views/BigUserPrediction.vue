@@ -1,9 +1,9 @@
 <template>
   <el-row>
-    <el-col :span="8">
+    <el-col :span="10">
       <BigUserPredictSelectForm/>
     </el-col>
-    <el-col :span="12">
+    <el-col :span="10" :offset="1">
       <el-row>
         <ResultChart></ResultChart>
       </el-row>
