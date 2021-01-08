@@ -52,7 +52,7 @@ export default {
         DeleteSchema: this.$data.currentSchema,
       }).then((response) => {
         console.log(response);
-        this.$messenger.success('删除计划成功。');
+        this.$messenger.success('删除方案成功。');
         this.loadSchemas();
       });
     },

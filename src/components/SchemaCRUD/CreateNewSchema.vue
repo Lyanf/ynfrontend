@@ -52,7 +52,7 @@ export default {
         NewSchemaName: this.$data.newSchemaName,
       }).then((response) => {
         console.log(response);
-        this.$messenger.success('创建计划成功。');
+        this.$messenger.success('创建方案成功。');
         this.loadSchemas();
       });
     },
