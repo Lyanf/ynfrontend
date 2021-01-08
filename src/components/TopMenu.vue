@@ -3,6 +3,21 @@
     <div class="top-warning" :hidden="bannerHidden" align="center">未登录
       <a style="color: lightgray" href="/#/logIn">立即登录</a>
     </div>
+    <el-dialog @close="clearInput"
+               title="确认版本名称"
+               :visible.sync="saveDialogVisible"
+               width="30%">
+      <el-form>
+        <el-form-item label="名称">
+          <el-input v-model="versionName" @keyup.enter.native="submitVersion"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="saveDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="submitVersion"
+                   :disabled="versionName.length === 0">确定</el-button>
+      </span>
+    </el-dialog>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
              style="display: flex; justify-content: space-between; margin-bottom: 3em"
              @select="handleSelect">
@@ -130,6 +145,8 @@ export default {
       activeName: '',
       dialogFormVisible: false,
       knownVersions: [],
+      versionName: '',
+      saveDialogVisible: false,
       isLogin: this.$store.state.isLogin,
     };
   },
@@ -146,25 +163,33 @@ export default {
     },
   },
   methods: {
+    clearInput() {
+      this.$data.versionName = '';
+    },
     refreshVersion() {
       this.$axios.get('/vcs/get').then((response) => {
         console.log(response);
         this.$data.knownVersions = response.data.data;
       });
     },
-    saveCurrentVersion() {
-      const VersionName = 'haha!';
+    submitVersion() {
+      const VersionName = this.$data.versionName;
       this.$axios.post('/vcs/put', {
         VersionName,
       }).then((response) => {
         console.log(response);
         this.$messenger.success(`成功创建了名为 ${VersionName} 的版本。`);
+        this.saveDialogVisible = false;
         this.refreshVersion();
       });
     },
     logOut() {
       this.$store.commit('switchVersion', undefined);
       this.$store.commit('logout');
+      this.$axios.post('/logout').then((response) => {
+        console.log(response);
+        this.$messenger.success('注销成功。');
+      });
     },
     handleSelect(key, keyPath) {
       if (keyPath[0] === '1') {
@@ -181,7 +206,7 @@ export default {
           this.refreshVersion();
         } else if (keyPath[1] === '1-2-2') {
           // 储存版本
-          this.saveCurrentVersion();
+          this.$data.saveDialogVisible = true;
         } else {
           // 加载特定版本
           const versionName = keyPath[1];
