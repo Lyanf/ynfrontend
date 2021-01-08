@@ -21,15 +21,15 @@ export default {
       selectedMetaData: '',
     };
   },
-  mounted() {
-    this.loadMetaData();
-  },
-  method: {
+  methods: {
     loadMetaData() {
       this.$axios.get('/db/metadata').then((response) => {
         this.$data.metaDataTree = response.data.data;
       });
     },
+  },
+  mounted() {
+    this.loadMetaData();
   },
 };
 </script>
