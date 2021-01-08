@@ -2,7 +2,7 @@
   <el-row>
     <el-col :span="3">
       <el-form label-position="top">
-        <el-form-item label="系数绝对值阈值:">
+        <el-form-item label="系数绝对值阈值：">
           <el-input></el-input>
         </el-form-item>
         <el-form-item >

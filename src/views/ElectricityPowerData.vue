@@ -2,13 +2,13 @@
   <div>
     <el-card>
       <span slot="header">
-        <span>全部数据</span>
+        <span>电力电量数据</span>
       </span>
-      <el-row justify="center">
-        <MetaDataTree category="All" :data-result.sync="tableData"></MetaDataTree>
+      <el-row justify="space-around">
+        <MetaDataTree category="ElecPower" :data-result.sync="tableData"></MetaDataTree>
       </el-row>
       <el-row>
-        <DataCRUDTable category="All" :display-data.sync="tableData"></DataCRUDTable>
+        <DataCRUDTable category="ElecPower" :display-data.sync="tableData"></DataCRUDTable>
       </el-row>
     </el-card>
   </div>
@@ -18,7 +18,7 @@ import MetaDataTree from '@/components/MetaDataTree.vue';
 import DataCRUDTable from '@/components/DataCRUDTable.vue';
 
 export default {
-  name: 'DataBaseCRUD',
+  name: 'ElectricityPowerData',
   components: {
     DataCRUDTable,
     MetaDataTree,
@@ -30,7 +30,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-
-</style>

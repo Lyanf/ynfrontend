@@ -1,9 +1,9 @@
 <template>
-  <el-form label-position="left" label-width="10%">
-    <el-form-item label="已有方案:">
+  <el-form label-position="right" label-width="14%">
+    <el-form-item label="已有方案">
       <el-select value=""></el-select>
     </el-form-item>
-    <el-form-item label="新建方案:">
+    <el-form-item label="新建方案">
       <el-input value=""></el-input>
     </el-form-item>
     <el-form-item>
@@ -20,6 +20,6 @@ export default {
 
 <style scoped>
   .el-select,.el-input{
-    width: 50%;
+    width: 60%;
   }
 </style>

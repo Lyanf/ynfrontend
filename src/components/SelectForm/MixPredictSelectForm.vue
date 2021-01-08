@@ -1,5 +1,5 @@
 <template>
-  <el-form>
+  <el-form label-position="right" label-width="auto">
     <el-form-item v-if="placeOrIndustry === 'industry'" label="预测行业">
       <el-select value=""></el-select>
     </el-form-item>
@@ -7,26 +7,12 @@
       <el-select value=""></el-select>
     </el-form-item>
     <el-form-item label="历史年份">
-      <el-date-picker
-        v-model="historyYear"
-        type="monthrange"
-        range-separator="至"
-        start-placeholder="开始年份"
-        end-placeholder="结束年份"
-        format="yyyy"
-      >
-      </el-date-picker>
+      <year-range-selector :begin-year.sync='historyYear.begin' :end-year.sync="historyYear.end">
+      </year-range-selector>
     </el-form-item>
     <el-form-item label="预测年份">
-      <el-date-picker
-        v-model="predictYear"
-        type="monthrange"
-        range-separator="至"
-        start-placeholder="开始年份"
-        end-placeholder="结束年份"
-        format="yyyy"
-      >
-      </el-date-picker>
+      <year-range-selector :begin-year.sync='predictYear.begin' :end-year.sync="predictYear.end">
+      </year-range-selector>
     </el-form-item>
     <el-form-item label="选择组合模型（必选）">
       <el-select v-model="selectedMethods" multiple placeholder="请选择">
@@ -45,21 +31,29 @@
       <el-select v-model="showChartType"></el-select>
     </el-form-item>
     <el-form-item>
-      <el-button>预测</el-button>
+      <el-button type="primary">预测</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
 import { generateLabelAndValueObjsByArray } from '@/tool';
+import YearRangeSelector from '@/components/YearRangeSelector.vue';
 
 export default {
   name: 'MixPredictSelectForm',
   props: ['placeOrIndustry'],
+  components: { YearRangeSelector },
   data() {
     return {
-      historyYear: '',
-      predictYear: '',
+      historyYear: {
+        begin: undefined,
+        end: undefined,
+      },
+      predictYear: {
+        begin: undefined,
+        end: undefined,
+      },
       selectedMethods: '',
       showChartType: '',
       originalAllMethodsForPlace: ['逐步回归模型', '灰色滑动平均模型', '分数阶灰色模型',

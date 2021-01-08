@@ -1,17 +1,27 @@
 <template>
   <el-row>
-    <el-col :span="8">
+    <el-col :span="11">
       <BigUserPredictSelectForm/>
+    </el-col>
+    <el-col :span="12" :offset="1">
+      <el-row>
+        <ResultChart></ResultChart>
+      </el-row>
+      <el-row>
+        <ResultTable></ResultTable>
+      </el-row>
     </el-col>
   </el-row>
 </template>
 
 <script>
 import BigUserPredictSelectForm from '@/components/SelectForm/BigUserPredictSelectForm.vue';
+import ResultChart from '@/components/ResultChart.vue';
+import ResultTable from '@/components/ResultTable.vue';
 
 export default {
   name: 'BigUserPrediction',
-  components: { BigUserPredictSelectForm },
+  components: { ResultTable, ResultChart, BigUserPredictSelectForm },
 };
 </script>
 

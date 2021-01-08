@@ -51,7 +51,6 @@ export default {
     exportTableSheet() {
       const data = json2csv.parse(this.$data.tableData, {
         fields: ['method', 'miningResult'],
-        excelStrings: true,
       });
       const blob = new Blob([data], { type: 'text/csv' });
       saveAs(blob, 'mining_result.csv');
