@@ -9,7 +9,9 @@
       </el-row>
       <el-row type="flex" justify="space-around">
         <el-button type="primary" v-on:click="dialogVisible=true">{{loginButtonText}}</el-button>
-        <el-button type="danger" v-on:click="$store.commit('logout')"
+        <el-button type="danger"
+                   v-on:click="$store.commit('logout');
+                   this.$store.commit('switchVersion', undefined);"
                    :disabled="logoutButtonDisabled">注销</el-button>
       </el-row>
     </el-card>

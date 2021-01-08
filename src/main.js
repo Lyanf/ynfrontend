@@ -17,10 +17,15 @@ Vue.use(Vuex);
 Vue.use(Print);
 Vue.component('LoadingView', LoadingView);
 
+const axios = axiosApi.create({
+  baseURL: 'http://localhost:5000/api/',
+});
+
 const store = new Vuex.Store({
   state: {
     isLogin: false,
     isLoading: false,
+    currentVersion: undefined,
   },
   mutations: {
     login(state) {
@@ -34,6 +39,14 @@ const store = new Vuex.Store({
     },
     finishLoad(state) {
       state.isLoading = false;
+    },
+    switchVersion(state, version) {
+      state.currentVersion = version;
+      if (version !== undefined) {
+        axios.defaults.baseURL = `http://localhost:5000/api/${version}`;
+      } else {
+        axios.defaults.baseURL = 'http://localhost:5000/api/';
+      }
     },
   },
 });
@@ -61,10 +74,6 @@ const messenger = {
     });
   },
 };
-
-const axios = axiosApi.create({
-  baseURL: 'http://localhost:5000/api/',
-});
 
 axios.interceptors.request.use(
   (config) => {

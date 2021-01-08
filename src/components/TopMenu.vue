@@ -9,7 +9,18 @@
       <el-submenu index="1">
         <template slot="title">开始</template>
         <el-menu-item index="1-1">登录</el-menu-item>
-        <el-menu-item index="1-2" :disabled="menuDisabled">最近保存文件</el-menu-item>
+        <el-submenu :disabled="menuDisabled">
+          <template slot="title" @click="refreshVersion">加载版本…</template>
+          <el-menu-item v-if="knownVersions.length === 0" disabled=true>无可用版本</el-menu-item>
+          <el-menu-item v-for="item in knownVersions"
+                        :key="item" :index="item"
+                        :is-active="item === $store.state.currentVersion">
+            {{ item }}
+          </el-menu-item>
+          <el-divider></el-divider>
+          <el-menu-item index="1-2-1">刷新</el-menu-item>
+        </el-submenu>
+        <el-menu-item index="1-2-2" :disabled="menuDisabled">储存版本</el-menu-item>
         <el-menu-item index="1-3">退出</el-menu-item>
       </el-submenu>
 
@@ -118,6 +129,8 @@ export default {
       activeIndex: '1',
       activeName: '',
       dialogFormVisible: false,
+      knownVersions: [],
+      isLogin: this.$store.state.isLogin,
     };
   },
   computed: {
@@ -125,25 +138,55 @@ export default {
       return !this.$store.state.isLogin;
     },
     bannerHidden() {
-      return this.$store.state.isLogin;
+      const login = this.$store.state.isLogin;
+      if (login) {
+        this.refreshVersion();
+      }
+      return login;
     },
   },
   methods: {
+    refreshVersion() {
+      this.$axios.get('/vcs/get').then((response) => {
+        console.log(response);
+        this.$data.knownVersions = response.data.data;
+      });
+    },
+    saveCurrentVersion() {
+      const VersionName = 'haha!';
+      this.$axios.post('/vcs/put', {
+        VersionName,
+      }).then((response) => {
+        console.log(response);
+        this.$messenger.success(`成功创建了名为 ${VersionName} 的版本。`);
+        this.refreshVersion();
+      });
+    },
+    logOut() {
+      this.$store.commit('switchVersion', undefined);
+      this.$store.commit('logout');
+    },
     handleSelect(key, keyPath) {
       if (keyPath[0] === '1') {
         // 开始
         if (keyPath[1] === '1-1') {
           // 登录
           window.location = '/#/logIn';
-        } else if (keyPath[1] === '1-2') {
-          // 最近保存文件
-          window.location = '/#/';
         } else if (keyPath[1] === '1-3') {
           // 退出
           window.location = '/#/logIn';
-          this.$store.commit('logout');
+          this.logOut();
+        } else if (keyPath[1] === '1-2-1') {
+          // 加载
+          this.refreshVersion();
+        } else if (keyPath[1] === '1-2-2') {
+          // 储存版本
+          this.saveCurrentVersion();
         } else {
-          console.assert(false);
+          // 加载特定版本
+          const versionName = keyPath[1];
+          this.$store.commit('switchVersion', versionName);
+          this.$messenger.success(`已经成功切换到 ${versionName} 版本。`);
         }
       } else if (keyPath[0] === '2') {
         // 数据库
