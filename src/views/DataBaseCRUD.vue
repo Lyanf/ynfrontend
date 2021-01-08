@@ -5,10 +5,10 @@
         <span>全部数据</span>
       </span>
       <el-row justify="center">
-        <MetaDataTree></MetaDataTree>
+        <MetaDataTree category="All" :data-result.sync="tableData"></MetaDataTree>
       </el-row>
       <el-row>
-        <DataCRUDTable></DataCRUDTable>
+        <DataCRUDTable category="All" :display-data.sync="tableData"></DataCRUDTable>
       </el-row>
     </el-card>
   </div>
@@ -22,6 +22,11 @@ export default {
   components: {
     DataCRUDTable,
     MetaDataTree,
+  },
+  data() {
+    return {
+      tableData: [],
+    };
   },
 };
 </script>

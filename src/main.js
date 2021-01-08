@@ -99,6 +99,15 @@ axios.interceptors.response.use(
   },
 );
 
+// Array Remove - By John Resig (MIT Licensed)
+// eslint-disable-next-line no-extend-native,func-names
+Array.prototype.remove = function (from, to) {
+  const rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  // eslint-disable-next-line prefer-spread
+  return this.push.apply(this, rest);
+};
+
 Vue.prototype.$axios = axios;
 Vue.prototype.$messenger = messenger;
 

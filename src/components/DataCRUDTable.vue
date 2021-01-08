@@ -5,7 +5,7 @@
     <d2-crud
       ref="d2Crud"
       :columns="columns"
-      :data="tableData"
+      :data="displayData"
       :add-template="addTemplate"
       @row-add="handleRowAdd"
       @dialog-cancel="handleDialogCancel"
@@ -15,11 +15,10 @@
       @row-edit="handleRowEdit"
 
       @row-remove="handleRowRemove"
-
-      :pagination="pagination"
-      @pageination-current-change="paginationCurrentChange"
-
     ></d2-crud>
+    <div style="color: darkgray; font-size: 12px">
+      共 {{ dataEntryLength }} 条
+    </div>
   </div>
 </template>
 
@@ -29,6 +28,15 @@ import { saveAs } from 'file-saver';
 
 export default {
   name: 'DataCRUDTable',
+  props: ['displayData', 'category'],
+  computed: {
+    dataEntryLength() {
+      if (this.displayData === undefined) {
+        return 0;
+      }
+      return this.displayData.length;
+    },
+  },
   data() {
     return {
       columns: [{
@@ -39,37 +47,6 @@ export default {
         title: '值',
         key: 'value',
       }],
-      tableData: [
-        {
-          date: '2019-10-21',
-          value: '11',
-        },
-        {
-          date: '2018-10-21',
-          value: '12',
-        },
-        {
-          date: '2018-10-21',
-          value: '12',
-        },
-        {
-          date: '2018-10-21',
-          value: '12',
-        },
-        {
-          date: '2018-10-21',
-          value: '12',
-        },
-        {
-          date: '2018-10-21',
-          value: '12',
-        },
-        {
-          date: '2018-10-21',
-          value: '12',
-        },
-      ],
-
       addTemplate: {
         date: {
           title: '日期',
@@ -90,22 +67,14 @@ export default {
 
       rowHandle: {
         edit: {
-          icon: 'el-icon-edit',
-          text: '点我进行编辑',
+          text: '编辑',
           size: 'small',
         },
         remove: {
-          icon: 'el-icon-delete',
           size: 'small',
           fixed: 'right',
           confirm: true,
         },
-      },
-
-      pagination: {
-        currentPage: 1,
-        pageSize: 5,
-        total: 2,
       },
     };
   },
@@ -122,29 +91,52 @@ export default {
             fields.push(item.key);
           });
           console.log(fields);
-          const data = json2csv.parse(this.$data.tableData, {
+          const data = json2csv.parse(this.displayData, {
             fields,
           });
           const blob = new Blob([data], { type: 'text/csv' });
           saveAs(blob, 'database.csv');
         },
         handleRowAdd(row, done) {
-          console.log(row.date, row.value);
-          done();
+          this.$axios.post('/db/create', {
+            Category: this.category,
+            NewData: {
+              date: row.date,
+              value: row.value,
+            },
+          }).then((response) => {
+            console.log(response);
+            this.$messenger.success('添加成功。');
+            this.displayData.push(row);
+            done();
+          });
         },
         handleDialogCancel(done) {
           done();
         },
         handleRowEdit({ index, row }, done) {
-          console.log(index, row);
-          done();
+          this.$axios.post('/db/update', {
+            Category: this.category,
+            OriginData: this.displayData[index],
+            ModifiedData: row,
+          }).then((response) => {
+            console.log(response);
+            this.$messenger.success('编辑成功。');
+            this.displayData[index] = row;
+            done();
+          });
         },
+        // eslint-disable-next-line no-unused-vars
         handleRowRemove({ index, row }, done) {
-          console.log(index, row);
-          done();
-        },
-        paginationCurrentChange(currentPage) {
-          this.pagination.currentPage = currentPage;
+          this.$axios.post('/db/delete', {
+            Category: this.category,
+            OriginData: this.displayData[index],
+          }).then((response) => {
+            console.log(response);
+            this.$messenger.success('删除成功。');
+            this.displayData.remove(index);
+            done();
+          });
         },
       },
 };

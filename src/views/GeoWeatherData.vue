@@ -5,10 +5,10 @@
         <span>地理气象数据</span>
       </span>
       <el-row justify="space-around">
-        <MetaDataTree></MetaDataTree>
+        <MetaDataTree category="GeoWeather" :data-result.sync="tableData"></MetaDataTree>
       </el-row>
       <el-row>
-        <DataCRUDTable></DataCRUDTable>
+        <DataCRUDTable category="GeoWeather" :display-data.sync="tableData"></DataCRUDTable>
       </el-row>
     </el-card>
   </div>
@@ -23,6 +23,11 @@ export default {
   components: {
     DataCRUDTable,
     MetaDataTree,
+  },
+  data() {
+    return {
+      tableData: [],
+    };
   },
 };
 </script>
