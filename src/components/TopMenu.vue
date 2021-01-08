@@ -205,7 +205,7 @@ export default {
           // 退出
           window.location = '/#/logIn';
           this.logOut();
-        } else if (keyPath[1] === '1-2-1') {
+        } else if (keyPath[2] === '1-2-1') {
           // 加载
           this.refreshVersion();
         } else if (keyPath[1] === '1-2-2') {
@@ -213,7 +213,7 @@ export default {
           this.$data.saveDialogVisible = true;
         } else {
           // 加载特定版本
-          const versionName = keyPath[1];
+          const versionName = keyPath[2];
           this.$store.commit('switchVersion', versionName);
           this.$messenger.success(`已经成功切换到 ${versionName} 版本。`);
         }

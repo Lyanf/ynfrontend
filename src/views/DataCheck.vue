@@ -11,7 +11,9 @@
               <el-select></el-select>
             </el-form-item>
             <el-form-item label="历史年份">
-              <el-date-picker></el-date-picker>
+              <el-date-picker
+                type="year"
+                placeholder="请选择"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button>异常检测</el-button>

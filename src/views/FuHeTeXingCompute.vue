@@ -6,8 +6,8 @@
         <el-col :span="8">
           <el-date-picker type="daterange"
                           range-separator="至"
-                          start-placeholder="开始日期"
-                          end-placeholder="结束日期"
+                          start-placeholder="起始日期"
+                          end-placeholder="终止日期"
                           v-model="selectedDate"
           ></el-date-picker>
         </el-col>
@@ -52,8 +52,8 @@
         <el-col :span="8">
           <el-date-picker type="monthrange"
                           range-separator="至"
-                          start-placeholder="开始月份"
-                          end-placeholder="结束月份"
+                          start-placeholder="起始月份"
+                          end-placeholder="终止月份"
                           v-model="selectedDate"
           ></el-date-picker>
         </el-col>
