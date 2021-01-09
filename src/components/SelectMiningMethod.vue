@@ -1,12 +1,13 @@
 <template>
-
+  <div>
+    Deprecated
+  </div>
 </template>
 
 <script>
 
 export default {
   name: 'SelectMiningMethod',
-  components: { YearRangeSelector },
   data() {
     return {
       formData: {},

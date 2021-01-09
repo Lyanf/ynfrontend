@@ -1,6 +1,6 @@
 <template>
   <el-form label-position="right" label-width="14%">
-    <el-form-item label="已有方案">
+    <el-form-item label="已有版本">
       <el-select placeholder="请选择" v-model="currentSchema">
         <el-option v-for="item in schemas"
                    :key="item"
@@ -9,7 +9,7 @@
         </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="新建方案">
+    <el-form-item label="新建版本">
       <el-input v-model="newSchemaName"
                 @keyup.enter.native="createNewSchema"
                 placeholder="请输入"></el-input>
@@ -52,7 +52,7 @@ export default {
         NewSchemaName: this.$data.newSchemaName,
       }).then((response) => {
         console.log(response);
-        this.$messenger.success('创建方案成功。');
+        this.$messenger.success('创建版本成功。');
         this.loadSchemas();
       });
     },

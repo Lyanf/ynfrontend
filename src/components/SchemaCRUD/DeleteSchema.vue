@@ -1,6 +1,6 @@
 <template>
   <el-form label-position="right" label-width="14%">
-    <el-form-item label="已有方案">
+    <el-form-item label="已有版本">
       <el-select placeholder="请选择" v-model="currentSchema">
         <el-option v-for="item in schemas"
                    :key="item"
@@ -10,10 +10,6 @@
       </el-select>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary"
-        @click="viewSchema"
-        :disable="currentSchema === undefined">查看
-      </el-button>
       <el-button type="danger"
          @click="deleteSchema"
         :disabled="currentSchema === undefined">
@@ -41,9 +37,6 @@ export default {
         this.$data.schemas = response.data.data;
       });
     },
-    viewSchema() {
-      console.log('view it');
-    },
     deleteSchema() {
       if (this.$data.currentSchema === undefined) {
         return;
@@ -52,7 +45,10 @@ export default {
         DeleteSchema: this.$data.currentSchema,
       }).then((response) => {
         console.log(response);
-        this.$messenger.success('删除方案成功。');
+        this.$messenger.success('删除版本成功。');
+        if (this.$store.state.currentVersion === this.$data.currentSchema) {
+          this.$store.commit('switchVersion', undefined);
+        }
         this.loadSchemas();
       });
     },

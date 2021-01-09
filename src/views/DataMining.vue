@@ -48,13 +48,18 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="postParams.Method==='Pearson'" label="皮尔逊系数阈值：">
-          <el-input placeholder="请填写" v-model="postParams.Pearson.threshold"></el-input>
-        </el-form-item>
-        <el-form-item v-if="postParams.Method==='KMeans'" label="推荐最佳分类数：">
-          <el-input placeholder="请填写" v-model="postParams.KMeans.suggestCategoryCount"></el-input>
+          <el-input placeholder="请填写 0 至 1 的小数"
+                    type="number"
+                    :min="0"
+                    :max="1"
+                    :step="0.01"
+                    v-model="postParams.Pearson.threshold"></el-input>
         </el-form-item>
         <el-form-item v-if="postParams.Method==='KMeans'" label="分类数：">
           <el-input placeholder="请填写" v-model="postParams.KMeans.categoryCount"></el-input>
+        </el-form-item>
+        <el-form-item v-if="postParams.Method==='KMeans'" label="推荐最佳分类数：">
+          {{suggestCategoryCount}}
         </el-form-item>
         <el-form-item v-if="postParams.Method==='PCA'" label="系数绝对值阈值：">
           <el-input placeholder="请填写" v-model="postParams.PCA.absThreshold"></el-input>
@@ -94,6 +99,7 @@ export default {
   mounted() {
     this.loadFactors();
     this.loadRegions();
+    this.loadSuggestedCategoryCount();
   },
   computed: {
     isFormComplete() {
@@ -114,8 +120,7 @@ export default {
         return params.Pearson.threshold.length !== 0;
       }
       if (params.Method === 'KMeans') {
-        return params.KMeans.suggestCategoryCount.length !== 0
-          && params.KMeans.categoryCount.length !== 0;
+        return params.KMeans.categoryCount.length !== 0;
       }
       if (params.Method === 'PCA') {
         return params.PCA.absThreshold.length !== 0;
@@ -141,6 +146,11 @@ export default {
             key: element,
           });
         });
+      });
+    },
+    loadSuggestedCategoryCount() {
+      this.$axios.get('/mining/factor/kmeans/suggest').then((response) => {
+        this.$data.suggestCategoryCount = response.data.data.Count;
       });
     },
     commitMining() {
@@ -170,7 +180,7 @@ export default {
       }],
       knownRegions: [],
       knownFactors: [],
-
+      suggestCategoryCount: undefined,
       postParams: {
         Region: '',
         Factors: [],
@@ -179,7 +189,6 @@ export default {
           threshold: '',
         },
         KMeans: {
-          suggestCategoryCount: '',
           categoryCount: '',
         },
         PCA: {

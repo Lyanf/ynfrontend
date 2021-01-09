@@ -1,6 +1,6 @@
 <template>
   <el-form label-position="right" label-width="14%">
-    <el-form-item label="已有方案">
+    <el-form-item label="已有版本">
       <el-select placeholder="请选择" v-model="currentSchema">
         <el-option v-for="item in schemas"
                    :key="item"
@@ -11,9 +11,9 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary"
-        @click="viewSchema"
+        @click="switchSchema"
         :disabled="currentSchema === undefined">
-        查看
+        切换
       </el-button>
     </el-form-item>
   </el-form>
@@ -37,8 +37,9 @@ export default {
         this.$data.schemas = response.data.data;
       });
     },
-    viewSchema() {
-      console.log('view it');
+    switchSchema() {
+      this.$store.commit('switchVersion', this.$data.currentSchema);
+      this.$messenger.success(`已切换到 ${this.$data.currentSchema} 版本。`);
     },
   },
 };

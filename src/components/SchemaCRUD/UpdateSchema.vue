@@ -1,6 +1,6 @@
 <template>
   <el-form label-position="right" label-width="14%">
-    <el-form-item label="已有方案">
+    <el-form-item label="已有版本">
       <el-select placeholder="请选择" v-model="currentSchema">
         <el-option v-for="item in schemas"
                    :key="item"
@@ -50,7 +50,10 @@ export default {
         NewSchemaName: this.$data.newSchemaName,
       }).then((response) => {
         console.log(response);
-        this.$messenger.success('修改方案成功。');
+        this.$messenger.success('修改版本成功。');
+        if (this.$store.state.currentVersion === this.$data.currentSchema) {
+          this.$store.commit('switchVersion', this.$data.newSchemaName);
+        }
         this.loadSchemas();
       });
     },
