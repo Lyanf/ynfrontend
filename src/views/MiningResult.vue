@@ -69,8 +69,8 @@ export default {
       });
     },
     exportTableSheet() {
-      const data = json2csv.parse(this.$data.tableData, {
-        fields: ['method', 'miningResult'],
+      const data = json2csv.parse(this.$data.displayTable, {
+        fields: ['planName', 'factors'],
       });
       const blob = new Blob([data], { type: 'text/csv' });
       saveAs(blob, 'mining_result.csv');
