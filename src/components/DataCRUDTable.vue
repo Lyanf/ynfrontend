@@ -40,16 +40,16 @@ export default {
   data() {
     return {
       columns: [{
-        title: '日期',
-        key: 'date',
+        title: '键',
+        key: 'key',
       },
       {
         title: '值',
         key: 'value',
       }],
       addTemplate: {
-        date: {
-          title: '日期',
+        key: {
+          title: '键',
         },
         value: {
           title: '值',
@@ -57,8 +57,8 @@ export default {
       },
 
       editTemplate: {
-        date: {
-          title: '日期',
+        key: {
+          title: '键',
         },
         value: {
           title: '值',
@@ -99,9 +99,9 @@ export default {
         },
         handleRowAdd(row, done) {
           this.$axios.post('/db/create', {
-            Category: this.category,
-            NewData: {
-              date: row.date,
+            category: this.category,
+            newData: {
+              key: row.key,
               value: row.value,
             },
           }).then((response) => {
@@ -116,9 +116,9 @@ export default {
         },
         handleRowEdit({ index, row }, done) {
           this.$axios.post('/db/update', {
-            Category: this.category,
-            OriginData: this.displayData[index],
-            ModifiedData: row,
+            category: this.category,
+            originData: this.displayData[index],
+            modifiedData: row,
           }).then((response) => {
             console.log(response);
             this.$messenger.success('编辑成功。');
@@ -129,8 +129,8 @@ export default {
         // eslint-disable-next-line no-unused-vars
         handleRowRemove({ index, row }, done) {
           this.$axios.post('/db/delete', {
-            Category: this.category,
-            OriginData: this.displayData[index],
+            category: this.category,
+            originData: this.displayData[index],
           }).then((response) => {
             console.log(response);
             this.$messenger.success('删除成功。');

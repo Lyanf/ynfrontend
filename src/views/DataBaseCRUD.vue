@@ -1,17 +1,12 @@
 <template>
-  <div>
-    <el-card>
-      <span slot="header">
-        <span>全部数据</span>
-      </span>
-      <el-row justify="center">
-        <MetaDataTree category="All" :data-result.sync="tableData"></MetaDataTree>
-      </el-row>
-      <el-row>
-        <DataCRUDTable category="All" :display-data.sync="tableData"></DataCRUDTable>
-      </el-row>
-    </el-card>
-  </div>
+  <el-row>
+    <el-col :offset="1" :span="9">
+      <MetaDataTree :category.sync="category" :data-result.sync="tableData"></MetaDataTree>
+    </el-col>
+    <el-col :span="14">
+      <DataCRUDTable :category.sync="category" :display-data.sync="tableData"></DataCRUDTable>
+    </el-col>
+  </el-row>
 </template>
 <script>
 import MetaDataTree from '@/components/MetaDataTree.vue';
@@ -26,6 +21,7 @@ export default {
   data() {
     return {
       tableData: [],
+      category: [],
     };
   },
 };

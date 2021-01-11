@@ -5,31 +5,30 @@
         <el-transfer
           filterable
           filter-placeholder="输入以查找"
-          v-model="postParams.Factors"
+          v-model="postParams.factors"
           :data="knownFactors"
           :titles="['待选择影响因素', '已选择影响因素']"
+          :button-texts="['移除', '添加']"
           style="height: 100%"
           @change="loadSuggestedCategoryCount"
         >
         </el-transfer>
       </el-row>
       <el-row style="margin-top: 5em">
-        <span >挖掘结果</span>
+        <span v-if="miningResults.length > 0">挖掘结果</span>
       </el-row>
       <el-row style="margin-top: 2em" >
-        <el-tag >第一产业产值</el-tag>
-        <el-divider direction="vertical"></el-divider>
-
-        <el-tag >GDP</el-tag>
-        <el-divider direction="vertical"></el-divider>
-
-        <el-tag>第二产业产值</el-tag>
+        <el-tag v-for="item in miningResults"
+                :key="item"
+        style="margin: 5px">
+          {{item}}
+        </el-tag>
       </el-row>
     </el-col>
     <el-col :span="10" :offset="1" style="margin-right: 20px">
       <el-form label-position="right" label-width="auto">
         <el-form-item label="选择地区：">
-          <el-select placeholder="请选择" v-model="postParams.Region">
+          <el-select placeholder="请选择" v-model="postParams.region">
             <el-option
               v-for="item in knownRegions"
               :key="item"
@@ -39,7 +38,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="挖掘方法：">
-          <el-select placeholder="请选择" v-model="postParams.Method">
+          <el-select placeholder="请选择" v-model="postParams.method">
             <el-option
               v-for="item in allMethods"
               :key="item.value"
@@ -48,22 +47,36 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="postParams.Method==='Pearson'" label="皮尔逊系数阈值：">
+        <el-form-item v-if="postParams.method==='Pearson'" label="皮尔逊系数阈值：">
           <el-slider
-            v-model="postParams.Pearson.threshold"
+            v-model="postParams.pearson.threshold"
             show-input
             :step="0.01"
             :max="1"
             :min="0">
           </el-slider>
         </el-form-item>
-        <el-form-item v-if="postParams.Method==='KMeans'" label="分类数：">
-          <el-input placeholder="请填写" v-model="postParams.KMeans.categoryCount"></el-input>
+        <el-form-item v-if="postParams.method==='KMeans'" label="分类数：">
+          <el-slider
+            v-model="postParams.kMeans.categoryCount"
+            show-input
+            show-stops="true"
+            :max="postParams.factors.length"
+            :min="0"
+            :disabled="postParams.factors.length === 0">
+          </el-slider>
         </el-form-item>
-        <el-form-item v-if="postParams.Method==='KMeans'" label="推荐最佳分类数：">
-          {{suggestCategoryCount}}
+        <el-form-item
+          v-if="postParams.method==='KMeans' && postParams.factors.length === 0">
+          <div style="color: darkred; font-size: 13px">请至少先加入一个影响因素。</div>
         </el-form-item>
-        <el-form-item v-if="postParams.Method==='PCA'" label="系数绝对值阈值：">
+        <el-form-item
+          v-if="postParams.method==='KMeans' && postParams.factors.length !== 0">
+          <div style="font-size: 13px">
+            推荐您将分类数设置为 {{suggestCategoryCount}}。
+          </div>
+        </el-form-item>
+        <el-form-item v-if="postParams.method==='PCA'" label="系数绝对值阈值：">
           <el-slider
             v-model="postParams.PCA.absThreshold"
             show-input
@@ -72,7 +85,7 @@
             :min="0">
           </el-slider>
         </el-form-item>
-        <el-form-item v-if="postParams.Method==='ARL'" label="最小支持度：">
+        <el-form-item v-if="postParams.method==='ARL'" label="最小支持度：">
           <el-slider
             v-model="postParams.ARL.minSupport"
             show-input
@@ -81,7 +94,7 @@
             :min="0">
           </el-slider>
         </el-form-item>
-        <el-form-item v-if="postParams.Method==='ARL'" label="最小置信度：">
+        <el-form-item v-if="postParams.method==='ARL'" label="最小置信度：">
           <el-slider
             v-model="postParams.ARL.minConfidence"
             show-input
@@ -127,25 +140,25 @@ export default {
       if (params.beginYear === '' || params.endYear === '') {
         return false;
       }
-      if (params.Factors.length === 0) {
+      if (params.factors.length === 0) {
         return false;
       }
-      if (params.Region.length === 0) {
+      if (params.region.length === 0) {
         return false;
       }
-      if (params.Method.length === 0) {
+      if (params.method.length === 0) {
         return false;
       }
-      if (params.Method === 'Pearson') {
-        return params.Pearson.threshold.length !== 0;
+      if (params.method === 'Pearson') {
+        return params.pearson.threshold.length !== 0;
       }
-      if (params.Method === 'KMeans') {
-        return params.KMeans.categoryCount.length !== 0;
+      if (params.method === 'KMeans') {
+        return params.kMeans.categoryCount !== 0;
       }
-      if (params.Method === 'PCA') {
+      if (params.method === 'PCA') {
         return params.PCA.absThreshold.length !== 0;
       }
-      if (params.Method === 'ARL') {
+      if (params.method === 'ARL') {
         return params.ARL.minConfidence.length !== 0
           && params.ARL.minSupport.length !== 0;
       }
@@ -171,16 +184,16 @@ export default {
     loadSuggestedCategoryCount() {
       this.$axios.get('/mining/factor/kmeans/suggest', {
         params: {
-          factors: this.$data.postParams.Factors.join(),
+          factors: this.$data.postParams.factors.join(),
         },
       }).then((response) => {
-        this.$data.suggestCategoryCount = response.data.data.Count;
+        this.$data.suggestCategoryCount = response.data.data.count;
       });
     },
     commitMining() {
       this.$axios.post('/mining/request', this.$data.postParams).then((response) => {
-        console.log(response);
-        this.$messenger.success('数据挖掘请求提交成功。');
+        this.$messenger.success('数据挖掘成功。');
+        this.$data.miningResults = response.data.data;
       });
     },
     goToResultPage() {
@@ -205,14 +218,15 @@ export default {
       knownRegions: [],
       knownFactors: [],
       suggestCategoryCount: undefined,
+      miningResults: [],
       postParams: {
-        Region: '',
-        Factors: [],
-        Method: '',
-        Pearson: {
+        region: '',
+        factors: [],
+        method: '',
+        pearson: {
           threshold: 0.5,
         },
-        KMeans: {
+        kMeans: {
           categoryCount: 0,
         },
         PCA: {

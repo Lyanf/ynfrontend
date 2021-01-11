@@ -46,8 +46,8 @@ export default {
         return;
       }
       this.$axios.post('/schema/rename', {
-        CurrentSchema: this.$data.currentSchema,
-        NewSchemaName: this.$data.newSchemaName,
+        currentSchema: this.$data.currentSchema,
+        newSchemaName: this.$data.newSchemaName,
       }).then((response) => {
         console.log(response);
         this.$messenger.success('修改版本成功。');

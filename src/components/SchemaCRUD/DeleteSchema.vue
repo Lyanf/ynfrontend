@@ -42,7 +42,7 @@ export default {
         return;
       }
       this.$axios.post('/schema/delete', {
-        DeleteSchema: this.$data.currentSchema,
+        deleteSchema: this.$data.currentSchema,
       }).then((response) => {
         console.log(response);
         this.$messenger.success('删除版本成功。');

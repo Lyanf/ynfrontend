@@ -24,9 +24,6 @@
 
       <el-submenu index="2" :disabled="menuDisabled">
         <template slot="title">数据库</template>
-        <el-menu-item index="2-1">社会经济数据</el-menu-item>
-        <el-menu-item index="2-2">电力电量数据</el-menu-item>
-        <el-menu-item index="2-3">地理气象数据</el-menu-item>
         <el-menu-item index="2-4">全部数据</el-menu-item>
         <el-menu-item index="2-5">数据监测与更正</el-menu-item>
       </el-submenu>
@@ -154,7 +151,7 @@ export default {
       });
     },
     triggerReload() {
-      const views = [this.$refs.newView,
+      const views = [
         this.$refs.switchView,
         this.$refs.renameView,
         this.$refs.deleteView];
