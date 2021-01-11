@@ -1,21 +1,39 @@
 <template>
   <el-form label-position="right" label-width="auto">
-    <el-form-item v-if="placeOrIndustry === 'industry'" label="预测行业">
-      <el-select value=""></el-select>
+    <el-form-item v-if="placeOrIndustry === 'industry'" label="预测行业：">
+      <el-select placeholder="请选择" v-model="postParams.industry">
+        <el-option
+          v-for="item in predictIndustries"
+          :key="item"
+          :value="item"
+          :label="item">
+        </el-option>
+      </el-select>
     </el-form-item>
-    <el-form-item v-if="placeOrIndustry === 'place'" label="预测地区">
-      <el-select value=""></el-select>
+    <el-form-item v-if="placeOrIndustry === 'place'" label="预测地区：">
+      <el-select placeholder="请选择" v-model="postParams.region">
+        <el-option
+          v-for="item in predictRegions"
+          :key="item"
+          :value="item"
+          :label="item">
+        </el-option>
+      </el-select>
     </el-form-item>
-    <el-form-item label="历史年份">
-      <year-range-selector :begin-year.sync='historyYear.begin' :end-year.sync="historyYear.end">
+    <el-form-item label="历史年份：">
+      <year-range-selector
+        :begin-year.sync='postParams.historyBeginYear'
+        :end-year.sync="postParams.historyEndYear">
       </year-range-selector>
     </el-form-item>
-    <el-form-item label="预测年份">
-      <year-range-selector :begin-year.sync='predictYear.begin' :end-year.sync="predictYear.end">
+    <el-form-item label="预测年份：">
+      <year-range-selector
+        :begin-year.sync='postParams.beginYear'
+        :end-year.sync="postParams.endYear">
       </year-range-selector>
     </el-form-item>
-    <el-form-item label="选择组合模型（必选）">
-      <el-select v-model="selectedMethods" multiple placeholder="请选择">
+    <el-form-item label="选择组合模型：">
+      <el-select v-model="postParams.selectedMethods" multiple placeholder="请选择">
         <el-option
           v-for="item in allMethods"
           :key="item.value"
@@ -27,11 +45,14 @@
     <el-form-item>
       <el-button>检测</el-button>
     </el-form-item>
-    <el-form-item label="展示曲线类型">
-      <el-select v-model="showChartType"></el-select>
+    <el-form-item label="展示曲线类型：">
+      <el-select v-model="showChartType">
+        <el-option value="折线图" label="折线图"></el-option>
+        <el-option value="柱状图" label="柱状图"></el-option>
+      </el-select>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary">预测</el-button>
+      <el-button type="primary" :disabled="!canCommitQuery">预测</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -46,15 +67,17 @@ export default {
   components: { YearRangeSelector },
   data() {
     return {
-      historyYear: {
-        begin: undefined,
-        end: undefined,
+      postParams: {
+        historyBeginYear: undefined,
+        historyEndYear: undefined,
+        beginYear: undefined,
+        endYear: undefined,
+        region: '',
+        industry: '',
+        selectedMethods: [],
       },
-      predictYear: {
-        begin: undefined,
-        end: undefined,
-      },
-      selectedMethods: '',
+      predictRegions: [],
+      predictIndustries: [],
       showChartType: '',
       originalAllMethodsForPlace: ['逐步回归模型', '灰色滑动平均模型', '分数阶灰色模型',
         '改进的滚动机理灰色预测', '高斯混合回归模型', '模糊线性回归模型',
@@ -64,13 +87,54 @@ export default {
       originalAllMethodsForIndustry: ['基于ARIMA季节分解的行业电量预测', '基于EEMD的行业用电量预测', '基于主成分因子的行业用电量预测', '基于随机森林的行业用电量预测', '基于神经网络的行业用电量预测'],
     };
   },
+  mounted() {
+    if (this.placeOrIndustry === 'place') {
+      this.loadRegions();
+    } else {
+      this.loadIndustries();
+    }
+  },
+  methods: {
+    loadRegions() {
+      this.$axios.get('/region/query').then((response) => {
+        this.$data.predictRegions = response.data.data;
+      });
+    },
+    loadIndustries() {
+      this.$axios.get('/industry/query').then((response) => {
+        this.$data.predictIndustries = response.data.data;
+      });
+    },
+  },
   computed: {
     allMethods() {
       if (this.placeOrIndustry === 'place') {
         return generateLabelAndValueObjsByArray(this.originalAllMethodsForPlace);
       }
-
       return generateLabelAndValueObjsByArray(this.originalAllMethodsForIndustry);
+    },
+    canCommitQuery() {
+      const params = this.$data.postParams;
+      if (params.beginYear === undefined || params.endYear === undefined) {
+        return false;
+      }
+      if (params.historyBeginYear === undefined || params.historyEndYear === undefined) {
+        return false;
+      }
+
+      if (this.placeOrIndustry === 'industry') {
+        if (params.industry.length === 0) {
+          return false;
+        }
+      } else if (this.placeOrIndustry === 'place') {
+        if (params.region.length === 0) {
+          return false;
+        }
+      }
+      if (params.selectedMethods.length === 0) {
+        return false;
+      }
+      return true;
     },
   },
 
