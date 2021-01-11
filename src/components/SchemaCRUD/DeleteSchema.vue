@@ -49,6 +49,7 @@ export default {
         if (this.$store.state.currentVersion === this.$data.currentSchema) {
           this.$store.commit('switchVersion', undefined);
         }
+        this.$data.currentSchema = undefined;
         this.loadSchemas();
       });
     },

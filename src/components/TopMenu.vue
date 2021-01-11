@@ -79,18 +79,18 @@
       </el-submenu>
     </el-menu>
     <el-dialog title="版本控制" :visible.sync="dialogFormVisible">
-      <el-tabs v-model="activeName" type="card">
+      <el-tabs v-model="activeName" type="card" @tab-click="triggerReload">
         <el-tab-pane label="新建版本" name="3-1">
-          <CreateNewSchema/>
+          <CreateNewSchema ref="newView"></CreateNewSchema>
         </el-tab-pane>
         <el-tab-pane label="切换版本" name="3-2">
-          <ReadSchema/>
+          <ReadSchema ref="switchView"></ReadSchema>
         </el-tab-pane>
         <el-tab-pane label="修改版本名称" name="3-3">
-          <UpdateSchema/>
+          <UpdateSchema ref="renameView"></UpdateSchema>
         </el-tab-pane>
         <el-tab-pane label="删除版本" name="3-4">
-          <DeleteSchema/>
+          <DeleteSchema ref="deleteView"></DeleteSchema>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
@@ -132,15 +132,15 @@ export default {
     },
   },
   methods: {
-    submitVersion() {
-      const VersionName = this.$data.versionName;
-      this.$axios.post('/vcs/put', {
-        VersionName,
-      }).then((response) => {
-        console.log(response);
-        this.$messenger.success(`成功创建了名为 ${VersionName} 的版本。`);
-        this.saveDialogVisible = false;
-        // this.refreshVersion();
+    triggerReload() {
+      const views = [this.$refs.newView,
+        this.$refs.switchView,
+        this.$refs.renameView,
+        this.$refs.deleteView];
+      views.forEach((item) => {
+        if (item !== undefined) {
+          item.loadSchemas();
+        }
       });
     },
     logOut() {
@@ -197,6 +197,7 @@ export default {
         // 方案设置，共用一个 View
         // eslint-disable-next-line prefer-destructuring
         this.activeName = keyPath[1];
+        this.triggerReload();
         this.dialogFormVisible = true;
       } else if (keyPath[0] === '4') {
         // 关联因素挖掘
