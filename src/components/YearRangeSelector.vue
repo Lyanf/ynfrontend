@@ -31,7 +31,7 @@ export default {
   watch: {
     beginYearInternal(value) {
       if (value === null) {
-        this.$emit('update:beginYear', '');
+        this.$emit('update:beginYear', undefined);
         return;
       }
       this.$emit('update:beginYear', value.getFullYear());
@@ -42,7 +42,7 @@ export default {
     },
     endYearInternal(value) {
       if (value === null) {
-        this.$emit('update:endYear', '');
+        this.$emit('update:endYear', undefined);
         return;
       }
       this.$emit('update:endYear', value.getFullYear());
