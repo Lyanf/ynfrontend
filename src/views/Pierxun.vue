@@ -2,7 +2,7 @@
     <el-row>
       <el-col :span="3">
         <el-form label-position="top">
-          <el-form-item label="皮尔逊系数阈值:">
+          <el-form-item label="皮尔逊系数阈值：">
           <el-input></el-input>
           </el-form-item>
           <el-form-item >

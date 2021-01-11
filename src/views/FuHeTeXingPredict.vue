@@ -4,13 +4,8 @@
       <!--      日负荷特性指标计算-->
       <el-form inline label-position="top">
         <el-form-item label="年份：">
-          <el-date-picker type="monthrange"
-                          range-separator="至"
-                          start-placeholder="开始年份"
-                          end-placeholder="结束年份"
-                          v-model="selectedDate"
-                          format="yyyy"
-          />
+          <year-range-selector>
+          </year-range-selector>
         </el-form-item>
         <el-form-item label="季节：">
           <el-select value=""/>
@@ -48,13 +43,8 @@
       <el-form inline label-position="top">
         <el-row>
           <el-form-item label="年份：">
-            <el-date-picker type="monthrange"
-                            range-separator="至"
-                            start-placeholder="开始年份"
-                            end-placeholder="结束年份"
-                            v-model="selectedDate"
-                            format="yyyy"
-            ></el-date-picker>
+            <year-range-selector>
+          </year-range-selector>
           </el-form-item>
           <el-form-item label="季节：">
             <el-select value=""></el-select>
@@ -86,13 +76,8 @@
       <el-form inline label-position="top">
         <el-row>
           <el-form-item label="年份：">
-            <el-date-picker type="monthrange"
-                            range-separator="至"
-                            start-placeholder="开始年份"
-                            end-placeholder="结束年份"
-                            v-model="selectedDate"
-                            format="yyyy"
-            ></el-date-picker>
+            <year-range-selector>
+          </year-range-selector>
           </el-form-item>
           <el-form-item label="季节：">
             <el-select value=""></el-select>
@@ -124,13 +109,8 @@
       <el-form inline label-position="top">
         <el-row>
           <el-form-item label="年份：">
-            <el-date-picker type="monthrange"
-                            range-separator="至"
-                            start-placeholder="开始年份"
-                            end-placeholder="结束年份"
-                            v-model="selectedDate"
-                            format="yyyy"
-            ></el-date-picker>
+            <year-range-selector>
+            </year-range-selector>
           </el-form-item>
           <el-form-item label="预测最大负荷：">
             <el-input placeholder="请输入"></el-input>
@@ -147,10 +127,11 @@
 
 <script>
 import ResultChart from '@/components/ResultChart.vue';
+import YearRangeSelector from '../components/YearRangeSelector.vue';
 
 export default {
   name: 'FuHeTeXingPredict',
-  components: { ResultChart },
+  components: { ResultChart, YearRangeSelector },
   data() {
     return {
       selectedDate: '',

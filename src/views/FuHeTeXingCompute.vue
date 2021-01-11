@@ -6,15 +6,15 @@
         <el-col :span="8">
           <el-date-picker type="daterange"
                           range-separator="至"
-                          start-placeholder="开始日期"
-                          end-placeholder="结束日期"
+                          start-placeholder="起始日期"
+                          end-placeholder="终止日期"
                           v-model="selectedDate"
           ></el-date-picker>
         </el-col>
         <el-button>计算</el-button>
       </el-row>
       <el-row>
-        <el-table>
+        <el-table title='日负荷特性指标表'>
           <el-table-column label="日期"></el-table-column>
           <el-table-column label="日最大负荷"></el-table-column>
           <el-table-column label="日平均负荷"></el-table-column>
@@ -52,15 +52,15 @@
         <el-col :span="8">
           <el-date-picker type="monthrange"
                           range-separator="至"
-                          start-placeholder="开始月份"
-                          end-placeholder="结束月份"
+                          start-placeholder="起始月份"
+                          end-placeholder="终止月份"
                           v-model="selectedDate"
           ></el-date-picker>
         </el-col>
         <el-button>计算</el-button>
       </el-row>
       <el-row>
-        <el-table>
+        <el-table title='月负荷特性指标表'>
           <el-table-column label="年份"></el-table-column>
           <el-table-column label="月份"></el-table-column>
           <el-table-column label="月平均负荷"></el-table-column>
@@ -82,19 +82,14 @@
 
     <el-tab-pane label="年负荷特性指标计算">
       <el-row>
-        <el-col :span="8">
-          <el-date-picker type="monthrange"
-                          range-separator="至"
-                          start-placeholder="开始年份"
-                          end-placeholder="结束年份"
-                          v-model="selectedDate"
-                          format="yyyy"
-          ></el-date-picker>
+        <el-col :span="10">
+          <year-range-selector>
+          </year-range-selector>
         </el-col>
         <el-button>计算</el-button>
       </el-row>
       <el-row>
-        <el-table>
+        <el-table title='年负荷特性指标表'>
           <el-table-column label="年份"></el-table-column>
           <el-table-column label="年最大负荷"></el-table-column>
           <el-table-column label="年平均日负荷率"></el-table-column>
@@ -117,10 +112,11 @@
 
 <script>
 import ResultChart from '@/components/ResultChart.vue';
+import YearRangeSelector from '../components/YearRangeSelector.vue';
 
 export default {
   name: 'FuHeTeXingCompute',
-  components: { ResultChart },
+  components: { ResultChart, YearRangeSelector },
   data() {
     return {
       selectedDate: '',
