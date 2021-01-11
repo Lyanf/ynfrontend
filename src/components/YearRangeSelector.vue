@@ -30,6 +30,10 @@ export default {
   },
   watch: {
     beginYearInternal(value) {
+      if (value === null) {
+        this.$emit('update:beginYear', '');
+        return;
+      }
       this.$emit('update:beginYear', value.getFullYear());
       if (this.$data.endYearInternal < value) {
         this.$data.endYearInternal = value;
@@ -37,6 +41,10 @@ export default {
       }
     },
     endYearInternal(value) {
+      if (value === null) {
+        this.$emit('update:endYear', '');
+        return;
+      }
       this.$emit('update:endYear', value.getFullYear());
       if (this.$data.beginYearInternal > value) {
         this.$data.beginYearInternal = value;

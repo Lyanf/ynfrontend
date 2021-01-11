@@ -9,6 +9,7 @@
           :data="knownFactors"
           :titles="['待选择影响因素', '已选择影响因素']"
           style="height: 100%"
+          @change="loadSuggestedCategoryCount"
         >
         </el-transfer>
       </el-row>
@@ -48,12 +49,13 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="postParams.Method==='Pearson'" label="皮尔逊系数阈值：">
-          <el-input placeholder="请填写 0 至 1 的小数"
-                    type="number"
-                    :min="0"
-                    :max="1"
-                    :step="0.01"
-                    v-model="postParams.Pearson.threshold"></el-input>
+          <el-slider
+            v-model="postParams.Pearson.threshold"
+            show-input
+            :step="0.01"
+            :max="1"
+            :min="0">
+          </el-slider>
         </el-form-item>
         <el-form-item v-if="postParams.Method==='KMeans'" label="分类数：">
           <el-input placeholder="请填写" v-model="postParams.KMeans.categoryCount"></el-input>
@@ -62,17 +64,35 @@
           {{suggestCategoryCount}}
         </el-form-item>
         <el-form-item v-if="postParams.Method==='PCA'" label="系数绝对值阈值：">
-          <el-input placeholder="请填写" v-model="postParams.PCA.absThreshold"></el-input>
+          <el-slider
+            v-model="postParams.PCA.absThreshold"
+            show-input
+            :step="0.01"
+            :max="1"
+            :min="0">
+          </el-slider>
         </el-form-item>
         <el-form-item v-if="postParams.Method==='ARL'" label="最小支持度：">
-          <el-input placeholder="请填写" v-model="postParams.ARL.minSupport"></el-input>
+          <el-slider
+            v-model="postParams.ARL.minSupport"
+            show-input
+            :step="0.01"
+            :max="1"
+            :min="0">
+          </el-slider>
         </el-form-item>
         <el-form-item v-if="postParams.Method==='ARL'" label="最小置信度：">
-          <el-input placeholder="请填写" v-model="postParams.ARL.minConfidence"></el-input>
+          <el-slider
+            v-model="postParams.ARL.minConfidence"
+            show-input
+            :step="0.01"
+            :max="1"
+            :min="0">
+          </el-slider>
         </el-form-item>
         <el-form-item label="数据年份：">
-          <year-range-selector :begin-year="postParams.beginYear"
-                               :end-year="postParams.endYear">
+          <year-range-selector :begin-year.sync="postParams.beginYear"
+                               :end-year.sync="postParams.endYear">
           </year-range-selector>
         </el-form-item>
         <el-form-item>
@@ -104,7 +124,7 @@ export default {
   computed: {
     isFormComplete() {
       const params = this.$data.postParams;
-      if (params.beginYear === undefined || params.endYear === undefined) {
+      if (params.beginYear === '' || params.endYear === '') {
         return false;
       }
       if (params.Factors.length === 0) {
@@ -149,7 +169,11 @@ export default {
       });
     },
     loadSuggestedCategoryCount() {
-      this.$axios.get('/mining/factor/kmeans/suggest').then((response) => {
+      this.$axios.get('/mining/factor/kmeans/suggest', {
+        params: {
+          factors: this.$data.postParams.Factors.join(),
+        },
+      }).then((response) => {
         this.$data.suggestCategoryCount = response.data.data.Count;
       });
     },
@@ -186,17 +210,17 @@ export default {
         Factors: [],
         Method: '',
         Pearson: {
-          threshold: '',
+          threshold: 0.5,
         },
         KMeans: {
-          categoryCount: '',
+          categoryCount: 0,
         },
         PCA: {
-          absThreshold: '',
+          absThreshold: 0.5,
         },
         ARL: {
-          minSupport: '',
-          minConfidence: '',
+          minSupport: 0.5,
+          minConfidence: 0.5,
         },
         beginYear: '',
         endYear: '',
