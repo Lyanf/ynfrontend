@@ -3,61 +3,37 @@
     <div class="top-warning" :hidden="bannerHidden" align="center">未登录
       <a style="color: lightgray" href="/#/logIn">立即登录</a>
     </div>
-    <el-dialog @close="clearInput"
-               title="确认版本名称"
-               :visible.sync="saveDialogVisible"
-               width="30%">
-      <el-form>
-        <el-form-item label="名称">
-          <el-input v-model="versionName" @keyup.enter.native="submitVersion"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="saveDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitVersion"
-                   :disabled="versionName.length === 0">确定</el-button>
-      </span>
-    </el-dialog>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
              style="display: flex; justify-content: space-between; margin-bottom: 3em"
              @select="handleSelect">
       <el-submenu index="1">
         <template slot="title">开始</template>
         <el-menu-item index="1-1">登录</el-menu-item>
-        <el-submenu :disabled="menuDisabled" index="1-loadVersion">
-          <template slot="title" @click="refreshVersion">加载版本…</template>
-          <el-menu-item index="1-placeholder"
-                        v-if="knownVersions.length === 0"
-                        :disabled=true>无可用版本</el-menu-item>
-          <div index="placeholder" v-if="knownVersions.length !== 0">
-            <el-menu-item v-for="item in knownVersions"
-                          :key="item" :index="item"
-                          :is-active="item === $store.state.currentVersion">
-              {{ item }}
-            </el-menu-item>
-          </div>
-          <el-divider index="1-split"></el-divider>
-          <el-menu-item index="1-2-1">刷新</el-menu-item>
+        <el-submenu index="1-2" :disabled="menuDisabled">
+          <template slot="title">最近保存文件</template>
+          <el-menu-item v-for="item in recentFiles"
+          :key="item.url" :index="item.url">
+            {{item.name}}
+          </el-menu-item>
+          <el-menu-item v-if="recentFiles.length === 0" :disabled="true">无最近文件</el-menu-item>
+          <el-divider index="1-2-2"></el-divider>
+          <el-menu-item index="1-2-3">刷新</el-menu-item>
         </el-submenu>
-        <el-menu-item index="1-2-2" :disabled="menuDisabled">储存版本</el-menu-item>
         <el-menu-item index="1-3">退出</el-menu-item>
       </el-submenu>
 
       <el-submenu index="2" :disabled="menuDisabled">
         <template slot="title">数据库</template>
-        <el-menu-item index="2-1">社会经济数据</el-menu-item>
-        <el-menu-item index="2-2">电力电量数据</el-menu-item>
-        <el-menu-item index="2-3">地理气象数据</el-menu-item>
         <el-menu-item index="2-4">全部数据</el-menu-item>
         <el-menu-item index="2-5">数据监测与更正</el-menu-item>
       </el-submenu>
 
       <el-submenu index="3" :disabled="menuDisabled">
-        <template slot="title">方案设置</template>
-        <el-menu-item index="3-1">新建方案</el-menu-item>
-        <el-menu-item index="3-2">查看方案</el-menu-item>
-        <el-menu-item index="3-3">修改方案名称</el-menu-item>
-        <el-menu-item index="3-4">删除方案</el-menu-item>
+        <template slot="title">版本控制</template>
+        <el-menu-item index="3-1">新建版本</el-menu-item>
+        <el-menu-item index="3-2">切换版本</el-menu-item>
+        <el-menu-item index="3-3">修改版本名称</el-menu-item>
+        <el-menu-item index="3-4">删除版本</el-menu-item>
       </el-submenu>
 
       <el-submenu index="4" :disabled="menuDisabled">
@@ -109,19 +85,19 @@
         <el-menu-item index="8-3">关于</el-menu-item>
       </el-submenu>
     </el-menu>
-    <el-dialog title="方案设置" :visible.sync="dialogFormVisible">
-      <el-tabs v-model="activeName" type="card">
-        <el-tab-pane label="新建方案" name="3-1">
-          <CreateNewSchema/>
+    <el-dialog title="版本控制" :visible.sync="dialogFormVisible">
+      <el-tabs v-model="activeName" type="card" @tab-click="triggerReload">
+        <el-tab-pane label="新建版本" name="3-1">
+          <CreateNewSchema ref="newView"></CreateNewSchema>
         </el-tab-pane>
-        <el-tab-pane label="查看方案" name="3-2">
-          <ReadSchema/>
+        <el-tab-pane label="切换版本" name="3-2">
+          <ReadSchema ref="switchView"></ReadSchema>
         </el-tab-pane>
-        <el-tab-pane label="修改方案名称" name="3-3">
-          <UpdateSchema/>
+        <el-tab-pane label="修改版本名称" name="3-3">
+          <UpdateSchema ref="renameView"></UpdateSchema>
         </el-tab-pane>
-        <el-tab-pane label="删除方案" name="3-4">
-          <DeleteSchema/>
+        <el-tab-pane label="删除版本" name="3-4">
+          <DeleteSchema ref="deleteView"></DeleteSchema>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
@@ -134,6 +110,7 @@ import CreateNewSchema from '@/components/SchemaCRUD/CreateNewSchema.vue';
 import ReadSchema from '@/components/SchemaCRUD/ReadSchema.vue';
 import UpdateSchema from '@/components/SchemaCRUD/UpdateSchema.vue';
 import DeleteSchema from '@/components/SchemaCRUD/DeleteSchema.vue';
+import { saveAs } from 'file-saver';
 
 export default {
   name: 'TopMenu',
@@ -145,6 +122,7 @@ export default {
   },
   data() {
     return {
+      recentFiles: [],
       activeIndex: '1',
       activeName: '',
       dialogFormVisible: false,
@@ -159,32 +137,28 @@ export default {
       return !this.$store.state.isLogin;
     },
     bannerHidden() {
-      const login = this.$store.state.isLogin;
-      if (login) {
-        this.refreshVersion();
+      const { isLogin } = this.$store.state;
+      if (isLogin) {
+        this.loadRecentFiles();
       }
-      return login;
+      return isLogin;
     },
   },
   methods: {
-    clearInput() {
-      this.$data.versionName = '';
-    },
-    refreshVersion() {
-      this.$axios.get('/vcs/get').then((response) => {
-        console.log(response);
-        this.$data.knownVersions = response.data.data;
+    loadRecentFiles() {
+      this.$axios.get('/recent').then((response) => {
+        this.$data.recentFiles = response.data.data;
       });
     },
-    submitVersion() {
-      const VersionName = this.$data.versionName;
-      this.$axios.post('/vcs/put', {
-        VersionName,
-      }).then((response) => {
-        console.log(response);
-        this.$messenger.success(`成功创建了名为 ${VersionName} 的版本。`);
-        this.saveDialogVisible = false;
-        this.refreshVersion();
+    triggerReload() {
+      const views = [
+        this.$refs.switchView,
+        this.$refs.renameView,
+        this.$refs.deleteView];
+      views.forEach((item) => {
+        if (item !== undefined) {
+          item.loadSchemas();
+        }
       });
     },
     logOut() {
@@ -205,17 +179,16 @@ export default {
           // 退出
           window.location = '/#/logIn';
           this.logOut();
-        } else if (keyPath[2] === '1-2-1') {
+        } else if (keyPath[2] === '1-2') {
           // 加载
-          this.refreshVersion();
-        } else if (keyPath[1] === '1-2-2') {
-          // 储存版本
-          this.$data.saveDialogVisible = true;
-        } else {
-          // 加载特定版本
-          const versionName = keyPath[2];
-          this.$store.commit('switchVersion', versionName);
-          this.$messenger.success(`已经成功切换到 ${versionName} 版本。`);
+          // this.refreshVersion();
+        } else if (keyPath[2] === '1-2-2') {
+          // 分割线
+        } else if (keyPath[2] === '1-2-3') {
+          // 重新加载
+          this.loadRecentFiles();
+        } else if (keyPath[2] !== undefined) {
+          saveAs(keyPath[2]);
         }
       } else if (keyPath[0] === '2') {
         // 数据库
@@ -241,6 +214,7 @@ export default {
         // 方案设置，共用一个 View
         // eslint-disable-next-line prefer-destructuring
         this.activeName = keyPath[1];
+        this.triggerReload();
         this.dialogFormVisible = true;
       } else if (keyPath[0] === '4') {
         // 关联因素挖掘

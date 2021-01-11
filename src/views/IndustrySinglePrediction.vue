@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row type="flex" justify="center">
-      <el-col :span="11">
+      <el-col :span="10" :offset="1">
         <DynamicSelectForm></DynamicSelectForm>
       </el-col>
       <el-col :span="12" :offset="1">

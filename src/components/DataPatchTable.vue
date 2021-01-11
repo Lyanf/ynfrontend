@@ -34,11 +34,14 @@ export default {
   data() {
     return {
       columns: [{
-        title: '日期',
-        key: 'date',
+        title: '元数据类型',
+        key: 'category',
       }, {
-        title: '数据类型',
-        key: 'type',
+        title: '数据粒度',
+        key: 'grain',
+      }, {
+        title: '键',
+        key: 'key',
       }, {
         title: '当前值',
         key: 'value',
@@ -48,8 +51,8 @@ export default {
       }],
 
       editTemplate: {
-        date: {
-          title: '日期',
+        key: {
+          title: '键',
         },
         value: {
           title: '值',
@@ -78,8 +81,8 @@ export default {
       },
       handleRowResolve({ index, row }, done) {
         this.$axios.post('/db/except/resolve', {
-          OriginData: this.displayData[index],
-          ModifiedData: row,
+          originData: this.displayData[index],
+          modifiedData: row,
         }).then((response) => {
           console.log(response);
           this.$messenger.success('手动更正成功。');
@@ -90,7 +93,7 @@ export default {
       // eslint-disable-next-line no-unused-vars
       handleRowAccept({ index, row }, done) {
         this.$axios.post('/db/except/accept', {
-          AcceptData: this.displayData[index],
+          acceptData: this.displayData[index],
         }).then((response) => {
           console.log(response);
           this.$messenger.success('已接受更正建议。');

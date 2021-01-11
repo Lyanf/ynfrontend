@@ -1,15 +1,27 @@
 <template>
-     <el-form label-position="right" v-model="formData" label-width="auto">
+     <el-form label-position="right" label-width="auto">
         <el-form-item v-if="placeOrIndustry === 'place'" label="预测地区：">
-          <el-select value="" placeholder="请选择">
+          <el-select placeholder="请选择" v-model="postParams.region">
+            <el-option
+              v-for="item in predictRegions"
+              :key="item"
+              :value="item"
+              :label="item">
+            </el-option>
           </el-select>
         </el-form-item>
        <el-form-item v-if="placeOrIndustry === 'industry'" label="预测行业：">
-         <el-select value="" placeholder="请选择">
+         <el-select placeholder="请选择" v-model="postParams.industry">
+           <el-option
+             v-for="item in predictIndustries"
+             :key="item"
+             :value="item"
+             :label="item">
+           </el-option>
          </el-select>
        </el-form-item>
-        <el-form-item v-if="longTerm === false" label="预测方法：">
-          <el-select placeholder="请选择" v-model="selectedMethod">
+        <el-form-item v-if="!longTerm" label="预测方法：">
+          <el-select placeholder="请选择" v-model="postParams.method">
             <el-option
               v-for="item in allMethods"
               :key="item.value"
@@ -19,18 +31,10 @@
           </el-select>
         </el-form-item>
       <el-form-item label="年份范围：">
-        <year-range-selector :begin-year.sync='predictYear.begin' :end-year.sync="predictYear.end">
+        <year-range-selector
+          :begin-year.sync='postParams.beginYear'
+          :end-year.sync="postParams.endYear">
       </year-range-selector>
-      </el-form-item>
-      <el-form-item label="预测年限：">
-        <el-select placeholder="请选择" value="">
-          <el-option
-            v-for="item in selectItems"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
       </el-form-item>
       <el-form-item label="自变量1：">
         <el-select placeholder="请选择" value="">
@@ -86,7 +90,7 @@
         </el-select>
       </el-form-item>
       <el-form-item >
-        <el-button type="primary" >预测</el-button>
+        <el-button type="primary" :disabled="!canCommitQuery">预测</el-button>
       </el-form-item>
      </el-form>
 
@@ -101,13 +105,17 @@ export default {
   components: { YearRangeSelector },
   data() {
     return {
-      predictYear: {
-        begin: undefined,
-        end: undefined,
-      },
       test: '123',
       selectItems: '',
-      formData: '',
+      predictRegions: [],
+      predictIndustries: [],
+      postParams: {
+        beginYear: undefined,
+        endYear: undefined,
+        region: '',
+        industry: '',
+        method: '',
+      },
       originalAllMethodsForPlace: ['逐步回归模型', '灰色滑动平均模型', '分数阶灰色模型',
         '改进的滚动机理灰色预测', '高斯混合回归模型', '模糊线性回归模型',
         '模糊指数平滑模型', '梯度提升模型', '支持向量机模型', '循环神经网络模型',
@@ -115,7 +123,6 @@ export default {
         '负荷最大利用小时数模型', '季节趋势模型', '考虑温度和节假日分布影响的电量预测模型',
         '一元线性函数', '一元二次函数', '幂函数', '生长函数', '指数函数', '对数函数', '二元一次函数'],
       originalAllMethodsForIndustry: ['基于ARIMA季节分解的行业电量预测', '基于EEMD的行业用电量预测', '基于主成分因子的行业用电量预测', '基于随机森林的行业用电量预测', '基于神经网络的行业用电量预测'],
-      selectedMethod: '',
     };
   },
   computed: {
@@ -128,9 +135,37 @@ export default {
       }
       return [];
     },
+    canCommitQuery() {
+      const params = this.$data.postParams;
+      if (params.beginYear === undefined || params.endYear === undefined) {
+        return false;
+      }
+      if (!this.longTerm) {
+        if (params.method === undefined) {
+          return false;
+        }
+      }
+      return true;
+    },
   },
   mounted() {
-    console.log(this.allMethods);
+    if (this.placeOrIndustry === 'place') {
+      this.loadRegions();
+    } else {
+      this.loadIndustries();
+    }
+  },
+  methods: {
+    loadRegions() {
+      this.$axios.get('/region/query').then((response) => {
+        this.$data.predictRegions = response.data.data;
+      });
+    },
+    loadIndustries() {
+      this.$axios.get('/industry/query').then((response) => {
+        this.$data.predictIndustries = response.data.data;
+      });
+    },
   },
   props: {
     placeOrIndustry: {
@@ -144,7 +179,5 @@ export default {
 };
 </script>
 <style scoped>
-  .el-form-item .el-select,.el-input {
-    width: 80%;
-  }
+
 </style>
