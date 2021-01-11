@@ -9,6 +9,16 @@
       <el-submenu index="1">
         <template slot="title">开始</template>
         <el-menu-item index="1-1">登录</el-menu-item>
+        <el-submenu index="1-2" :disabled="menuDisabled">
+          <template slot="title">最近保存文件</template>
+          <el-menu-item v-for="item in recentFiles"
+          :key="item.url" :index="item.url">
+            {{item.name}}
+          </el-menu-item>
+          <el-menu-item v-if="recentFiles.length === 0" :disabled="true">无最近文件</el-menu-item>
+          <el-divider index="1-2-2"></el-divider>
+          <el-menu-item index="1-2-3">刷新</el-menu-item>
+        </el-submenu>
         <el-menu-item index="1-3">退出</el-menu-item>
       </el-submenu>
 
@@ -103,6 +113,7 @@ import CreateNewSchema from '@/components/SchemaCRUD/CreateNewSchema.vue';
 import ReadSchema from '@/components/SchemaCRUD/ReadSchema.vue';
 import UpdateSchema from '@/components/SchemaCRUD/UpdateSchema.vue';
 import DeleteSchema from '@/components/SchemaCRUD/DeleteSchema.vue';
+import { saveAs } from 'file-saver';
 
 export default {
   name: 'TopMenu',
@@ -114,6 +125,7 @@ export default {
   },
   data() {
     return {
+      recentFiles: [],
       activeIndex: '1',
       activeName: '',
       dialogFormVisible: false,
@@ -128,10 +140,19 @@ export default {
       return !this.$store.state.isLogin;
     },
     bannerHidden() {
-      return this.$store.state.isLogin;
+      const { isLogin } = this.$store.state;
+      if (isLogin) {
+        this.loadRecentFiles();
+      }
+      return isLogin;
     },
   },
   methods: {
+    loadRecentFiles() {
+      this.$axios.get('/recent').then((response) => {
+        this.$data.recentFiles = response.data.data;
+      });
+    },
     triggerReload() {
       const views = [this.$refs.newView,
         this.$refs.switchView,
@@ -161,17 +182,16 @@ export default {
           // 退出
           window.location = '/#/logIn';
           this.logOut();
-        } else if (keyPath[2] === '1-2-1') {
+        } else if (keyPath[2] === '1-2') {
           // 加载
           // this.refreshVersion();
-        } else if (keyPath[1] === '1-2-2') {
-          // 储存版本
-          this.$data.saveDialogVisible = true;
-        } else {
-          // 加载特定版本
-          const versionName = keyPath[2];
-          this.$store.commit('switchVersion', versionName);
-          this.$messenger.success(`已经成功切换到 ${versionName} 版本。`);
+        } else if (keyPath[2] === '1-2-2') {
+          // 分割线
+        } else if (keyPath[2] === '1-2-3') {
+          // 重新加载
+          this.loadRecentFiles();
+        } else if (keyPath[2] !== undefined) {
+          saveAs(keyPath[2]);
         }
       } else if (keyPath[0] === '2') {
         // 数据库
