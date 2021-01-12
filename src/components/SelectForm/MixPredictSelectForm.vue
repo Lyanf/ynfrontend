@@ -43,16 +43,11 @@
       </el-select>
     </el-form-item>
     <el-form-item>
-      <el-button>检测</el-button>
-    </el-form-item>
-    <el-form-item label="展示曲线类型：">
-      <el-select v-model="showChartType">
-        <el-option value="折线图" label="折线图"></el-option>
-        <el-option value="柱状图" label="柱状图"></el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" :disabled="!canCommitQuery">预测</el-button>
+      <el-button @click="validate"
+                 :disabled="postParams.selectedMethods.length === 0">检测</el-button>
+      <el-button @click="performQuery"
+                  type="primary"
+                 :disabled="!canCommitQuery">预测</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -63,7 +58,12 @@ import YearRangeSelector from '@/components/YearRangeSelector.vue';
 
 export default {
   name: 'MixPredictSelectForm',
-  props: ['placeOrIndustry'],
+  props: [
+    'placeOrIndustry',
+    'graphData',
+    'tableOneData',
+    'tableTwoData',
+  ],
   components: { YearRangeSelector },
   data() {
     return {
@@ -76,9 +76,11 @@ export default {
         industry: '',
         selectedMethods: [],
       },
+      graphDataInternal: [],
+      tableOneDataInternal: [],
+      tableTwoDataInternal: [],
       predictRegions: [],
       predictIndustries: [],
-      showChartType: '',
       originalAllMethodsForPlace: ['逐步回归模型', '灰色滑动平均模型', '分数阶灰色模型',
         '改进的滚动机理灰色预测', '高斯混合回归模型', '模糊线性回归模型',
         '模糊指数平滑模型', '梯度提升模型', '支持向量机模型', '循环神经网络模型',
@@ -105,6 +107,25 @@ export default {
         this.$data.predictIndustries = response.data.data;
       });
     },
+    validate() {
+      this.$axios.post('/predict/place/mix/validate', {
+        methods: this.$data.postParams.selectedMethods,
+      }).then((response) => {
+        const isOk = response.data.data.ok;
+        if (isOk) {
+          this.$messenger.success('这组组合模型符合要求。');
+        } else {
+          this.$messenger.warning('这组组合模型不符合要求。');
+        }
+      });
+    },
+    performQuery() {
+      this.$axios.post('/predict/place/mix', this.$data.postParams).then((response) => {
+        this.$data.graphDataInternal = response.data.data.graphData;
+        this.$data.tableOneDataInternal = response.data.data.tableOneData;
+        this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
+      });
+    },
   },
   computed: {
     allMethods() {
@@ -121,7 +142,6 @@ export default {
       if (params.historyBeginYear === undefined || params.historyEndYear === undefined) {
         return false;
       }
-
       if (this.placeOrIndustry === 'industry') {
         if (params.industry.length === 0) {
           return false;
@@ -137,7 +157,17 @@ export default {
       return true;
     },
   },
-
+  watch: {
+    graphDataInternal(value) {
+      this.$emit('update:graphData', value);
+    },
+    tableOneDataInternal(value) {
+      this.$emit('update:tableOneData', value);
+    },
+    tableTwoDataInternal(value) {
+      this.$emit('update:tableTwoData', value);
+    },
+  },
 };
 </script>
 

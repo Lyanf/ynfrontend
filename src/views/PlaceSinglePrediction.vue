@@ -8,7 +8,7 @@
           :table-one-data.sync="tableOneData"
           :table-two-data.sync="tableTwoData"></PredictSelectForm>
       </el-col>
-      <el-col :span="11" :offset="1">
+      <el-col :span="12">
         <el-row>
           <ResultChart ref="resultChart"></ResultChart>
         </el-row>

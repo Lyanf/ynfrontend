@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-show="graphData.length > 0">
     <el-row>
-      <div id="chart1" style="width: 680px;height: 300px"></div>
+      <div id="resultChart" style="width: 680px;height: 300px"></div>
     </el-row>
     <el-row>
       <el-form>
@@ -67,7 +67,9 @@ export default {
   },
   methods: {
     refreshChart() {
-      console.log('called refreshChart');
+      if (this.currentChart === undefined) {
+        this.currentChart = echarts.init(document.getElementById('resultChart'));
+      }
       const xData = [];
       const yData = [];
 
@@ -104,9 +106,6 @@ export default {
     currentDisplayMethod() {
       this.refreshChart();
     },
-  },
-  mounted() {
-    this.currentChart = echarts.init(document.getElementById('chart1'));
   },
 };
 </script>

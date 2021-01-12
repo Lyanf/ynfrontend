@@ -214,7 +214,7 @@ export default {
       return factor.name.length !== 0;
     },
     performPrediction() {
-      this.$axios.post('/predict/place/single/query', this.$data.postParams).then((response) => {
+      this.$axios.post('/predict/place/single', this.$data.postParams).then((response) => {
         this.$data.graphDataInternal = response.data.data.graphData;
         this.$data.tableOneDataInternal = response.data.data.tableOneData;
         this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
