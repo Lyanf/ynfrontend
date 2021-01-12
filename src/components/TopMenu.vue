@@ -1,5 +1,6 @@
 <template>
   <div>
+    <input hidden="true" type="file" value="" id="file">
     <div class="top-warning" :hidden="bannerHidden" align="center">未登录
       <a style="color: lightgray" href="/#/logIn">立即登录</a>
     </div>
@@ -27,6 +28,8 @@
         <el-menu-item index="2-1">增加元数据节点</el-menu-item>
         <el-menu-item index="2-2">重命名元数据节点</el-menu-item>
         <el-menu-item index="2-3">删除元数据节点</el-menu-item>
+        <el-menu-item index="2-6">导入元数据…</el-menu-item>
+        <el-divider></el-divider>
         <el-menu-item index="2-4">全部数据</el-menu-item>
         <el-menu-item index="2-5">数据监测与更正</el-menu-item>
       </el-submenu>
@@ -115,6 +118,9 @@
         <el-tab-pane label="删除节点" name="2-3">
           <DeleteNode ref="deleteView"></DeleteNode>
         </el-tab-pane>
+        <el-tab-pane label="导入元数据" name="2-6">
+          <UploadData ref="uploadView"></UploadData>
+        </el-tab-pane>
       </el-tabs>
     </el-dialog>
   </div>
@@ -125,6 +131,7 @@
 import CreateNewNode from '@/components/MetadataCRUD/CreateNewNode.vue';
 import RenameNode from '@/components/MetadataCRUD/RenameNode.vue';
 import DeleteNode from '@/components/MetadataCRUD/DeleteNode.vue';
+import UploadData from '@/components/MetadataCRUD/UploadData.vue';
 import CreateNewSchema from '@/components/SchemaCRUD/CreateNewSchema.vue';
 import ReadSchema from '@/components/SchemaCRUD/ReadSchema.vue';
 import UpdateSchema from '@/components/SchemaCRUD/UpdateSchema.vue';
@@ -137,6 +144,7 @@ export default {
     CreateNewNode,
     RenameNode,
     DeleteNode,
+    UploadData,
     DeleteSchema,
     UpdateSchema,
     ReadSchema,
@@ -235,7 +243,7 @@ export default {
           // 数据监测与更正
           window.location = '/#/dataCheck';
         } else {
-          // 元数据管理
+          // 元数据管理，共用一个页面
           this.triggerReloadMetas();
           // eslint-disable-next-line prefer-destructuring
           this.$data.activeMetadataName = keyPath[1];
