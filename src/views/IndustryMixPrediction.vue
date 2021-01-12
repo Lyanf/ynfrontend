@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="10" :offset="1">
+      <el-col :span="11" :offset="1">
         <MixPredictSelectForm placeOrIndustry="industry"></MixPredictSelectForm>
       </el-col>
-      <el-col :span="12" :offset="1">
+      <el-col :span="11" :offset="1">
         <el-row>
         <ResultChart></ResultChart>
         </el-row>

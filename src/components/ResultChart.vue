@@ -4,9 +4,21 @@
       <div id="chart1" style="width: 680px;height: 300px"></div>
     </el-row>
     <el-row>
-      <el-col :span="2">
-        <el-button type="primary" v-on:click="exportImage">图像导出</el-button>
-      </el-col>
+      <el-form>
+        <el-form-item>
+          <el-button v-on:click="exportImage">导出图像</el-button>
+        </el-form-item>
+        <el-form-item label="显示方式：">
+          <el-select placeholder="请选择" v-model="currentDisplayMethod">
+            <el-option
+              v-for="item in displayMethods"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
     </el-row>
   </div>
 </template>
@@ -31,31 +43,53 @@ function base64ToBlob(code) {
 }
 
 export default {
-  name: 'ResultChart',
   data() {
     return {
       temp: '',
       currentChart: undefined,
+      graphData: [],
+      displayMethods: [
+        {
+          label: '折线图',
+          value: 'line',
+        },
+        {
+          label: '柱状图',
+          value: 'bar',
+        },
+        {
+          label: '散点图',
+          value: 'scatter',
+        },
+      ],
+      currentDisplayMethod: 'line',
     };
   },
   methods: {
-    initializeChart() {
-      const chart1 = echarts.init(document.getElementById('chart1'));
-      this.currentChart = chart1;
+    refreshChart() {
+      console.log('called refreshChart');
+      const xData = [];
+      const yData = [];
+
+      this.$data.graphData.forEach((elem) => {
+        xData.push(elem.xName);
+        yData.push(elem.yValue);
+      });
+
       const initializeOption = {
         xAxis: {
           type: 'category',
-          data: ['类比1', '类比2', '类比3', '类比4', '类比5', '类比6', '类比7'],
+          data: xData,
         },
         yAxis: {
           type: 'value',
         },
         series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: 'line',
+          data: yData,
+          type: this.$data.currentDisplayMethod,
         }],
       };
-      chart1.setOption(initializeOption);
+      this.currentChart.setOption(initializeOption);
     },
     exportImage() {
       if (!this.currentChart) {
@@ -66,8 +100,13 @@ export default {
       saveAs(blob, 'chart.png');
     },
   },
+  watch: {
+    currentDisplayMethod() {
+      this.refreshChart();
+    },
+  },
   mounted() {
-    this.initializeChart();
+    this.currentChart = echarts.init(document.getElementById('chart1'));
   },
 };
 </script>
