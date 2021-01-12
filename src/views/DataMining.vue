@@ -108,6 +108,10 @@
                                :end-year.sync="postParams.endYear">
           </year-range-selector>
         </el-form-item>
+        <el-form-item label="方案标签：">
+          <el-input placeholder="请输入" v-model="postParams.tag">
+          </el-input>
+        </el-form-item>
         <el-form-item>
           <el-button @click="commitMining"
                      type="primary"
@@ -149,6 +153,9 @@ export default {
       if (params.method.length === 0) {
         return false;
       }
+      if (params.tag.length === 0) {
+        return false;
+      }
       if (params.method === 'Pearson') {
         return params.pearson.threshold.length !== 0;
       }
@@ -172,7 +179,7 @@ export default {
       });
     },
     loadFactors() {
-      this.$axios.get('/mining/factor/query').then((response) => {
+      this.$axios.get('/factor/query').then((response) => {
         response.data.data.forEach((element) => {
           this.$data.knownFactors.push({
             label: element,
@@ -238,6 +245,7 @@ export default {
         },
         beginYear: '',
         endYear: '',
+        tag: '',
       },
     };
   },
@@ -245,5 +253,7 @@ export default {
 </script>
 
 <style scoped>
-
+.el-input, .el-select {
+  width: 60%
+}
 </style>
