@@ -1,5 +1,5 @@
 <template>
-  <div v-show="graphData.length > 0">
+  <div style="margin-left: 20px" v-show="graphData.length > 0">
     <el-row>
       <div id="resultChart" style="width: 680px;height: 300px"></div>
     </el-row>

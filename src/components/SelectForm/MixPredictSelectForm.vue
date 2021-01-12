@@ -108,7 +108,7 @@ export default {
       });
     },
     validate() {
-      this.$axios.post('/predict/place/mix/validate', {
+      this.$axios.post(this.validateUrl, {
         methods: this.$data.postParams.selectedMethods,
       }).then((response) => {
         const isOk = response.data.data.ok;
@@ -120,7 +120,7 @@ export default {
       });
     },
     performQuery() {
-      this.$axios.post('/predict/place/mix', this.$data.postParams).then((response) => {
+      this.$axios.post(this.commitUrl, this.$data.postParams).then((response) => {
         this.$data.graphDataInternal = response.data.data.graphData;
         this.$data.tableOneDataInternal = response.data.data.tableOneData;
         this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
@@ -133,6 +133,15 @@ export default {
         return generateLabelAndValueObjsByArray(this.originalAllMethodsForPlace);
       }
       return generateLabelAndValueObjsByArray(this.originalAllMethodsForIndustry);
+    },
+    commitUrl() {
+      if (this.placeOrIndustry === 'place') {
+        return '/predict/region/mix';
+      }
+      return '/predict/industry/mix';
+    },
+    validateUrl() {
+      return `${this.commitUrl}/validate`;
     },
     canCommitQuery() {
       const params = this.$data.postParams;
@@ -172,5 +181,7 @@ export default {
 </script>
 
 <style scoped>
-
+.el-input, .el-select {
+  width: 60%
+}
 </style>

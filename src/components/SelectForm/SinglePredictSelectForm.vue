@@ -30,12 +30,18 @@
             </el-option>
           </el-select>
         </el-form-item>
-      <el-form-item label="年份范围：">
+      <el-form-item label="历史年份：">
         <year-range-selector
-          :begin-year.sync='postParams.beginYear'
-          :end-year.sync="postParams.endYear">
+          :begin-year.sync='postParams.historyBeginYear'
+          :end-year.sync="postParams.historyEndYear">
       </year-range-selector>
       </el-form-item>
+       <el-form-item label="预测年份：">
+         <year-range-selector
+           :begin-year.sync='postParams.beginYear'
+           :end-year.sync="postParams.endYear">
+         </year-range-selector>
+       </el-form-item>
       <el-form-item label="自变量：">
         <el-select placeholder="请选择" v-model="postParams.factor1.name">
           <el-option
@@ -114,8 +120,6 @@ export default {
   components: { YearRangeSelector },
   data() {
     return {
-      test: '123',
-      selectItems: '',
       predictRegions: [],
       predictIndustries: [],
       variadicFactors: [],
@@ -123,6 +127,8 @@ export default {
       tableOneDataInternal: [],
       tableTwoDataInternal: [],
       postParams: {
+        historyBeginYear: undefined,
+        historyEndYear: undefined,
         beginYear: undefined,
         endYear: undefined,
         region: '',
@@ -139,13 +145,8 @@ export default {
           value: 0.5,
         },
       },
-      originalAllMethodsForPlace: ['逐步回归模型', '灰色滑动平均模型', '分数阶灰色模型',
-        '改进的滚动机理灰色预测', '高斯混合回归模型', '模糊线性回归模型',
-        '模糊指数平滑模型', '梯度提升模型', '支持向量机模型', '循环神经网络模型',
-        '长短期神经网络模型', '扩展索洛模型', '分位数回归模型', '分行业典型日负荷曲线叠加法',
-        '负荷最大利用小时数模型', '季节趋势模型', '考虑温度和节假日分布影响的电量预测模型',
-        '一元线性函数', '一元二次函数', '幂函数', '生长函数', '指数函数', '对数函数', '二元一次函数'],
-      originalAllMethodsForIndustry: ['基于ARIMA季节分解的行业电量预测', '基于EEMD的行业用电量预测', '基于主成分因子的行业用电量预测', '基于随机森林的行业用电量预测', '基于神经网络的行业用电量预测'],
+      originalAllMethodsForPlace: [],
+      originalAllMethodsForIndustry: [],
     };
   },
   computed: {
@@ -161,6 +162,9 @@ export default {
     canCommitQuery() {
       const params = this.$data.postParams;
       if (params.beginYear === undefined || params.endYear === undefined) {
+        return false;
+      }
+      if (params.historyBeginYear === undefined || params.historyEndYear === undefined) {
         return false;
       }
       if (params.region.length === 0) {
@@ -189,8 +193,10 @@ export default {
   mounted() {
     if (this.placeOrIndustry === 'place') {
       this.loadRegions();
+      this.loadRegionalMethods();
     } else {
       this.loadIndustries();
+      this.loadIndustrialMethods();
     }
     this.loadFactors();
   },
@@ -210,11 +216,21 @@ export default {
         this.$data.variadicFactors = response.data.data;
       });
     },
+    loadIndustrialMethods() {
+      this.$axios.get('/method/industry/query').then((response) => {
+        this.$data.originalAllMethodsForIndustry = response.data.data;
+      });
+    },
+    loadRegionalMethods() {
+      this.$axios.get('/method/region/query').then((response) => {
+        this.$data.originalAllMethodsForPlace = response.data.data;
+      });
+    },
     validateFactor(factor) {
       return factor.name.length !== 0;
     },
     performPrediction() {
-      this.$axios.post('/predict/place/single', this.$data.postParams).then((response) => {
+      this.$axios.post('/predict/region/single', this.$data.postParams).then((response) => {
         this.$data.graphDataInternal = response.data.data.graphData;
         this.$data.tableOneDataInternal = response.data.data.tableOneData;
         this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
