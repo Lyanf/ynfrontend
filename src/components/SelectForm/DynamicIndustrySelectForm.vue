@@ -61,7 +61,7 @@
 import YearRangeSelector from '@/components/YearRangeSelector.vue';
 
 export default {
-  name: 'DynamicSelectForm',
+  name: 'DynamicIndustrySelectForm',
   components: { YearRangeSelector },
   data() {
     return {

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import DynamicSelectForm from '@/components/SelectForm/DynamicSelectForm.vue';
+import DynamicSelectForm from '@/components/SelectForm/DynamicIndustrySelectForm.vue';
 import ResultChart from '@/components/ResultChart.vue';
 import ResultTable from '@/components/ResultTable.vue';
 
