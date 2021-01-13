@@ -29,10 +29,10 @@ export default {
     };
   },
   mounted() {
-    this.loadSchemas();
+    this.loadSchema();
   },
   methods: {
-    loadSchemas() {
+    loadSchema() {
       this.$axios.get('/schema/query').then((response) => {
         this.$data.schemas = response.data.data;
       });
