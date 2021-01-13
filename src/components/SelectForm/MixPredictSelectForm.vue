@@ -68,10 +68,10 @@ export default {
   data() {
     return {
       postParams: {
-        historyBeginYear: undefined,
-        historyEndYear: undefined,
-        beginYear: undefined,
-        endYear: undefined,
+        historyBeginYear: null,
+        historyEndYear: null,
+        beginYear: null,
+        endYear: null,
         region: '',
         industry: '',
         selectedMethods: [],
@@ -145,10 +145,10 @@ export default {
     },
     canCommitQuery() {
       const params = this.$data.postParams;
-      if (params.beginYear === undefined || params.endYear === undefined) {
+      if (params.beginYear === null || params.endYear === null) {
         return false;
       }
-      if (params.historyBeginYear === undefined || params.historyEndYear === undefined) {
+      if (params.historyBeginYear === null || params.historyEndYear === null) {
         return false;
       }
       if (this.placeOrIndustry === 'industry') {

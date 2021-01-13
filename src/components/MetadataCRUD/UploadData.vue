@@ -9,7 +9,7 @@
         :before-upload="beforeUpload"
         :action="baseURL + 'db/metadata/upload'"
       >
-        <el-button type="success" :disabled="!enabledUploadButton">上传</el-button>
+        <el-button type="primary" :disabled="!enabledUploadButton">上传</el-button>
       </el-upload>
     </el-form-item>
   </el-form>
@@ -30,12 +30,10 @@ export default {
   },
   methods: {
     onSuccess() {
-      // ...
       this.$data.enabledUploadButton = true;
       this.$messenger.success('上传成功。');
     },
     onFailure() {
-      // ...
       this.$data.enabledUploadButton = true;
       this.$messenger.error('上传失败。');
     },

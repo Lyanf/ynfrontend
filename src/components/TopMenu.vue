@@ -94,32 +94,32 @@
     <el-dialog title="版本控制" :visible.sync="dialogFormVisible">
       <el-tabs v-model="activeName" type="card" @tab-click="triggerReloadSchemas">
         <el-tab-pane label="新建版本" name="3-1">
-          <CreateNewSchema ref="newView"></CreateNewSchema>
+          <CreateNewSchema ref="newSchemaView"></CreateNewSchema>
         </el-tab-pane>
         <el-tab-pane label="切换版本" name="3-2">
-          <ReadSchema ref="switchView"></ReadSchema>
+          <ReadSchema ref="switchSchemaView"></ReadSchema>
         </el-tab-pane>
         <el-tab-pane label="修改版本名称" name="3-3">
-          <UpdateSchema ref="renameView"></UpdateSchema>
+          <UpdateSchema ref="renameSchemaView"></UpdateSchema>
         </el-tab-pane>
         <el-tab-pane label="删除版本" name="3-4">
-          <DeleteSchema ref="deleteView"></DeleteSchema>
+          <DeleteSchema ref="deleteSchemaView"></DeleteSchema>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
     <el-dialog title="元数据管理" :visible.sync="metaDataDialogFormVisible">
       <el-tabs v-model="activeMetadataName" type="card" @tab-click="triggerReloadMetas">
         <el-tab-pane label="新建节点" name="2-1">
-          <CreateNewNode ref="newView"></CreateNewNode>
+          <CreateNewNode ref="newMetaView"></CreateNewNode>
         </el-tab-pane>
         <el-tab-pane label="修改节点名称" name="2-2">
-          <RenameNode ref="renameView"></RenameNode>
+          <RenameNode ref="renameMetaView"></RenameNode>
         </el-tab-pane>
         <el-tab-pane label="删除节点" name="2-3">
-          <DeleteNode ref="deleteView"></DeleteNode>
+          <DeleteNode ref="deleteMetaView"></DeleteNode>
         </el-tab-pane>
         <el-tab-pane label="导入元数据" name="2-6">
-          <UploadData ref="uploadView"></UploadData>
+          <UploadData ref="uploadMetaView"></UploadData>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
@@ -183,23 +183,23 @@ export default {
       });
     },
     triggerReloadSchemas() {
-      const views = [
-        this.$refs.switchView,
-        this.$refs.renameView,
-        this.$refs.deleteView];
-      views.forEach((item) => {
+      const schemaViews = [
+        this.$refs.switchSchemaView,
+        this.$refs.renameSchemaView,
+        this.$refs.deleteSchemaView];
+      schemaViews.forEach((item) => {
         if (item !== undefined) {
-          item.loadSchemas();
+          item.loadSchema();
         }
       });
     },
     triggerReloadMetas() {
-      const views = [
-        this.$refs.createNodeView,
-        this.$refs.renameNodeView,
-        this.$refs.deleteNodeView,
+      const metaViews = [
+        this.$refs.createMetaView,
+        this.$refs.renameMetaView,
+        this.$refs.deleteMetaView,
       ];
-      views.forEach((item) => {
+      metaViews.forEach((item) => {
         if (item !== undefined) {
           item.loadMetadata();
         }

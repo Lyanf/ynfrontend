@@ -141,7 +141,7 @@ export default {
   computed: {
     isFormComplete() {
       const params = this.$data.postParams;
-      if (params.beginYear === '' || params.endYear === '') {
+      if (params.beginYear === null || params.endYear === null) {
         return false;
       }
       if (params.factors.length === 0) {
@@ -224,7 +224,7 @@ export default {
       }],
       knownRegions: [],
       knownFactors: [],
-      suggestCategoryCount: undefined,
+      suggestCategoryCount: null,
       miningResults: [],
       postParams: {
         region: '',
@@ -243,8 +243,8 @@ export default {
           minSupport: 0.5,
           minConfidence: 0.5,
         },
-        beginYear: '',
-        endYear: '',
+        beginYear: null,
+        endYear: null,
         tag: '',
       },
     };

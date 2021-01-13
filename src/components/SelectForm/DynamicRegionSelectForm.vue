@@ -74,10 +74,10 @@ export default {
         region: '',
         method: '',
         parameters: ['', ''],
-        beginYear: undefined,
-        endYear: undefined,
-        historyBeginYear: undefined,
-        historyEndYear: undefined,
+        beginYear: null,
+        endYear: null,
+        historyBeginYear: null,
+        historyEndYear: null,
       },
     };
   },
@@ -107,10 +107,10 @@ export default {
   computed: {
     canCommitQuery() {
       const params = this.$data.postParams;
-      if (params.beginYear === undefined || params.endYear === undefined) {
+      if (params.beginYear === null || params.endYear === null) {
         return false;
       }
-      if (params.historyBeginYear === undefined || params.historyEndYear === undefined) {
+      if (params.historyBeginYear === null || params.historyEndYear === null) {
         return false;
       }
       if (params.region.length === 0 || params.method.length === 0) {
@@ -121,7 +121,7 @@ export default {
       }
       for (let i = 0; i < params.parameters.length; i += 1) {
         const x = params.parameters[i];
-        if (x === undefined || x.length === 0) {
+        if (x === null || x.length === 0) {
           return false;
         }
       }

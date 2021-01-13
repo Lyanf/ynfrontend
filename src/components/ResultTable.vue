@@ -9,7 +9,8 @@
       </el-table>
     </el-form-item>
     <el-form-item>
-      <el-button @click="exportTableOneSheet" :disabled="tableOneData.length === 0">导出上表</el-button>
+      <el-button @click="exportTableOneSheet"
+                 :disabled="tableOneData.length === 0">导出评价指标表</el-button>
     </el-form-item>
     <el-form-item label="年份 − 预测值表：">
       <el-table :data="tableTwoData">
@@ -18,7 +19,8 @@
       </el-table>
     </el-form-item>
     <el-form-item>
-      <el-button @click="exportTableTwoSheet" :disabled="tableTwoData.length === 0">导出上表</el-button>
+      <el-button @click="exportTableTwoSheet"
+                 :disabled="tableTwoData.length === 0">导出预测结果表</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -36,12 +38,7 @@ export default {
     };
   },
   methods: {
-    exportTableSheet(rawData) {
-      const fields = [];
-      this.$data.columns.forEach((item) => {
-        fields.push(item.key);
-      });
-      console.log(fields);
+    exportTableSheet(rawData, fields) {
       const data = json2csv.parse(rawData, {
         fields,
       });
@@ -49,10 +46,10 @@ export default {
       saveAs(blob, 'database.csv');
     },
     exportTableOneSheet() {
-      this.exportTableSheet(this.$data.tableOneData);
+      this.exportTableSheet(this.$data.tableOneData, ['index', 'r2', 'mape', 'rmse']);
     },
     exportTableTwoSheet() {
-      this.exportTableSheet(this.$data.tableTwoData);
+      this.exportTableSheet(this.$data.tableTwoData, ['year', 'predict']);
     },
   },
 };
