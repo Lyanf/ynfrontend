@@ -14,8 +14,8 @@
         </el-form-item>
         <el-form-item>
           <el-button
-            :disabled="postParams.beginYear === undefined ||
-                        postParams.endYear  === undefined ||
+            :disabled="postParams.beginYear === null ||
+                        postParams.endYear  === null ||
                         postParams.category.length === 0"
             @click="loadExceptions">
             异常检测
@@ -43,8 +43,8 @@ export default {
       metaDataTree: [],
       postParams: {
         category: [],
-        beginYear: undefined,
-        endYear: undefined,
+        beginYear: null,
+        endYear: null,
       },
     };
   },

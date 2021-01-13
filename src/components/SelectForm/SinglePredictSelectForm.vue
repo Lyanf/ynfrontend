@@ -127,10 +127,10 @@ export default {
       tableOneDataInternal: [],
       tableTwoDataInternal: [],
       postParams: {
-        historyBeginYear: undefined,
-        historyEndYear: undefined,
-        beginYear: undefined,
-        endYear: undefined,
+        historyBeginYear: null,
+        historyEndYear: null,
+        beginYear: null,
+        endYear: null,
         region: '',
         industry: '',
         method: '',
@@ -161,17 +161,17 @@ export default {
     },
     canCommitQuery() {
       const params = this.$data.postParams;
-      if (params.beginYear === undefined || params.endYear === undefined) {
+      if (params.beginYear === null || params.endYear === null) {
         return false;
       }
-      if (params.historyBeginYear === undefined || params.historyEndYear === undefined) {
+      if (params.historyBeginYear === null || params.historyEndYear === null) {
         return false;
       }
       if (params.region.length === 0) {
         return false;
       }
       if (!this.longTerm) {
-        if (params.method === undefined) {
+        if (params.method.length === 0) {
           return false;
         }
       }

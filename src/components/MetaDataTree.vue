@@ -59,8 +59,8 @@ export default {
         category: [],
         region: '',
         grain: '',
-        beginYear: undefined,
-        endYear: undefined,
+        beginYear: null,
+        endYear: null,
       },
     };
   },
@@ -73,7 +73,7 @@ export default {
       if (params.grain.length === 0) {
         return false;
       }
-      if (params.beginYear === undefined || params.endYear === undefined) {
+      if (params.beginYear === null || params.endYear === null) {
         return false;
       }
       if (params.category === []) {

@@ -1,69 +1,95 @@
 <template>
-  <el-form label-position="right" v-model="formData" label-width="auto">
-    <el-form-item v-if="placeOrIndustry === 'place'" label="预测地区：">
-      <el-select value="" placeholder="请选择">
+  <el-form label-position="right" label-width="auto">
+    <el-form-item label="预测地区：">
+      <el-select v-model="postParams.region" placeholder="请选择">
+        <el-option
+          v-for="item in knownRegions"
+          :key="item"
+          :label="item"
+          :value="item">
+        </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="预测地区：">
-    <el-select placeholder="请选择" value="">
-      <el-option
-        v-for="item in selectItems"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-select>
-    </el-form-item>
     <el-form-item label="历史年份：">
-      <year-range-selector :begin-year.sync='historyYear.begin' :end-year.sync="historyYear.end">
+      <year-range-selector
+        :begin-year.sync='postParams.historyBeginYear'
+        :end-year.sync="postParams.historyEndYear">
       </year-range-selector>
     </el-form-item>
     <el-form-item label="预测年份：">
-      <year-range-selector :begin-year.sync='predictYear.begin' :end-year.sync="predictYear.end">
+      <year-range-selector
+        :begin-year.sync='postParams.beginYear'
+        :end-year.sync="postParams.endYear">
       </year-range-selector>
     </el-form-item>
-    <el-form-item v-if="longTerm === false" label="预测模型：">
-      <el-select placeholder="请选择" v-model="selectedMethod">
+    <el-form-item label="预测模型：">
+      <el-select placeholder="请选择" v-model="postParams.method">
         <el-option
-          v-for="item in allMethods"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
+          v-for="item in knownMethods"
+          :key="item"
+          :label="item"
+          :value="item">
         </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="修改数据类型：">
-      <el-select placeholder="数据类型"></el-select>
+    <el-form-item label="修改数据节点：">
+      <el-cascader placeholder="请选择"
+                 :options="knownMetadata"
+                 v-model="addEntryParams.metaData"></el-cascader>
+    </el-form-item>
+    <el-form-item label="修改年份："
+                  v-if="postParams.historyBeginYear !== null
+                  && postParams.historyEndYear !== null">
+      <el-select placeholder="请选择" v-model="addEntryParams.year">
+        <el-option v-for="i in postParams.historyEndYear - postParams.historyBeginYear + 1"
+        :key="i + postParams.historyBeginYear - 1"
+        :label="`${i + postParams.historyBeginYear - 1} 年`"
+        :value="i + postParams.historyBeginYear - 1">
+        </el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item v-if="postParams.historyBeginYear === null
+                  || postParams.historyEndYear === null">
+      <div style="color: darkred; font-size: 12px">
+        请先指定历史数据年份范围。
+      </div>
+    </el-form-item>
+    <el-form-item label="更新值：">
+      <el-input placeholder="请输入" v-model="addEntryParams.value"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-input placeholder="数据值"></el-input>
-      <el-button size="mini" type="primary">保存修改「数据项」</el-button>
+      <el-button @click="addEntry"
+                 size="mini" type="primary"
+                 :disabled="!canAddEntry">加入修改项</el-button>
     </el-form-item>
-    <el-form-item>
-      <el-table title='预定修改'>
-        <el-table-column label="修改数据类型"></el-table-column>
-        <el-table-column label="修改值"></el-table-column>
+    <el-form-item v-if="postParams.patches.length !== 0">
+      <el-table :data="postParams.patches">
+        <el-table-column label="数据节点" prop="metaData"></el-table-column>
+        <el-table-column label="数据年份" prop="year"></el-table-column>
+        <el-table-column label="数据粒度" prop="grain"></el-table-column>
+        <el-table-column label="值" prop="value"></el-table-column>
+        <el-table-column align="center">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="danger"
+              plain
+              icon="el-icon-delete"
+              @click="handleDelete(scope.$index)">
+            </el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-form-item>
-    <el-form-item label="展示曲线类型：">
-      <el-select placeholder="请选择" value="">
-        <el-option
-          v-for="item in selectItems"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item >
-      <el-button type="primary">预测</el-button>
+    <el-form-item>
+      <el-button :disabled="!canCommitQuery"
+                 type="primary"
+                 @click="performPrediction">预测</el-button>
     </el-form-item>
   </el-form>
-
 </template>
 
 <script>
-import { generateLabelAndValueObjsByArray } from '@/tool';
 import YearRangeSelector from '@/components/YearRangeSelector.vue';
 
 export default {
@@ -71,54 +97,115 @@ export default {
   components: { YearRangeSelector },
   data() {
     return {
-      test: '123',
-      selectItems: '',
-      historyYear: {
-        begin: undefined,
-        end: undefined,
+      knownRegions: [],
+      knownMethods: [],
+      knownMetadata: [],
+      graphDataInternal: [],
+      tableOneDataInternal: [],
+      tableTwoDataInternal: [],
+      addEntryParams: {
+        metaData: [],
+        year: '',
+        grain: '年',
+        value: '',
       },
-      predictYear: {
-        begin: undefined,
-        end: undefined,
+      postParams: {
+        historyBeginYear: null,
+        historyEndYear: null,
+        beginYear: null,
+        endYear: null,
+        method: '',
+        region: '',
+        patches: [],
       },
-      formData: '',
-      originalAllMethodsForPlace: ['逐步回归模型', '灰色滑动平均模型', '分数阶灰色模型',
-        '改进的滚动机理灰色预测', '高斯混合回归模型', '模糊线性回归模型',
-        '模糊指数平滑模型', '梯度提升模型', '支持向量机模型', '循环神经网络模型',
-        '长短期神经网络模型', '扩展索洛模型', '分位数回归模型', '分行业典型日负荷曲线叠加法',
-        '负荷最大利用小时数模型', '季节趋势模型', '考虑温度和节假日分布影响的电量预测模型',
-        '一元线性函数', '一元二次函数', '幂函数', '生长函数', '指数函数', '对数函数', '二元一次函数'],
-      originalAllMethodsForIndustry: ['基于ARIMA季节分解的行业电量预测', '基于EEMD的行业用电量预测', '基于主成分因子的行业用电量预测', '基于随机森林的行业用电量预测', '基于神经网络的行业用电量预测'],
-      selectedMethod: '',
     };
   },
-  computed: {
-    allMethods() {
-      if (this.placeOrIndustry === 'place') {
-        return generateLabelAndValueObjsByArray(this.originalAllMethodsForPlace);
-      }
-      if (this.placeOrIndustry === 'industry') {
-        return generateLabelAndValueObjsByArray(this.originalAllMethodsForIndustry);
-      }
-      return [];
+  methods: {
+    loadMetaData() {
+      this.$axios.get('/db/metadata').then((response) => {
+        this.$data.knownMetadata = response.data.data;
+      });
+    },
+    loadRegions() {
+      this.$axios.get('/region/query').then((response) => {
+        this.$data.knownRegions = response.data.data;
+      });
+    },
+    loadMethods() {
+      this.$axios.get('/method/bigdata/query').then((response) => {
+        this.$data.knownMethods = response.data.data;
+      });
+    },
+    addEntry() {
+      const param = this.$data.addEntryParams;
+      this.$data.postParams.patches.push({
+        metaData: [...param.metaData],
+        grain: param.grain,
+        year: param.year,
+        value: param.value,
+      });
+    },
+    performPrediction() {
+      this.$axios.post('/predict/bigdata', this.$data.postParams).then((response) => {
+        this.$data.graphDataInternal = response.data.data.graphData;
+        this.$data.tableOneDataInternal = response.data.data.tableOneData;
+        this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
+      });
+    },
+    handleDelete(index) {
+      this.$data.postParams.patches.remove(index, index);
     },
   },
   mounted() {
-    console.log(this.allMethods);
+    this.loadMetaData();
+    this.loadRegions();
+    this.loadMethods();
   },
-  props: {
-    placeOrIndustry: {
-      type: String,
+  computed: {
+    canCommitQuery() {
+      const param = this.$data.postParams;
+      if (param.historyBeginYear === null || param.historyEndYear === null) {
+        return false;
+      }
+      if (param.beginYear === null || param.endYear === null) {
+        return false;
+      }
+      if (param.method.length === 0 || param.region.length === 0) {
+        return false;
+      }
+      return true;
     },
-    longTerm: {
-      type: Boolean,
-      default: false,
+    canAddEntry() {
+      const param = this.$data.addEntryParams;
+      if (param.metaData.length === 0) {
+        return false;
+      }
+      if (param.value.length === 0 || param.year.length === 0) {
+        return false;
+      }
+      return true;
     },
   },
+  watch: {
+    graphDataInternal(value) {
+      this.$emit('update:graphData', value);
+    },
+    tableOneDataInternal(value) {
+      this.$emit('update:tableOneData', value);
+    },
+    tableTwoDataInternal(value) {
+      this.$emit('update:tableTwoData', value);
+    },
+  },
+  props: [
+    'graphData',
+    'tableOneData',
+    'tableTwoData',
+  ],
 };
 </script>
 <style scoped>
-  .el-form-item .el-select,.el-input{
+  .el-form-item .el-select,.el-input,.el-cascader{
     width: 80%;
   }
 </style>

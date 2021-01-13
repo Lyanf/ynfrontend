@@ -224,7 +224,7 @@ export default {
       }],
       knownRegions: [],
       knownFactors: [],
-      suggestCategoryCount: undefined,
+      suggestCategoryCount: null,
       miningResults: [],
       postParams: {
         region: '',
