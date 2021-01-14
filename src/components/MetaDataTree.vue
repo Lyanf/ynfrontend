@@ -121,5 +121,7 @@ export default {
 </script>
 
 <style scoped>
-
+.el-select, .el-input, .el-cascader .year-range-selector {
+  width: 55%
+}
 </style>

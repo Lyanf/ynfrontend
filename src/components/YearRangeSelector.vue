@@ -23,7 +23,7 @@
 <script>
 export default {
   name: 'YearRangeSelector',
-  props: ['beginYear', 'endYear'],
+  props: ['beginYear', 'endYear', 'style'],
   data() {
     return {
       beginYearInternal: this.beginYear,
