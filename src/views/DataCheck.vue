@@ -4,6 +4,7 @@
       <el-form>
         <el-form-item label="数据节点：">
           <el-cascader id="cascader" :options="metaDataTree"
+                       change-on-select
                        ref="cascader" v-model="postParams.category"></el-cascader>
         </el-form-item>
         <el-form-item label="年份选择：">
@@ -67,5 +68,7 @@ export default {
 </script>
 
 <style scoped>
-
+.el-form-item .el-select,.el-input,.el-cascader {
+  width: 55%;
+}
 </style>

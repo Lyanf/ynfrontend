@@ -2,7 +2,8 @@
   <el-row >
     <el-col>
     <el-cascader-panel id="cascader" :options="metaDataTree"
-            ref="cascader"  v-model="selectedMetaData"
+                        change-on-select
+                        ref="cascader"  v-model="selectedMetaData"
                        :props="{checkStrictly:true}"></el-cascader-panel>
     </el-col>
     <el-col>

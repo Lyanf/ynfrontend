@@ -35,6 +35,7 @@
     <el-form-item label="修改数据节点：">
       <el-cascader placeholder="请选择"
                  :options="knownMetadata"
+                 change-on-select
                  v-model="addEntryParams.metaData"></el-cascader>
     </el-form-item>
     <el-form-item label="修改年份："
