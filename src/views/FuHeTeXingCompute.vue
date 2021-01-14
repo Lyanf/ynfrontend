@@ -1,5 +1,5 @@
 <template>
-  <el-tabs tab-position="left">
+  <el-tabs tab-position="left" label-width="100px">
     <el-tab-pane label="日负荷特性指标计算">
       <!--      日负荷特性指标计算-->
       <el-form>

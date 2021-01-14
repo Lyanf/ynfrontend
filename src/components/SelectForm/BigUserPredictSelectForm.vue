@@ -60,7 +60,7 @@
     </el-form-item>
     <el-form-item>
       <el-button @click="addEntry"
-                 size="mini" type="primary"
+                 size="mini"
                  :disabled="!canAddEntry">加入修改项</el-button>
     </el-form-item>
     <el-form-item v-if="postParams.patches.length !== 0">
@@ -72,11 +72,10 @@
         <el-table-column align="center">
           <template slot-scope="scope">
             <el-button
-              size="mini"
               type="danger"
-              plain
-              icon="el-icon-delete"
+              size="mini"
               @click="handleDelete(scope.$index)">
+              ×
             </el-button>
           </template>
         </el-table-column>
@@ -207,6 +206,6 @@ export default {
 </script>
 <style scoped>
   .el-form-item .el-select,.el-input,.el-cascader{
-    width: 80%;
+    width: 55%;
   }
 </style>
