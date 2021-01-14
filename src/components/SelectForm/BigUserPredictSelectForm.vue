@@ -56,7 +56,7 @@
       </div>
     </el-form-item>
     <el-form-item label="更新值：">
-      <el-input placeholder="请输入" v-model="addEntryParams.value"></el-input>
+      <el-input clearable placeholder="请输入" v-model="addEntryParams.value"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button @click="addEntry"

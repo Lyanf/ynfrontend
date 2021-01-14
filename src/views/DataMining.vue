@@ -109,7 +109,7 @@
           </year-range-selector>
         </el-form-item>
         <el-form-item label="方案标签：">
-          <el-input placeholder="请输入" v-model="postParams.tag">
+          <el-input clearable placeholder="请输入" v-model="postParams.tag">
           </el-input>
         </el-form-item>
         <el-form-item>

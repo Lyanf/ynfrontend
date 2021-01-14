@@ -8,7 +8,7 @@
                    placeholder="请选择"></el-cascader>
     </el-form-item>
     <el-form-item label="新名称">
-      <el-input v-model="name" placeholder="请输入"></el-input>
+      <el-input clearable v-model="name" placeholder="请输入"></el-input>
     </el-form-item>
     <el-form-item>
       <div style="font-size: 12px">
