@@ -1,12 +1,24 @@
 <template>
-  <div>
+  <div style="margin-left: 20px" v-show="graphData.length > 0">
     <el-row>
-      <div id="chart1" style="width: 680px;height: 300px"></div>
+      <div :id="uniqueId" style="width: 680px;height: 300px"></div>
     </el-row>
     <el-row>
-      <el-col :span="2">
-        <el-button type="primary" v-on:click="exportImage">图像导出</el-button>
-      </el-col>
+      <el-form>
+        <el-form-item>
+          <el-button v-on:click="exportImage">导出图像</el-button>
+        </el-form-item>
+        <el-form-item label="显示方式：">
+          <el-select placeholder="请选择" v-model="currentDisplayMethod">
+            <el-option
+              v-for="item in displayMethods"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
     </el-row>
   </div>
 </template>
@@ -31,31 +43,129 @@ function base64ToBlob(code) {
 }
 
 export default {
-  name: 'ResultChart',
   data() {
     return {
-      temp: '',
       currentChart: undefined,
+      graphData: [],
+      params1st: {
+        xTag: 'xName',
+        yTag: 'yValue',
+        xName: '',
+        yName: '',
+      },
+      params2nd: {
+        xTag: '',
+        yTag1st: '',
+        yTag2nd: '',
+        xName: '',
+        yName: '',
+        yName1st: '',
+        yName2nd: '',
+      },
+      displayMethods: [
+        {
+          label: '折线图',
+          value: 'line',
+        },
+        {
+          label: '柱状图',
+          value: 'bar',
+        },
+        {
+          label: '散点图',
+          value: 'scatter',
+        },
+      ],
+      currentDisplayMethod: 'line',
     };
   },
   methods: {
-    initializeChart() {
-      const chart1 = echarts.init(document.getElementById('chart1'));
-      this.currentChart = chart1;
+    refreshChart() {
+      const param = this.$data.params1st;
+      if (this.currentChart === undefined) {
+        this.currentChart = echarts.init(document.getElementById(this.uniqueId));
+      }
+      const xData = [];
+      const yData = [];
+
+      this.$data.graphData.forEach((elem) => {
+        xData.push(elem[param.xTag]);
+        yData.push(elem[param.yTag]);
+      });
+
       const initializeOption = {
         xAxis: {
           type: 'category',
-          data: ['类比1', '类比2', '类比3', '类比4', '类比5', '类比6', '类比7'],
+          name: param.xName,
+          data: xData,
         },
         yAxis: {
           type: 'value',
+          name: param.yName,
         },
         series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
-          type: 'line',
+          data: yData,
+          name: param.yName,
+          type: this.$data.currentDisplayMethod,
         }],
+        legend: {
+          // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
+          orient: 'horizontal',
+          // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+          x: 'center',
+          // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+          y: 'top',
+        },
       };
-      chart1.setOption(initializeOption);
+      this.currentChart.setOption(initializeOption);
+    },
+    refreshChart2nd() {
+      const param = this.$data.params2nd;
+      if (this.currentChart === undefined) {
+        this.currentChart = echarts.init(document.getElementById(this.uniqueId));
+      }
+      const xData = [];
+      const yData1st = [];
+      const yData2nd = [];
+
+      this.$data.graphData.forEach((elem) => {
+        xData.push(elem[param.xTag]);
+        yData1st.push(elem[param.yTag1st]);
+        yData2nd.push(elem[param.yTag2nd]);
+      });
+
+      const initializeOption = {
+        xAxis: {
+          type: 'category',
+          name: param.xName,
+          data: xData,
+        },
+        yAxis: {
+          type: 'value',
+          name: param.yName,
+        },
+        series: [
+          {
+            data: yData1st,
+            name: param.yName1st,
+            type: this.$data.currentDisplayMethod,
+          },
+          {
+            data: yData2nd,
+            name: param.yName2nd,
+            type: this.$data.currentDisplayMethod,
+          },
+        ],
+        legend: {
+          // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
+          orient: 'horizontal',
+          // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+          x: 'center',
+          // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+          y: 'top',
+        },
+      };
+      this.currentChart.setOption(initializeOption);
     },
     exportImage() {
       if (!this.currentChart) {
@@ -66,9 +176,24 @@ export default {
       saveAs(blob, 'chart.png');
     },
   },
-  mounted() {
-    this.initializeChart();
+  watch: {
+    currentDisplayMethod() {
+      if (this.typee === '2nd') {
+        this.refreshChart2nd();
+      } else {
+        this.refreshChart();
+      }
+    },
   },
+  computed: {
+    uniqueId() {
+      if (this.uid !== undefined) {
+        return this.uid;
+      }
+      return 'globalChart';
+    },
+  },
+  props: ['typee', 'uid'],
 };
 </script>
 

@@ -1,32 +1,56 @@
 <template>
   <div>
     <el-row type="flex" justify="center">
-      <el-col :span="11">
-        <PredictSelectForm placeOrIndustry="place" longTerm></PredictSelectForm>
+      <el-col :span="11" :offset="1">
+        <DynamicSelectForm type="saturation" placeOrIndustry="place" longTerm
+                           :graph-data.sync="graphData"
+                           :table-one-data.sync="tableOneData"
+                           :table-two-data.sync="tableTwoData"></DynamicSelectForm>
       </el-col>
-      <el-col :span="12" :offset="1">
+      <el-col :span="12">
         <el-row>
-          <ResultChart></ResultChart>
+          <ResultChart ref="resultChart"></ResultChart>
         </el-row>
-        <el-row>
-          <ResultTable></ResultTable>
-        </el-row>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="22" :offset="1">
+        <ResultTable ref="resultTable"></ResultTable>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import PredictSelectForm from '@/components/SelectForm/SinglePredictSelectForm.vue';
 import ResultChart from '@/components/ResultChart.vue';
 import ResultTable from '@/components/ResultTable.vue';
+import DynamicSelectForm from '@/components/SelectForm/DynamicRegionSelectForm.vue';
 
 export default {
   name: 'LongTermBaohePredict',
   components: {
+    DynamicSelectForm,
     ResultTable,
     ResultChart,
-    PredictSelectForm,
+  },
+  data() {
+    return {
+      graphData: [],
+      tableOneData: [],
+      tableTwoData: [],
+    };
+  },
+  watch: {
+    graphData(value) {
+      this.$refs.resultChart.graphData = value;
+      this.$refs.resultChart.refreshChart();
+    },
+    tableOneData(value) {
+      this.$refs.resultTable.tableOneData = value;
+    },
+    tableTwoData(value) {
+      this.$refs.resultTable.tableTwoData = value;
+    },
   },
 };
 </script>

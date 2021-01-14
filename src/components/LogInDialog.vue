@@ -19,10 +19,11 @@
       width="30%">
       <el-form>
         <el-form-item label="用户名">
-          <el-input v-model="username"></el-input>
+          <el-input clearable v-model="username"></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="password" type="password" @keyup.enter.native="realLogInClicked">
+          <el-input
+            clearable v-model="password" type="password" @keyup.enter.native="realLogInClicked">
           </el-input>
         </el-form-item>
       </el-form>

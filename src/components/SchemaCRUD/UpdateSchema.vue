@@ -10,7 +10,7 @@
       </el-select>
     </el-form-item>
     <el-form-item label="新名称">
-      <el-input v-model="newSchemaName"
+      <el-input clearable v-model="newSchemaName"
                 @keyup.enter.native="renameSchema"
                 placeholder="请输入"></el-input>
     </el-form-item>
@@ -33,10 +33,10 @@ export default {
     };
   },
   mounted() {
-    this.loadSchemas();
+    this.loadSchema();
   },
   methods: {
-    loadSchemas() {
+    loadSchema() {
       this.$axios.get('/schema/query').then((response) => {
         this.$data.schemas = response.data.data;
       });

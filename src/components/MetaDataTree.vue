@@ -2,8 +2,9 @@
   <div>
     <el-form type="flex" justify="right">
       <el-form-item label="数据节点：">
-        <el-cascader id="cascader" :options="metaDataTree"
-                     ref="cascader" v-model="postParams.category"></el-cascader>
+        <el-cascader id="cascader" :options="metaDataTree" change-on-select
+                     ref="cascader" v-model="postParams.category"
+                    style="width: 55%"></el-cascader>
       </el-form-item>
       <el-form-item label="地区选择：">
         <el-select placeholder="请选择" v-model="postParams.region">
@@ -59,8 +60,8 @@ export default {
         category: [],
         region: '',
         grain: '',
-        beginYear: undefined,
-        endYear: undefined,
+        beginYear: null,
+        endYear: null,
       },
     };
   },
@@ -73,7 +74,7 @@ export default {
       if (params.grain.length === 0) {
         return false;
       }
-      if (params.beginYear === undefined || params.endYear === undefined) {
+      if (params.beginYear === null || params.endYear === null) {
         return false;
       }
       if (params.category === []) {
@@ -121,5 +122,7 @@ export default {
 </script>
 
 <style scoped>
-
+.el-select, .el-input, .el-cascader .year-range-selector {
+  width: 55%
+}
 </style>
