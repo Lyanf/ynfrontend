@@ -124,6 +124,9 @@ export default {
     loadParameters() {
       this.$axios.get('/params/predict/biguser').then((response) => {
         this.$data.postParams = response.data.data;
+        Object.keys(response.data.data).forEach((key) => {
+          this.$data.postParams[key] = response.data.data[key];
+        });
       });
     },
     loadMetaData() {
