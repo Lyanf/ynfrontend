@@ -55,7 +55,7 @@ export default {
           this.$store.commit('switchVersion', this.$data.newSchemaName);
         }
         this.$data.currentSchema = this.$data.newSchemaName;
-        this.loadSchemas();
+        this.loadSchema();
       });
     },
   },

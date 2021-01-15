@@ -56,6 +56,7 @@ export default {
       }).then((response) => {
         console.log(response);
         this.$messenger.success('元数据节点删除成功。');
+        this.loadMetadata();
       });
     },
     loadMetadata() {

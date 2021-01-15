@@ -50,7 +50,7 @@ export default {
           this.$store.commit('switchVersion', undefined);
         }
         this.$data.currentSchema = undefined;
-        this.loadSchemas();
+        this.loadSchema();
       });
     },
   },

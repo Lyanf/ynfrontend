@@ -66,6 +66,7 @@ export default {
       }).then((response) => {
         console.log(response);
         this.$messenger.success('元数据节点更名成功。');
+        this.loadMetadata();
       });
     },
     loadMetadata() {
