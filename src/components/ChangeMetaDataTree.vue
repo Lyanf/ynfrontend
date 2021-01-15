@@ -2,11 +2,12 @@
   <el-row >
     <el-col>
     <el-cascader-panel id="cascader" :options="metaDataTree"
-            ref="cascader"  v-model="selectedMetaData"
+                        change-on-select
+                        ref="cascader"  v-model="selectedMetaData"
                        :props="{checkStrictly:true}"></el-cascader-panel>
     </el-col>
     <el-col>
-    <el-input v-model="crudInput"></el-input>
+    <el-input clearable v-model="crudInput"></el-input>
     <el-button @click="add">新增</el-button>
     <el-button @click="del">删除</el-button>
     <el-button @click="edit">编辑</el-button>

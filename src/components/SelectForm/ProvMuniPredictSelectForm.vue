@@ -18,7 +18,7 @@
         :on-success="onSuccess"
         :on-error="onFailure"
         :before-upload="beforeUpload"
-        :action="baseURL + 'predict/project/upload'"
+        :action="baseURL + '/predict/project/upload'"
       >
         <el-button :disabled="!enabledUploadButton">批量导入</el-button>
       </el-upload>

@@ -7,7 +7,7 @@
         :on-success="onSuccess"
         :on-error="onFailure"
         :before-upload="beforeUpload"
-        :action="baseURL + 'db/metadata/upload'"
+        :action="baseURL + '/db/metadata/upload'"
       >
         <el-button type="primary" :disabled="!enabledUploadButton">上传</el-button>
       </el-upload>

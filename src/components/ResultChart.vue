@@ -1,7 +1,7 @@
 <template>
   <div style="margin-left: 20px" v-show="graphData.length > 0">
     <el-row>
-      <div id="resultChart" style="width: 680px;height: 300px"></div>
+      <div :id="uniqueId" style="width: 680px;height: 300px"></div>
     </el-row>
     <el-row>
       <el-form>
@@ -45,9 +45,23 @@ function base64ToBlob(code) {
 export default {
   data() {
     return {
-      temp: '',
       currentChart: undefined,
       graphData: [],
+      params1st: {
+        xTag: 'xName',
+        yTag: 'yValue',
+        xName: '',
+        yName: '',
+      },
+      params2nd: {
+        xTag: '',
+        yTag1st: '',
+        yTag2nd: '',
+        xName: '',
+        yName: '',
+        yName1st: '',
+        yName2nd: '',
+      },
       displayMethods: [
         {
           label: '折线图',
@@ -67,29 +81,89 @@ export default {
   },
   methods: {
     refreshChart() {
+      const param = this.$data.params1st;
       if (this.currentChart === undefined) {
-        this.currentChart = echarts.init(document.getElementById('resultChart'));
+        this.currentChart = echarts.init(document.getElementById(this.uniqueId));
       }
       const xData = [];
       const yData = [];
 
       this.$data.graphData.forEach((elem) => {
-        xData.push(elem.xName);
-        yData.push(elem.yValue);
+        xData.push(elem[param.xTag]);
+        yData.push(elem[param.yTag]);
       });
 
       const initializeOption = {
         xAxis: {
           type: 'category',
+          name: param.xName,
           data: xData,
         },
         yAxis: {
           type: 'value',
+          name: param.yName,
         },
         series: [{
           data: yData,
+          name: param.yName,
           type: this.$data.currentDisplayMethod,
         }],
+        legend: {
+          // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
+          orient: 'horizontal',
+          // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+          x: 'center',
+          // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+          y: 'top',
+        },
+      };
+      this.currentChart.setOption(initializeOption);
+    },
+    refreshChart2nd() {
+      const param = this.$data.params2nd;
+      if (this.currentChart === undefined) {
+        this.currentChart = echarts.init(document.getElementById(this.uniqueId));
+      }
+      const xData = [];
+      const yData1st = [];
+      const yData2nd = [];
+
+      this.$data.graphData.forEach((elem) => {
+        xData.push(elem[param.xTag]);
+        yData1st.push(elem[param.yTag1st]);
+        yData2nd.push(elem[param.yTag2nd]);
+      });
+
+      const initializeOption = {
+        xAxis: {
+          type: 'category',
+          name: param.xName,
+          data: xData,
+        },
+        yAxis: {
+          type: 'value',
+          name: param.yName,
+        },
+        series: [
+          {
+            data: yData1st,
+            name: param.yName1st,
+            type: this.$data.currentDisplayMethod,
+          },
+          {
+            data: yData2nd,
+            name: param.yName2nd,
+            type: this.$data.currentDisplayMethod,
+          },
+        ],
+        legend: {
+          // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
+          orient: 'horizontal',
+          // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+          x: 'center',
+          // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+          y: 'top',
+        },
       };
       this.currentChart.setOption(initializeOption);
     },
@@ -104,9 +178,22 @@ export default {
   },
   watch: {
     currentDisplayMethod() {
-      this.refreshChart();
+      if (this.typee === '2nd') {
+        this.refreshChart2nd();
+      } else {
+        this.refreshChart();
+      }
     },
   },
+  computed: {
+    uniqueId() {
+      if (this.uid !== undefined) {
+        return this.uid;
+      }
+      return 'globalChart';
+    },
+  },
+  props: ['typee', 'uid'],
 };
 </script>
 

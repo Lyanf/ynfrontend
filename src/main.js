@@ -4,6 +4,7 @@ import axiosApi from 'axios';
 import Print from 'vue-print-nb';
 import ElementUI from 'element-ui';
 import D2Crud from '@d2-projects/d2-crud';
+import VuexPersistence from 'vuex-persist';
 import LoadingView from '@/components/LoadingView.vue';
 // import RouteLinker from '@/components/RouteLinker.vue';
 import router from './router';
@@ -18,14 +19,18 @@ Vue.use(Print);
 Vue.component('LoadingView', LoadingView);
 
 const axios = axiosApi.create({
-  baseURL: 'http://localhost:5000/api/',
+  baseURL: 'http://localhost:5000/api',
+});
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage,
 });
 
 const store = new Vuex.Store({
   state: {
     isLogin: false,
     isLoading: false,
-    currentVersion: undefined,
+    currentVersion: null,
   },
   mutations: {
     login(state) {
@@ -42,13 +47,14 @@ const store = new Vuex.Store({
     },
     switchVersion(state, version) {
       state.currentVersion = version;
-      if (version !== undefined) {
+      if (version !== null) {
         axios.defaults.baseURL = `http://localhost:5000/api/${version}`;
       } else {
-        axios.defaults.baseURL = 'http://localhost:5000/api/';
+        axios.defaults.baseURL = 'http://localhost:5000/api';
       }
     },
   },
+  plugins: [vuexLocal.plugin],
 });
 
 const messenger = {
@@ -106,6 +112,30 @@ Array.prototype.remove = function (from, to) {
   this.length = from < 0 ? this.length + from : from;
   // eslint-disable-next-line prefer-spread
   return this.push.apply(this, rest);
+};
+
+// eslint-disable-next-line no-extend-native,func-names
+Date.prototype.format = function (inFmt) {
+  let fmt = inFmt;
+  const o = {
+    'M+': this.getMonth() + 1,
+    'd+': this.getDate(),
+    'h+': this.getHours(),
+    'm+': this.getMinutes(),
+    's+': this.getSeconds(),
+    'q+': Math.floor((this.getMonth() + 3) / 3),
+    S: this.getMilliseconds(),
+  };
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (`${this.getFullYear()}`).substr(4 - RegExp.$1.length));
+  }
+  // eslint-disable-next-line no-restricted-syntax
+  for (const k in o) {
+    if (new RegExp(`(${k})`).test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : ((`00${o[k]}`).substr((`${o[k]}`).length)));
+    }
+  }
+  return fmt;
 };
 
 Vue.prototype.$axios = axios;

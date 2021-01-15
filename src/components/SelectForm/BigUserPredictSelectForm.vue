@@ -35,6 +35,7 @@
     <el-form-item label="修改数据节点：">
       <el-cascader placeholder="请选择"
                  :options="knownMetadata"
+                 change-on-select
                  v-model="addEntryParams.metaData"></el-cascader>
     </el-form-item>
     <el-form-item label="修改年份："
@@ -55,11 +56,11 @@
       </div>
     </el-form-item>
     <el-form-item label="更新值：">
-      <el-input placeholder="请输入" v-model="addEntryParams.value"></el-input>
+      <el-input clearable placeholder="请输入" v-model="addEntryParams.value"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button @click="addEntry"
-                 size="mini" type="primary"
+                 size="mini"
                  :disabled="!canAddEntry">加入修改项</el-button>
     </el-form-item>
     <el-form-item v-if="postParams.patches.length !== 0">
@@ -71,11 +72,10 @@
         <el-table-column align="center">
           <template slot-scope="scope">
             <el-button
-              size="mini"
               type="danger"
-              plain
-              icon="el-icon-delete"
+              size="mini"
               @click="handleDelete(scope.$index)">
+              ×
             </el-button>
           </template>
         </el-table-column>
@@ -121,6 +121,14 @@ export default {
     };
   },
   methods: {
+    loadParameters() {
+      this.$axios.get('/params/predict/biguser').then((response) => {
+        this.$data.postParams = response.data.data;
+        Object.keys(response.data.data).forEach((key) => {
+          this.$data.postParams[key] = response.data.data[key];
+        });
+      });
+    },
     loadMetaData() {
       this.$axios.get('/db/metadata').then((response) => {
         this.$data.knownMetadata = response.data.data;
@@ -157,6 +165,7 @@ export default {
     },
   },
   mounted() {
+    this.loadParameters();
     this.loadMetaData();
     this.loadRegions();
     this.loadMethods();
@@ -206,6 +215,6 @@ export default {
 </script>
 <style scoped>
   .el-form-item .el-select,.el-input,.el-cascader{
-    width: 80%;
+    width: 55%;
   }
 </style>

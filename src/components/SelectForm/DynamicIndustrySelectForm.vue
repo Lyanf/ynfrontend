@@ -34,7 +34,7 @@
     </el-form-item>
     <div v-for="(item, index) in postParams.parameters" :key="index">
       <el-form-item :label="`参数 ${index + 1}：`">
-        <el-input v-model="postParams.parameters[index]" placeholder="请输入"></el-input>
+        <el-input clearable v-model="postParams.parameters[index]" placeholder="请输入"></el-input>
         <el-button style="margin-left: 8px"
                    type="danger"
         @click="postParams.parameters.remove(index, index)">×</el-button>
@@ -82,6 +82,11 @@ export default {
     };
   },
   methods: {
+    loadParameters() {
+      this.$axios.get('/params/predict/dynamic/industry').then((response) => {
+        this.$data.postParams = response.data.data;
+      });
+    },
     loadIndustries() {
       this.$axios.get('/industry/query').then((response) => {
         this.$data.knownIndustries = response.data.data;
@@ -101,6 +106,7 @@ export default {
     },
   },
   mounted() {
+    this.loadParameters();
     this.loadIndustries();
     this.loadIndustrialMethods();
   },

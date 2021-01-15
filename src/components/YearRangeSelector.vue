@@ -1,5 +1,5 @@
 <template>
-  <el-row type="flex" justify="left" style="width: 55%">
+  <el-row type="flex" justify="left" :style="mainStyle">
     <el-col>
       <el-date-picker
         v-model="beginYearInternal"
@@ -23,7 +23,7 @@
 <script>
 export default {
   name: 'YearRangeSelector',
-  props: ['beginYear', 'endYear'],
+  props: ['beginYear', 'endYear', 'expand'],
   data() {
     return {
       beginYearInternal: this.beginYear,
@@ -70,6 +70,28 @@ export default {
         this.$data.beginYearInternal = value;
         this.$emit('update:beginYear', value.getFullYear());
       }
+    },
+    beginYear(value) {
+      if (value !== null) {
+        this.beginYearInternal = new Date(value, 1, 1);
+      } else {
+        this.beginYearInternal = null;
+      }
+    },
+    endYear(value) {
+      if (value !== null) {
+        this.endYearInternal = new Date(value, 1, 1);
+      } else {
+        this.endYearInternal = null;
+      }
+    },
+  },
+  computed: {
+    mainStyle() {
+      if (this.expand) {
+        return '';
+      }
+      return 'width: 55%';
     },
   },
 };

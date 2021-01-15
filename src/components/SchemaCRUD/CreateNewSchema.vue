@@ -1,7 +1,7 @@
 <template>
   <el-form label-position="right" label-width="14%">
     <el-form-item label="新建版本">
-      <el-input v-model="newSchemaName"
+      <el-input clearable v-model="newSchemaName"
                 @keyup.enter.native="createNewSchema"
                 placeholder="请输入"></el-input>
     </el-form-item>
