@@ -4,8 +4,8 @@
     <div class="top-warning" :hidden="bannerHidden" align="center">未登录
     </div>
     <div class="top-info" :hidden="versionBannerHidden" align="center">
-      版本 {{this.$store.state.currentVersion}}
-      <a style="color: lightgray" @click="switchSchema">切换版本</a>
+      <a style="text-align: center; margin-right: 10px">版本 {{this.$store.state.currentVersion}}</a>
+      <el-button type="text" @click="switchSchema" style="color: white">切换版本</el-button>
     </div>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
              style="display: flex; justify-content: space-between; margin-bottom: 3em"
