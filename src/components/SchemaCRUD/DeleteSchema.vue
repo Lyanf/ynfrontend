@@ -47,7 +47,7 @@ export default {
         console.log(response);
         this.$messenger.success('删除版本成功。');
         if (this.$store.state.currentVersion === this.$data.currentSchema) {
-          this.$store.commit('switchVersion', undefined);
+          this.$store.commit('switchVersion', null);
         }
         this.$data.currentSchema = undefined;
         this.loadSchema();

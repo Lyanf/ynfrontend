@@ -2,7 +2,10 @@
   <div>
     <input hidden="true" type="file" value="" id="file">
     <div class="top-warning" :hidden="bannerHidden" align="center">未登录
-      <a style="color: lightgray" href="/#/logIn">立即登录</a>
+    </div>
+    <div class="top-info" :hidden="versionBannerHidden" align="center">
+      版本 {{this.$store.state.currentVersion}}
+      <a style="color: lightgray" @click="switchSchema">切换版本</a>
     </div>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
              style="display: flex; justify-content: space-between; margin-bottom: 3em"
@@ -175,14 +178,33 @@ export default {
       }
       return isLogin;
     },
+    versionBannerHidden() {
+      if (this.$store.state.isLogin && this.$store.state.currentVersion !== null) {
+        return false;
+      }
+      return true;
+    },
   },
   mounted() {
     this.updateBaseUrl();
+    window.location = '/#/logIn';
   },
   methods: {
     updateBaseUrl() {
-      // forcefully refreshes current baseUrl
-      this.$store.commit('switchVersion', this.$store.state.currentVersion);
+      if (this.$store.state.isLogin) {
+        // forcefully refreshes current baseUrl
+        this.$store.commit('switchVersion', this.$store.state.currentVersion);
+      } else {
+        // give up rubbish
+        this.$store.commit('switchVersion', null);
+      }
+      // ... and give up unfinished loadings
+      this.$store.commit('finishLoad');
+    },
+    switchSchema() {
+      this.activeName = '3-2';
+      this.triggerReloadSchemas();
+      this.dialogFormVisible = true;
     },
     loadRecentFiles() {
       this.$axios.get('/recent').then((response) => {
@@ -213,7 +235,7 @@ export default {
       });
     },
     logOut() {
-      this.$store.commit('switchVersion', undefined);
+      this.$store.commit('switchVersion', null);
       this.$store.commit('logout');
       this.$axios.post('/logout').then((response) => {
         console.log(response);
@@ -352,5 +374,11 @@ export default {
   padding: 5px;
   color: white;
   background-color: darkred;
+}
+
+.top-info {
+  padding: 5px;
+  color: white;
+  background-color: darkblue;
 }
 </style>
