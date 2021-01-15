@@ -176,7 +176,14 @@ export default {
       return isLogin;
     },
   },
+  mounted() {
+    this.updateBaseUrl();
+  },
   methods: {
+    updateBaseUrl() {
+      // forcefully refreshes current baseUrl
+      this.$store.commit('switchVersion', this.$store.state.currentVersion);
+    },
     loadRecentFiles() {
       this.$axios.get('/recent').then((response) => {
         this.$data.recentFiles = response.data.data;

@@ -2,6 +2,9 @@
   <el-form label-position="right" label-width="14%">
     <el-form-item label="已有版本">
       <el-select placeholder="请选择" v-model="currentSchema">
+        <el-option key="[[ null ]]"
+                  label="默认版本"
+                  :value="null"></el-option>
         <el-option v-for="item in schemas"
                    :key="item"
                    :label="item"
@@ -39,7 +42,11 @@ export default {
     },
     switchSchema() {
       this.$store.commit('switchVersion', this.$data.currentSchema);
-      this.$messenger.success(`已切换到 ${this.$data.currentSchema} 版本。`);
+      if (this.$data.currentSchema === null) {
+        this.$messenger.success('已切换到默认版本。');
+      } else {
+        this.$messenger.success(`已切换到 ${this.$data.currentSchema} 版本。`);
+      }
     },
   },
 };
