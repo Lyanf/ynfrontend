@@ -63,11 +63,11 @@ export default {
   },
   methods: {
     logOut() {
-      this.$store.commit('switchVersion', undefined);
       this.$store.commit('logout');
       this.$axios.post('/logout').then((response) => {
         console.log(response);
         this.$messenger.success('注销成功。');
+        this.$store.commit('switchVersion', null);
       });
     },
     realLogInClicked() {

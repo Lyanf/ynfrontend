@@ -82,6 +82,11 @@ export default {
     };
   },
   methods: {
+    loadParameters() {
+      this.$axios.get('/params/predict/dynamic/region').then((response) => {
+        this.$data.postParams = response.data.data;
+      });
+    },
     loadRegions() {
       this.$axios.get('/region/query').then((response) => {
         this.$data.knownRegions = response.data.data;
@@ -101,6 +106,7 @@ export default {
     },
   },
   mounted() {
+    this.loadParameters();
     this.loadRegions();
     this.loadIndustrialMethods();
   },

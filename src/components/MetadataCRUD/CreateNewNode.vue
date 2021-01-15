@@ -60,6 +60,7 @@ export default {
       }).then((response) => {
         console.log(response);
         this.$messenger.success('元数据节点添加成功。');
+        this.loadMetadata();
       });
     },
     loadMetadata() {

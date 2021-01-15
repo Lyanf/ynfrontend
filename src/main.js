@@ -4,6 +4,7 @@ import axiosApi from 'axios';
 import Print from 'vue-print-nb';
 import ElementUI from 'element-ui';
 import D2Crud from '@d2-projects/d2-crud';
+import VuexPersistence from 'vuex-persist';
 import LoadingView from '@/components/LoadingView.vue';
 // import RouteLinker from '@/components/RouteLinker.vue';
 import router from './router';
@@ -18,14 +19,18 @@ Vue.use(Print);
 Vue.component('LoadingView', LoadingView);
 
 const axios = axiosApi.create({
-  baseURL: 'http://localhost:5000/api/',
+  baseURL: 'http://localhost:5000/api',
+});
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage,
 });
 
 const store = new Vuex.Store({
   state: {
     isLogin: false,
     isLoading: false,
-    currentVersion: undefined,
+    currentVersion: null,
   },
   mutations: {
     login(state) {
@@ -42,13 +47,14 @@ const store = new Vuex.Store({
     },
     switchVersion(state, version) {
       state.currentVersion = version;
-      if (version !== undefined) {
+      if (version !== null) {
         axios.defaults.baseURL = `http://localhost:5000/api/${version}`;
       } else {
-        axios.defaults.baseURL = 'http://localhost:5000/api/';
+        axios.defaults.baseURL = 'http://localhost:5000/api';
       }
     },
   },
+  plugins: [vuexLocal.plugin],
 });
 
 const messenger = {

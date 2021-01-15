@@ -247,7 +247,18 @@ export default {
       yearContTableData: [],
     };
   },
+  mounted() {
+    this.loadSokuParameters();
+    this.loadClampParameters();
+    this.loadInterpParameters();
+    this.loadYearContParameters();
+  },
   methods: {
+    loadSokuParameters() {
+      this.$axios.get('/params/predict/soku').then((response) => {
+        this.$data.sokuParams = response.data.data;
+      });
+    },
     sokuPredict() {
       this.$axios.post('/payload/predict/dbquery', this.$data.sokuParams).then((response) => {
         this.$data.sokuTableData = response.data.data;
@@ -262,6 +273,11 @@ export default {
           yName2nd: '预期负载',
         };
         this.$refs.sokuResultChart.refreshChart2nd();
+      });
+    },
+    loadClampParameters() {
+      this.$axios.get('/params/predict/clamping').then((response) => {
+        this.$data.clampParams = response.data.data;
       });
     },
     clampPredict() {
@@ -280,6 +296,11 @@ export default {
         this.$refs.clampResultChart.refreshChart2nd();
       });
     },
+    loadInterpParameters() {
+      this.$axios.get('/params/predict/interp').then((response) => {
+        this.$data.interpParams = response.data.data;
+      });
+    },
     interpPredict() {
       this.$axios.post('/payload/predict/interp', this.$data.interpParams).then((response) => {
         this.$data.interpTableData = response.data.data;
@@ -294,6 +315,11 @@ export default {
           yName2nd: '预期负载',
         };
         this.$refs.interpResultChart.refreshChart2nd();
+      });
+    },
+    loadYearContParameters() {
+      this.$axios.get('/params/predict/yearcont').then((response) => {
+        this.$data.yearContParams = response.data.data;
       });
     },
     yearContPredict() {

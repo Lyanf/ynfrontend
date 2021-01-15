@@ -71,6 +71,20 @@ export default {
         this.$emit('update:beginYear', value.getFullYear());
       }
     },
+    beginYear(value) {
+      if (value !== null) {
+        this.beginYearInternal = new Date(value, 1, 1);
+      } else {
+        this.beginYearInternal = null;
+      }
+    },
+    endYear(value) {
+      if (value !== null) {
+        this.endYearInternal = new Date(value, 1, 1);
+      } else {
+        this.endYearInternal = null;
+      }
+    },
   },
   computed: {
     mainStyle() {

@@ -121,6 +121,14 @@ export default {
     };
   },
   methods: {
+    loadParameters() {
+      this.$axios.get('/params/predict/biguser').then((response) => {
+        this.$data.postParams = response.data.data;
+        Object.keys(response.data.data).forEach((key) => {
+          this.$data.postParams[key] = response.data.data[key];
+        });
+      });
+    },
     loadMetaData() {
       this.$axios.get('/db/metadata').then((response) => {
         this.$data.knownMetadata = response.data.data;
@@ -157,6 +165,7 @@ export default {
     },
   },
   mounted() {
+    this.loadParameters();
     this.loadMetaData();
     this.loadRegions();
     this.loadMethods();

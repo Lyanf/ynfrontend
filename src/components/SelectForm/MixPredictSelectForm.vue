@@ -90,6 +90,7 @@ export default {
     };
   },
   mounted() {
+    this.loadParameters();
     if (this.placeOrIndustry === 'place') {
       this.loadRegions();
     } else {
@@ -97,6 +98,11 @@ export default {
     }
   },
   methods: {
+    loadParameters() {
+      this.$axios.get('/params/predict/mix').then((response) => {
+        this.$data.postParams = response.data.data;
+      });
+    },
     loadRegions() {
       this.$axios.get('/region/query').then((response) => {
         this.$data.predictRegions = response.data.data;

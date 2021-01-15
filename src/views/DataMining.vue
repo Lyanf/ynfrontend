@@ -134,6 +134,7 @@ export default {
     YearRangeSelector,
   },
   mounted() {
+    this.loadParameters();
     this.loadFactors();
     this.loadRegions();
     this.loadSuggestedCategoryCount();
@@ -173,6 +174,11 @@ export default {
     },
   },
   methods: {
+    loadParameters() {
+      this.$axios.get('/params/mining').then((response) => {
+        this.$data.postParams = response.data.data;
+      });
+    },
     loadRegions() {
       this.$axios.get('/region/query').then((response) => {
         this.$data.knownRegions = response.data.data;
