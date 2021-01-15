@@ -82,6 +82,11 @@ export default {
     };
   },
   methods: {
+    loadParameters() {
+      this.$axios.get('/params/predict/dynamic/industry').then((response) => {
+        this.$data.postParams = response.data.data;
+      });
+    },
     loadIndustries() {
       this.$axios.get('/industry/query').then((response) => {
         this.$data.knownIndustries = response.data.data;
@@ -101,6 +106,7 @@ export default {
     },
   },
   mounted() {
+    this.loadParameters();
     this.loadIndustries();
     this.loadIndustrialMethods();
   },

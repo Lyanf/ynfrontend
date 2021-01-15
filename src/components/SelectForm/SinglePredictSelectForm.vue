@@ -191,6 +191,7 @@ export default {
     },
   },
   mounted() {
+    this.loadParameters();
     if (this.placeOrIndustry === 'place') {
       this.loadRegions();
       this.loadRegionalMethods();
@@ -201,6 +202,11 @@ export default {
     this.loadFactors();
   },
   methods: {
+    loadParameters() {
+      this.$axios.get('/params/predict/static/region').then((response) => {
+        this.$data.postParams = response.data.data;
+      });
+    },
     loadRegions() {
       this.$axios.get('/region/query').then((response) => {
         this.$data.predictRegions = response.data.data;
