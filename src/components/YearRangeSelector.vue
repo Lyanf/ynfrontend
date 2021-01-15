@@ -72,10 +72,18 @@ export default {
       }
     },
     beginYear(value) {
-      this.beginYearInternal = new Date(value, 1, 1);
+      if (value !== null) {
+        this.beginYearInternal = new Date(value, 1, 1);
+      } else {
+        this.beginYearInternal = null;
+      }
     },
     endYear(value) {
-      this.endYearInternal = new Date(value, 1, 1);
+      if (value !== null) {
+        this.endYearInternal = new Date(value, 1, 1);
+      } else {
+        this.endYearInternal = null;
+      }
     },
   },
   computed: {
