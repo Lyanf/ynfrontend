@@ -371,13 +371,13 @@ export default {
 
 <style scoped>
 .top-warning {
-  padding: 5px;
+  margin: 2px;
   color: white;
   background-color: darkred;
 }
 
 .top-info {
-  padding: 5px;
+  margin: 2px;
   color: white;
   background-color: darkblue;
 }
