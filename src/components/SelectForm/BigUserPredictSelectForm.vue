@@ -81,6 +81,23 @@
         </el-table-column>
       </el-table>
     </el-form-item>
+    <el-form-item label="方案标签：">
+      <el-input clearable placeholder="可留空" v-model="postParams.tag">
+      </el-input>
+    </el-form-item>
+    <el-form-item label="加载方案：">
+      <el-select placeholder="选择标签" v-model="currentTag" size="small" style="width: 50%">
+        <el-option
+          v-for="item in knownTags"
+          :key="item.id"
+          :label="item.id"
+          :value="item.id">
+        </el-option>
+      </el-select>
+      <el-button size="small" @click="loadParameters"
+                 :disabled="currentTag === null"
+                 style="margin-left: 10px">加载</el-button>
+    </el-form-item>
     <el-form-item>
       <el-button :disabled="!canCommitQuery"
                  type="primary"
@@ -103,6 +120,8 @@ export default {
       graphDataInternal: [],
       tableOneDataInternal: [],
       tableTwoDataInternal: [],
+      knownTags: [],
+      currentTag: null,
       addEntryParams: {
         metaData: [],
         year: '',
@@ -117,16 +136,27 @@ export default {
         method: '',
         region: '',
         patches: [],
+        tag: null,
       },
     };
   },
   methods: {
+    loadTags() {
+      this.$axios.get('/tags/query', {
+        params: {
+          tagType: 'BIGUSER',
+        },
+      }).then((response) => {
+        this.$data.knownTags = response.data.data;
+      });
+    },
     loadParameters() {
-      this.$axios.get('/params/predict/biguser').then((response) => {
+      this.$axios.get('/params/predict/biguser', {
+        params: {
+          tag: this.$data.currentTag,
+        },
+      }).then((response) => {
         this.$data.postParams = response.data.data;
-        Object.keys(response.data.data).forEach((key) => {
-          this.$data.postParams[key] = response.data.data[key];
-        });
       });
     },
     loadMetaData() {
@@ -165,10 +195,11 @@ export default {
     },
   },
   mounted() {
-    this.loadParameters();
+    // this.loadParameters();
     this.loadMetaData();
     this.loadRegions();
     this.loadMethods();
+    this.loadTags();
   },
   computed: {
     canCommitQuery() {

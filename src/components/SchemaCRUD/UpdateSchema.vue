@@ -4,8 +4,9 @@
       <el-select placeholder="请选择" v-model="currentSchema">
         <el-option v-for="item in schemas"
                    :key="item.id"
-                   :label="item.id"
                    :value="item.id">
+          <span style="float: left">{{ item.id }}</span>
+          <span style="float: right; color: #8492a6;">{{ typeName[item.tagType] }}</span>
         </el-option>
       </el-select>
     </el-form-item>
@@ -15,8 +16,13 @@
                 placeholder="请输入"></el-input>
     </el-form-item>
     <el-form-item>
+      <el-button
+        @click="viewSchema"
+        :disabled="currentSchema === null">
+        查看
+      </el-button>
       <el-button type="primary"
-                 :disabled="currentSchema === undefined || newSchemaName.length === 0"
+                 :disabled="currentSchema === null || newSchemaName.length === 0"
                  @click="renameSchema">修改</el-button>
     </el-form-item>
   </el-form>
@@ -28,8 +34,16 @@ export default {
   data() {
     return {
       schemas: [],
-      currentSchema: undefined,
+      currentSchema: null,
       newSchemaName: '',
+      typeName: {
+        MINING: '数据挖掘方案',
+        STATIC_REGIONAL: '地区单预测方案',
+        DYNAMIC_INDUSTRIAL: '行业单预测方案',
+        MIX: '组合预测方案',
+        LONGTERM: '远期规划预测方案',
+        BIGUSER: '大用户预测方案',
+      },
     };
   },
   mounted() {
@@ -41,8 +55,11 @@ export default {
         this.$data.schemas = response.data.data;
       });
     },
+    viewSchema() {
+      // ...
+    },
     renameSchema() {
-      if (this.$data.currentSchema === undefined || this.$data.newSchemaName.length === 0) {
+      if (this.$data.currentSchema === null || this.$data.newSchemaName.length === 0) {
         return;
       }
       this.$axios.post('/tags/rename', {
@@ -50,7 +67,7 @@ export default {
         newTag: this.$data.newSchemaName,
       }).then((response) => {
         console.log(response);
-        this.$messenger.success('修改版本成功。');
+        this.$messenger.success('修改方案标签成功。');
         this.$data.currentSchema = this.$data.newSchemaName;
         this.loadSchema();
       });

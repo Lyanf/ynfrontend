@@ -1,10 +1,9 @@
 <template>
   <div>
     <input hidden="true" type="file" value="" id="file">
-    <div class="top-warning" :hidden="bannerHidden" align="center">未登录
+    <div class="top-warning" :hidden="bannerHidden" align="center" style="font-size: 14px">未登录
       <el-button type="text" style="color: white" @click="switchToLogin">立即登录</el-button>
     </div>
-
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
              style="display: flex; justify-content: space-between; margin-bottom: 3em"
              @select="handleSelect">
@@ -36,9 +35,9 @@
       </el-submenu>
 
       <el-submenu index="3" :disabled="menuDisabled">
-        <template slot="title">版本控制</template>
-        <el-menu-item index="3-3">修改版本名称</el-menu-item>
-        <el-menu-item index="3-4">删除版本</el-menu-item>
+        <template slot="title">方案标签</template>
+        <el-menu-item index="3-3">修改方案标签</el-menu-item>
+        <el-menu-item index="3-4">删除方案标签</el-menu-item>
       </el-submenu>
 
       <el-submenu index="4" :disabled="menuDisabled">
@@ -90,12 +89,12 @@
         <el-menu-item index="8-3">关于</el-menu-item>
       </el-submenu>
     </el-menu>
-    <el-dialog title="版本控制" :visible.sync="dialogFormVisible">
+    <el-dialog title="方案标签" :visible.sync="dialogFormVisible">
       <el-tabs v-model="activeName" type="card" @tab-click="triggerReloadSchemas">
-        <el-tab-pane label="修改版本名称" name="3-3">
+        <el-tab-pane label="修改标签名称" name="3-3">
           <UpdateSchema ref="renameSchemaView"></UpdateSchema>
         </el-tab-pane>
-        <el-tab-pane label="删除版本" name="3-4">
+        <el-tab-pane label="删除标签" name="3-4">
           <DeleteSchema ref="deleteSchemaView"></DeleteSchema>
         </el-tab-pane>
       </el-tabs>

@@ -33,6 +33,24 @@
             <el-form-item label="Beta 值：">
               <el-input clearable type="number" placeholder="请输入" v-model="sokuParams.beta"/>
             </el-form-item>
+            <el-form-item label="方案标签：">
+              <el-input clearable placeholder="可留空" v-model="sokuParams.tag">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="加载方案：">
+              <el-select placeholder="选择标签"
+                         v-model="currentSokuTag" size="small" style="width: 50%">
+                <el-option
+                  v-for="item in knownSokuTags"
+                  :key="item.id"
+                  :label="item.id"
+                  :value="item.id">
+                </el-option>
+              </el-select>
+              <el-button size="small" @click="loadSokuParameters"
+                         :disabled="currentSokuTag === null"
+                         style="margin-left: 10px">加载</el-button>
+            </el-form-item>
             <el-form-item>
               <el-button :disabled="!sokuSubmittable" @click="sokuPredict">计算</el-button>
             </el-form-item>
@@ -80,6 +98,24 @@
               <el-form-item label="预测日电量：">
                 <el-input clearable type="number"
                           placeholder="请输入" v-model="clampParams.dailyAmount"></el-input>
+              </el-form-item>
+              <el-form-item label="方案标签：">
+                <el-input clearable placeholder="可留空" v-model="clampParams.tag">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="加载方案：">
+                <el-select placeholder="选择标签"
+                           v-model="currentClampTag" size="small" style="width: 50%">
+                  <el-option
+                    v-for="item in knownClampTags"
+                    :key="item.id"
+                    :label="item.id"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+                <el-button size="small" @click="loadClampParameters"
+                           :disabled="currentClampTag === null"
+                           style="margin-left: 10px">加载</el-button>
               </el-form-item>
               <el-form-item>
                 <el-button :disabled="!clampSubmittable" @click="clampPredict">计算</el-button>
@@ -130,6 +166,24 @@
                 <el-input clearable type="number"
                           placeholder="请输入" v-model="interpParams.dailyAmount"></el-input>
               </el-form-item>
+              <el-form-item label="方案标签：">
+                <el-input clearable placeholder="可留空" v-model="interpParams.tag">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="加载方案：">
+                <el-select placeholder="选择标签"
+                           v-model="currentInterpTag" size="small" style="width: 50%">
+                  <el-option
+                    v-for="item in knownInterpTags"
+                    :key="item.id"
+                    :label="item.id"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+                <el-button size="small" @click="loadInterpParameters"
+                           :disabled="currentInterpTag === null"
+                           style="margin-left: 10px">加载</el-button>
+              </el-form-item>
               <el-form-item>
                 <el-button :disabled="!interpSubmittable" @click="interpPredict">计算</el-button>
               </el-form-item>
@@ -164,6 +218,24 @@
               <el-form-item label="预测最大负荷：">
                 <el-input clearable type="number"
                           placeholder="请输入" v-model="yearContParams.maxPayload"></el-input>
+              </el-form-item>
+              <el-form-item label="方案标签：">
+                <el-input clearable placeholder="可留空" v-model="yearContParams.tag">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="加载方案：">
+                <el-select placeholder="选择标签"
+                           v-model="currentYearContTag" size="small" style="width: 50%">
+                  <el-option
+                    v-for="item in knownYearContTags"
+                    :key="item.id"
+                    :label="item.id"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+                <el-button size="small" @click="loadYearContParameters"
+                           :disabled="currentYearContTag === null"
+                           style="margin-left: 10px">加载</el-button>
               </el-form-item>
               <el-form-item>
                 <el-button :disabled="!yearContSubmittable" @click="yearContPredict">计算</el-button>
@@ -223,6 +295,8 @@ export default {
         beta: null,
       },
       sokuTableData: [],
+      knownSokuTags: [],
+      currentSokuTag: null,
       clampParams: {
         beginYear: null,
         endYear: null,
@@ -231,6 +305,8 @@ export default {
         dailyAmount: null,
       },
       clampTableData: [],
+      knownClampTags: [],
+      currentClampTag: null,
       interpParams: {
         beginYear: null,
         endYear: null,
@@ -239,23 +315,40 @@ export default {
         dailyAmount: null,
       },
       interpTableData: [],
+      knownInterpTags: [],
+      currentInterpTag: null,
       yearContParams: {
         beginYear: null,
         endYear: null,
         maxPayload: null,
       },
       yearContTableData: [],
+      knownYearContTags: [],
+      currentYearContTag: null,
     };
   },
   mounted() {
-    this.loadSokuParameters();
-    this.loadClampParameters();
-    this.loadInterpParameters();
-    this.loadYearContParameters();
+    this.loadSokuTags();
+    this.loadClampTags();
+    this.loadInterpTags();
+    this.loadYearContTags();
   },
   methods: {
+    loadSokuTags() {
+      this.$axios.get('/tags/query', {
+        params: {
+          tagType: 'SOKU',
+        },
+      }).then((response) => {
+        this.$data.knownSokuTags = response.data.data;
+      });
+    },
     loadSokuParameters() {
-      this.$axios.get('/params/predict/soku').then((response) => {
+      this.$axios.get('/params/predict/soku', {
+        params: {
+          tag: this.$data.currentSokuTag,
+        },
+      }).then((response) => {
         this.$data.sokuParams = response.data.data;
       });
     },
@@ -275,8 +368,21 @@ export default {
         this.$refs.sokuResultChart.refreshChart2nd();
       });
     },
+    loadClampTags() {
+      this.$axios.get('/tags/query', {
+        params: {
+          tagType: 'CLAMP',
+        },
+      }).then((response) => {
+        this.$data.knownClampTags = response.data.data;
+      });
+    },
     loadClampParameters() {
-      this.$axios.get('/params/predict/clamping').then((response) => {
+      this.$axios.get('/params/predict/clamping', {
+        params: {
+          tag: this.$data.currentClampTag,
+        },
+      }).then((response) => {
         this.$data.clampParams = response.data.data;
       });
     },
@@ -296,8 +402,21 @@ export default {
         this.$refs.clampResultChart.refreshChart2nd();
       });
     },
+    loadInterpTags() {
+      this.$axios.get('/tags/query', {
+        params: {
+          tagType: 'INTERP',
+        },
+      }).then((response) => {
+        this.$data.knownInterpTags = response.data.data;
+      });
+    },
     loadInterpParameters() {
-      this.$axios.get('/params/predict/interp').then((response) => {
+      this.$axios.get('/params/predict/interp', {
+        params: {
+          tag: this.$data.currentInterpTag,
+        },
+      }).then((response) => {
         this.$data.interpParams = response.data.data;
       });
     },
@@ -317,8 +436,21 @@ export default {
         this.$refs.interpResultChart.refreshChart2nd();
       });
     },
+    loadYearContTags() {
+      this.$axios.get('/tags/query', {
+        params: {
+          tagType: 'YEARCONT',
+        },
+      }).then((response) => {
+        this.$data.knownYearContTags = response.data.data;
+      });
+    },
     loadYearContParameters() {
-      this.$axios.get('/params/predict/yearcont').then((response) => {
+      this.$axios.get('/params/predict/yearcont', {
+        params: {
+          tag: this.$data.currentYearContTag,
+        },
+      }).then((response) => {
         this.$data.yearContParams = response.data.data;
       });
     },
