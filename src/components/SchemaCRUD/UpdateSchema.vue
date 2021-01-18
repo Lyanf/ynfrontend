@@ -51,9 +51,6 @@ export default {
       }).then((response) => {
         console.log(response);
         this.$messenger.success('修改版本成功。');
-        if (this.$store.state.currentVersion === this.$data.currentSchema) {
-          this.$store.commit('switchVersion', this.$data.newSchemaName);
-        }
         this.$data.currentSchema = this.$data.newSchemaName;
         this.loadSchema();
       });

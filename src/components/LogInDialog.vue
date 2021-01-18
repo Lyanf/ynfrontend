@@ -63,7 +63,6 @@ export default {
   },
   methods: {
     logOut() {
-      this.$store.commit('switchVersion', null);
       this.$store.commit('logout');
       this.$axios.post('/logout').then((response) => {
         console.log(response);

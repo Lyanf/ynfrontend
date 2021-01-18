@@ -3,10 +3,6 @@
     <input hidden="true" type="file" value="" id="file">
     <div class="top-warning" :hidden="bannerHidden" align="center">未登录
     </div>
-    <div class="top-info" :hidden="versionBannerHidden" align="center">
-      <a style="text-align: center; margin-right: 10px">版本 {{this.$store.state.currentVersion}}</a>
-      <el-button type="text" @click="switchSchema" style="color: white">切换版本</el-button>
-    </div>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
              style="display: flex; justify-content: space-between; margin-bottom: 3em"
              @select="handleSelect">
@@ -39,8 +35,6 @@
 
       <el-submenu index="3" :disabled="menuDisabled">
         <template slot="title">版本控制</template>
-        <el-menu-item index="3-1">新建版本</el-menu-item>
-        <el-menu-item index="3-2">切换版本</el-menu-item>
         <el-menu-item index="3-3">修改版本名称</el-menu-item>
         <el-menu-item index="3-4">删除版本</el-menu-item>
       </el-submenu>
@@ -96,12 +90,6 @@
     </el-menu>
     <el-dialog title="版本控制" :visible.sync="dialogFormVisible">
       <el-tabs v-model="activeName" type="card" @tab-click="triggerReloadSchemas">
-        <el-tab-pane label="新建版本" name="3-1">
-          <CreateNewSchema ref="newSchemaView"></CreateNewSchema>
-        </el-tab-pane>
-        <el-tab-pane label="切换版本" name="3-2">
-          <ReadSchema ref="switchSchemaView"></ReadSchema>
-        </el-tab-pane>
         <el-tab-pane label="修改版本名称" name="3-3">
           <UpdateSchema ref="renameSchemaView"></UpdateSchema>
         </el-tab-pane>
@@ -178,12 +166,6 @@ export default {
       }
       return isLogin;
     },
-    versionBannerHidden() {
-      if (this.$store.state.isLogin && this.$store.state.currentVersion !== null) {
-        return false;
-      }
-      return true;
-    },
   },
   mounted() {
     this.updateBaseUrl();
@@ -191,20 +173,8 @@ export default {
   },
   methods: {
     updateBaseUrl() {
-      if (this.$store.state.isLogin) {
-        // forcefully refreshes current baseUrl
-        this.$store.commit('switchVersion', this.$store.state.currentVersion);
-      } else {
-        // give up rubbish
-        this.$store.commit('switchVersion', null);
-      }
       // ... and give up unfinished loadings
       this.$store.commit('finishLoad');
-    },
-    switchSchema() {
-      this.activeName = '3-2';
-      this.triggerReloadSchemas();
-      this.dialogFormVisible = true;
     },
     loadRecentFiles() {
       this.$axios.get('/recent').then((response) => {
@@ -213,7 +183,6 @@ export default {
     },
     triggerReloadSchemas() {
       const schemaViews = [
-        this.$refs.switchSchemaView,
         this.$refs.renameSchemaView,
         this.$refs.deleteSchemaView];
       schemaViews.forEach((item) => {
@@ -235,7 +204,6 @@ export default {
       });
     },
     logOut() {
-      this.$store.commit('switchVersion', null);
       this.$store.commit('logout');
       this.$axios.post('/logout').then((response) => {
         console.log(response);
