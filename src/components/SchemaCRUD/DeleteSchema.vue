@@ -3,9 +3,9 @@
     <el-form-item label="已有版本">
       <el-select placeholder="请选择" v-model="currentSchema">
         <el-option v-for="item in schemas"
-                   :key="item"
-                   :label="item"
-                   :value="item">
+                   :key="item.id"
+                   :label="item.id"
+                   :value="item.id">
         </el-option>
       </el-select>
     </el-form-item>
@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     loadSchema() {
-      this.$axios.get('/schema/query').then((response) => {
+      this.$axios.get('/tags/query').then((response) => {
         this.$data.schemas = response.data.data;
       });
     },
@@ -41,8 +41,8 @@ export default {
       if (this.$data.currentSchema === undefined) {
         return;
       }
-      this.$axios.post('/schema/delete', {
-        deleteSchema: this.$data.currentSchema,
+      this.$axios.post('/tags/delete', {
+        tag: this.$data.currentSchema,
       }).then((response) => {
         console.log(response);
         this.$messenger.success('删除版本成功。');

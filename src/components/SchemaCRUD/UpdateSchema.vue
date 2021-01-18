@@ -3,9 +3,9 @@
     <el-form-item label="已有版本">
       <el-select placeholder="请选择" v-model="currentSchema">
         <el-option v-for="item in schemas"
-                   :key="item"
-                   :label="item"
-                   :value="item">
+                   :key="item.id"
+                   :label="item.id"
+                   :value="item.id">
         </el-option>
       </el-select>
     </el-form-item>
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     loadSchema() {
-      this.$axios.get('/schema/query').then((response) => {
+      this.$axios.get('/tags/query').then((response) => {
         this.$data.schemas = response.data.data;
       });
     },
@@ -45,9 +45,9 @@ export default {
       if (this.$data.currentSchema === undefined || this.$data.newSchemaName.length === 0) {
         return;
       }
-      this.$axios.post('/schema/rename', {
-        currentSchema: this.$data.currentSchema,
-        newSchemaName: this.$data.newSchemaName,
+      this.$axios.post('/tags/rename', {
+        tag: this.$data.currentSchema,
+        newTag: this.$data.newSchemaName,
       }).then((response) => {
         console.log(response);
         this.$messenger.success('修改版本成功。');

@@ -2,7 +2,9 @@
   <div>
     <input hidden="true" type="file" value="" id="file">
     <div class="top-warning" :hidden="bannerHidden" align="center">未登录
+      <el-button type="text" style="color: white" @click="switchToLogin">立即登录</el-button>
     </div>
+
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
              style="display: flex; justify-content: space-between; margin-bottom: 3em"
              @select="handleSelect">
@@ -123,8 +125,6 @@ import CreateNewNode from '@/components/MetadataCRUD/CreateNewNode.vue';
 import RenameNode from '@/components/MetadataCRUD/RenameNode.vue';
 import DeleteNode from '@/components/MetadataCRUD/DeleteNode.vue';
 import UploadData from '@/components/MetadataCRUD/UploadData.vue';
-import CreateNewSchema from '@/components/SchemaCRUD/CreateNewSchema.vue';
-import ReadSchema from '@/components/SchemaCRUD/ReadSchema.vue';
 import UpdateSchema from '@/components/SchemaCRUD/UpdateSchema.vue';
 import DeleteSchema from '@/components/SchemaCRUD/DeleteSchema.vue';
 import { saveAs } from 'file-saver';
@@ -138,8 +138,6 @@ export default {
     UploadData,
     DeleteSchema,
     UpdateSchema,
-    ReadSchema,
-    CreateNewSchema,
   },
   data() {
     return {
@@ -180,6 +178,9 @@ export default {
       this.$axios.get('/recent').then((response) => {
         this.$data.recentFiles = response.data.data;
       });
+    },
+    switchToLogin() {
+      window.location = '/#/logIn';
     },
     triggerReloadSchemas() {
       const schemaViews = [
