@@ -13,12 +13,12 @@
     <el-form-item>
       <el-button
                  @click="viewSchema"
-                 :disabled="currentSchema === undefined">
+                 :disabled="currentSchema === null">
         查看
       </el-button>
       <el-button type="danger"
          @click="deleteSchema"
-        :disabled="currentSchema === undefined">
+        :disabled="currentSchema === null">
         删除
       </el-button>
     </el-form-item>
@@ -39,10 +39,10 @@ export default {
         MIX: '组合预测方案',
         LONGTERM: '远期规划预测方案',
         BIGUSER: '大用户预测方案',
-        SOKU: '负荷特性预测方案（搜库法）',
-        CLAMP: '负荷特性预测方案（夹逼法）',
-        INTERP: '负荷特性预测方案（分型插值法）',
-        YEARCONT: '的负荷特性预测方案（年持续）',
+        SOKU: '负荷特性预测方案',
+        CLAMP: '负荷特性预测方案',
+        INTERP: '负荷特性预测方案',
+        YEARCONT: '负荷特性预测方案',
       },
     };
   },
