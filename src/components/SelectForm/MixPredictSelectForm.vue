@@ -42,6 +42,23 @@
         </el-option>
       </el-select>
     </el-form-item>
+    <el-form-item label="方案标签：">
+      <el-input clearable placeholder="可留空" v-model="postParams.tag">
+      </el-input>
+    </el-form-item>
+    <el-form-item label="加载方案：">
+      <el-select placeholder="选择标签" v-model="currentTag" size="small" style="width: 50%">
+        <el-option
+          v-for="item in knownTags"
+          :key="item.id"
+          :label="item.id"
+          :value="item.id">
+        </el-option>
+      </el-select>
+      <el-button size="small" @click="loadParameters"
+                 :disabled="currentTag === null"
+                 style="margin-left: 10px">加载</el-button>
+    </el-form-item>
     <el-form-item>
       <el-button @click="validate"
                  :disabled="postParams.selectedMethods.length === 0">检测</el-button>
@@ -75,32 +92,47 @@ export default {
         region: '',
         industry: '',
         selectedMethods: [],
+        tag: null,
       },
       graphDataInternal: [],
       tableOneDataInternal: [],
       tableTwoDataInternal: [],
       predictRegions: [],
       predictIndustries: [],
-      originalAllMethodsForPlace: ['逐步回归模型', '灰色滑动平均模型', '分数阶灰色模型',
-        '改进的滚动机理灰色预测', '高斯混合回归模型', '模糊线性回归模型',
-        '模糊指数平滑模型', '梯度提升模型', '支持向量机模型', '循环神经网络模型',
-        '长短期神经网络模型', '扩展索洛模型', '分位数回归模型', '分行业典型日负荷曲线叠加法',
-        '负荷最大利用小时数模型', '季节趋势模型', '考虑温度和节假日分布影响的电量预测模型'],
-      originalAllMethodsForIndustry: ['基于ARIMA季节分解的行业电量预测', '基于EEMD的行业用电量预测', '基于主成分因子的行业用电量预测', '基于随机森林的行业用电量预测', '基于神经网络的行业用电量预测'],
+      originalAllMethodsForPlace: [],
+      originalAllMethodsForIndustry: [],
+      knownTags: [],
+      currentTag: null,
     };
   },
   mounted() {
-    this.loadParameters();
+    // this.loadParameters();
     if (this.placeOrIndustry === 'place') {
       this.loadRegions();
+      this.loadRegionalMethods();
     } else {
       this.loadIndustries();
+      this.loadIndustrialMethods();
     }
+    this.loadTags();
   },
   methods: {
     loadParameters() {
-      this.$axios.get('/params/predict/mix').then((response) => {
+      this.$axios.get('/params/predict/mix', {
+        params: {
+          tag: this.$data.currentTag,
+        },
+      }).then((response) => {
         this.$data.postParams = response.data.data;
+      });
+    },
+    loadTags() {
+      this.$axios.get('/tags/query', {
+        params: {
+          tagType: 'MIX',
+        },
+      }).then((response) => {
+        this.$data.knownTags = response.data.data;
       });
     },
     loadRegions() {
@@ -111,6 +143,16 @@ export default {
     loadIndustries() {
       this.$axios.get('/industry/query').then((response) => {
         this.$data.predictIndustries = response.data.data;
+      });
+    },
+    loadIndustrialMethods() {
+      this.$axios.get('/method/industry/query').then((response) => {
+        this.$data.originalAllMethodsForIndustry = response.data.data;
+      });
+    },
+    loadRegionalMethods() {
+      this.$axios.get('/method/region/query').then((response) => {
+        this.$data.originalAllMethodsForPlace = response.data.data;
       });
     },
     validate() {

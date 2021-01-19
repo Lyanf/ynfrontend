@@ -67,7 +67,6 @@ export default {
       this.$axios.post('/logout').then((response) => {
         console.log(response);
         this.$messenger.success('注销成功。');
-        this.$store.commit('switchVersion', null);
       });
     },
     realLogInClicked() {
@@ -75,7 +74,6 @@ export default {
         return;
       }
       this.dialogVisible = false;
-      // TEST: always login success
       this.$axios.post('login', {
         username: this.$data.username,
         password: this.$data.password,

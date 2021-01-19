@@ -30,7 +30,6 @@ const store = new Vuex.Store({
   state: {
     isLogin: false,
     isLoading: false,
-    currentVersion: null,
   },
   mutations: {
     login(state) {
@@ -44,14 +43,6 @@ const store = new Vuex.Store({
     },
     finishLoad(state) {
       state.isLoading = false;
-    },
-    switchVersion(state, version) {
-      state.currentVersion = version;
-      if (version !== null) {
-        axios.defaults.baseURL = `http://localhost:5000/api/${version}`;
-      } else {
-        axios.defaults.baseURL = 'http://localhost:5000/api';
-      }
     },
   },
   plugins: [vuexLocal.plugin],

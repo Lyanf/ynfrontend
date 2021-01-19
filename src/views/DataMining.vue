@@ -109,8 +109,21 @@
           </year-range-selector>
         </el-form-item>
         <el-form-item label="方案标签：">
-          <el-input clearable placeholder="请输入" v-model="postParams.tag">
+          <el-input clearable placeholder="可留空" v-model="postParams.tag">
           </el-input>
+        </el-form-item>
+        <el-form-item label="加载方案：">
+          <el-select placeholder="选择标签" v-model="currentTag" size="small" style="width: 50%">
+            <el-option
+              v-for="item in knownTags"
+              :key="item.id"
+              :label="item.id"
+              :value="item.id">
+            </el-option>
+          </el-select>
+          <el-button size="small" @click="loadParameters"
+                     :disabled="currentTag === null"
+                     style="margin-left: 10px">加载</el-button>
         </el-form-item>
         <el-form-item>
           <el-button @click="commitMining"
@@ -134,10 +147,10 @@ export default {
     YearRangeSelector,
   },
   mounted() {
-    this.loadParameters();
     this.loadFactors();
     this.loadRegions();
     this.loadSuggestedCategoryCount();
+    this.loadTags();
   },
   computed: {
     isFormComplete() {
@@ -154,9 +167,9 @@ export default {
       if (params.method.length === 0) {
         return false;
       }
-      if (params.tag.length === 0) {
-        return false;
-      }
+      // if (params.tag.length === 0) {
+      //   return false;
+      // }
       if (params.method === 'Pearson') {
         return params.pearson.threshold.length !== 0;
       }
@@ -174,8 +187,21 @@ export default {
     },
   },
   methods: {
+    loadTags() {
+      this.$axios.get('/tags/query', {
+        params: {
+          tagType: 'MINING',
+        },
+      }).then((response) => {
+        this.$data.knownTags = response.data.data;
+      });
+    },
     loadParameters() {
-      this.$axios.get('/params/mining').then((response) => {
+      this.$axios.get('/params/mining', {
+        params: {
+          tag: this.$data.currentTag,
+        },
+      }).then((response) => {
         this.$data.postParams = response.data.data;
       });
     },
@@ -230,6 +256,8 @@ export default {
       }],
       knownRegions: [],
       knownFactors: [],
+      knownTags: [],
+      currentTag: null,
       suggestCategoryCount: null,
       miningResults: [],
       postParams: {
