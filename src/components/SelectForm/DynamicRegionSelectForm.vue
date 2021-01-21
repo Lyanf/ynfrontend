@@ -41,12 +41,29 @@
       </el-form-item>
     </div>
     <el-form-item>
-      <div v-if="postParams.parameters.length < 2" style="color: darkred; font-size: 12px">
+      <div v-if="postParams.parameters.length < 2" style="color: #8b0000; font-size: 12px">
         至少需要 2 个参数。
       </div>
       <el-form-item>
       </el-form-item>
       <el-button @click="postParams.parameters.push('')">增加参数</el-button>
+    </el-form-item>
+    <el-form-item label="方案标签：">
+      <el-input clearable placeholder="可留空" v-model="postParams.tag">
+      </el-input>
+    </el-form-item>
+    <el-form-item label="加载方案：">
+      <el-select placeholder="选择标签" v-model="currentTag" size="small" style="width: 50%">
+        <el-option
+          v-for="item in knownTags"
+          :key="item.id"
+          :label="item.id"
+          :value="item.id">
+        </el-option>
+      </el-select>
+      <el-button size="small" @click="loadParameters"
+                 :disabled="currentTag === null"
+                 style="margin-left: 10px">加载</el-button>
     </el-form-item>
     <el-form-item>
       <el-button type="primary"
@@ -70,6 +87,8 @@ export default {
       graphDataInternal: [],
       tableOneDataInternal: [],
       tableTwoDataInternal: [],
+      knownTags: [],
+      currentTag: null,
       postParams: {
         region: '',
         method: '',
@@ -78,12 +97,26 @@ export default {
         endYear: null,
         historyBeginYear: null,
         historyEndYear: null,
+        tag: null,
       },
     };
   },
   methods: {
+    loadTags() {
+      this.$axios.get('/tags/query', {
+        params: {
+          tagType: 'LONGTERM',
+        },
+      }).then((response) => {
+        this.$data.knownTags = response.data.data;
+      });
+    },
     loadParameters() {
-      this.$axios.get('/params/predict/dynamic/region').then((response) => {
+      this.$axios.get('/params/predict/dynamic/region', {
+        params: {
+          tag: this.$data.currentTag,
+        },
+      }).then((response) => {
         this.$data.postParams = response.data.data;
       });
     },
@@ -106,9 +139,10 @@ export default {
     },
   },
   mounted() {
-    this.loadParameters();
+    // this.loadParameters();
     this.loadRegions();
     this.loadIndustrialMethods();
+    this.loadTags();
   },
   computed: {
     canCommitQuery() {

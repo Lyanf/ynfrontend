@@ -65,7 +65,7 @@
           <el-table-column prop="monthAverageDailyPayloadRate" label="月平均日负荷率"></el-table-column>
           <el-table-column prop="monthImbaRate" label="月不均衡率系数"></el-table-column>
           <el-table-column prop="monthMinPayloadRate" label="月最小负荷率"></el-table-column>
-          <el-table-column prop="monthAveragePayloadRate" label="月平均负荷率"></el-table-column>
+          <el-table-column prop="monthMaxPeekValleyDiffRate" label="月平均峰谷差率"></el-table-column>
         </el-table>
       </el-row>
       <el-form>
@@ -105,6 +105,7 @@
           <el-table-column prop="seasonImbaRate" label="季不均衡系数"></el-table-column>
           <el-table-column prop="yearMaxPeekValleyDiff" label="年最大峰谷差"></el-table-column>
           <el-table-column prop="yearMaxPeekValleyDiffRate" label="年最大峰谷差率"></el-table-column>
+          <el-table-column prop="yearMaxPayloadUsageHours" label="年最大负载小时数"></el-table-column>
         </el-table>
       </el-row>
       <el-form>
