@@ -41,7 +41,7 @@
       </el-form-item>
     </div>
     <el-form-item>
-      <div v-if="postParams.parameters.length < 2" style="color: darkred; font-size: 12px">
+      <div v-if="postParams.parameters.length < 2" style="color: #8b0000; font-size: 12px">
         至少需要 2 个参数。
       </div>
       <el-form-item>

@@ -1,5 +1,19 @@
 <template>
   <el-form label-position="right" label-width="auto">
+    <el-form-item label="历史年份区间：">
+      <year-range-selector
+        :expand="true"
+        :begin-year.sync="postParams.historyBeginYear"
+        :end-year.sync="postParams.historyEndYear">
+      </year-range-selector>
+    </el-form-item>
+    <el-form-item label="预测年份：">
+      <el-date-picker
+        v-model="postParams.predictYear"
+        type="year"
+        value-format="yyyy"
+        placeholder="请选择"/>
+    </el-form-item>
     <el-form-item label="省级负荷预测方案选择：">
       <el-select placeholder="请选择" v-model="postParams.provPlan">
         <el-option
@@ -57,12 +71,18 @@
 </template>
 
 <script>
+import YearRangeSelector from '@/components/YearRangeSelector.vue';
+
 export default {
   name: 'ProvMuniPredictSelectForm',
+  components: { YearRangeSelector },
   data() {
     return {
       enabledUploadButton: true,
       postParams: {
+        historyBeginYear: null,
+        historyEndYear: null,
+        predictYear: null,
         provPlan: '',
         provFile: '',
         muniData: {},
@@ -131,6 +151,12 @@ export default {
   computed: {
     canCommitQuery() {
       const param = this.$data.postParams;
+      if (param.historyBeginYear === null || param.historyEndYear === null) {
+        return false;
+      }
+      if (param.predictYear === null) {
+        return false;
+      }
       if (param.provPlan.length === 0) {
         return false;
       }

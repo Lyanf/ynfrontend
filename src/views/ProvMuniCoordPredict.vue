@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="7">
+      <el-col :span="8">
         <ProvMuniPredictSelectForm
         :table-three-data.sync="tableThreeData"
         :table-four-data.sync="tableFourData">
         </ProvMuniPredictSelectForm>
       </el-col>
-      <el-col :span="16" :offset="1">
+      <el-col :span="15" :offset="1">
         <el-form>
           <el-form-item label="历史年份协调预测误差校核：">
             <el-table :data="tableThreeData">
