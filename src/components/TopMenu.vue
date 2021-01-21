@@ -79,7 +79,7 @@
       <el-submenu index="7" :disabled="menuDisabled">
         <template slot="title">预测结果</template>
         <el-menu-item index="7-1">预测结果查询</el-menu-item>
-        <el-menu-item index="7-2">预测结果展示</el-menu-item>
+        <el-menu-item index="7-2">预测结果对比</el-menu-item>
       </el-submenu>
 
       <el-submenu index="8" :disabled="menuDisabled">
