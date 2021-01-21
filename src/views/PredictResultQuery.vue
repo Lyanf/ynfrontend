@@ -18,6 +18,11 @@
                        @click="preformQuery">查询</el-button>
           </el-form-item>
         </el-form>
+        <el-form label-position="right" label-width="auto">
+          <el-form-item v-for="pair in knownKVs" :label="pair.key + '：'" :key="pair.key">
+            <a>{{pair.value}}</a>
+          </el-form-item>
+        </el-form>
       </el-col>
       <el-col :span="12">
         <el-row>
@@ -44,6 +49,7 @@ export default {
     return {
       knownTags: [],
       selectedTag: null,
+      knownKVs: [],
       typeName: {
         MINING: '数据挖掘方案',
         STATIC_REGIONAL: '地区单预测方案',
@@ -73,6 +79,7 @@ export default {
           tag: this.$data.selectedTag,
         },
       }).then((response) => {
+        this.$data.knownKVs = response.data.data.parameters;
         this.$refs.resultChart.graphData = response.data.data.graphData;
         this.$refs.resultChart.refreshChart();
         this.$refs.resultTable.tableOneData = response.data.data.tableOneData;
