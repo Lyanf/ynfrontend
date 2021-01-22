@@ -157,7 +157,7 @@
           <div id="dailyTypicalChart" style="width: 680px; height: 300px"></div>
         </el-form-item>
         <el-form-item label="年份：">
-          <el-date-picker type="date"
+          <el-date-picker type="year"
                           format="yyyy 年" value-format="yyyy"
                           v-model="dailyTypicalChartParams.year"></el-date-picker>
         </el-form-item>
@@ -253,7 +253,7 @@
 import ResultChart from '@/components/ResultChart.vue';
 import * as echarts from 'echarts';
 import { saveAs } from 'file-saver';
-import YearRangeSelector from '@/components/YearRangeSelector';
+import YearRangeSelector from '@/components/YearRangeSelector.vue';
 
 function base64ToBlob(code) {
   const parts = code.split(';base64,');
