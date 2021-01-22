@@ -189,7 +189,7 @@ export default {
           y: 'top',
         },
       };
-      this.currentChart.setOption(initializeOption);
+      this.currentChart.setOption(initializeOption, true);
       this.currentChart.style.width = `${document.body.clientWidth * 0.6}px`;
     },
     performCompare() {

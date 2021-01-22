@@ -16,11 +16,6 @@
                 placeholder="请输入"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button
-        @click="viewSchema"
-        :disabled="currentSchema === null">
-        查看
-      </el-button>
       <el-button type="primary"
                  :disabled="currentSchema === null || newSchemaName.length === 0"
                  @click="renameSchema">修改</el-button>
@@ -58,9 +53,6 @@ export default {
       this.$axios.get('/tags/query').then((response) => {
         this.$data.schemas = response.data.data;
       });
-    },
-    viewSchema() {
-      // ...
     },
     renameSchema() {
       if (this.$data.currentSchema === null || this.$data.newSchemaName.length === 0) {
