@@ -98,6 +98,7 @@ export default {
         historyBeginYear: null,
         historyEndYear: null,
         tag: null,
+        tagType: 'LONGTERM',
       },
     };
   },

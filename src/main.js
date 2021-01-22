@@ -19,7 +19,7 @@ Vue.use(Print);
 Vue.component('LoadingView', LoadingView);
 
 const axios = axiosApi.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'http://dclab.club:18000/api',
 });
 
 const vuexLocal = new VuexPersistence({

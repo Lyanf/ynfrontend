@@ -7,6 +7,26 @@
                        change-on-select
                        ref="cascader" v-model="postParams.category"></el-cascader>
         </el-form-item>
+        <el-form-item label="地区选择：">
+          <el-select placeholder="请选择" v-model="postParams.region">
+            <el-option
+              v-for="item in knownRegions"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="粒度选择：">
+          <el-select placeholder="请选择" v-model="postParams.grain">
+            <el-option
+              v-for="item in knownGrains"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="年份选择：">
           <year-range-selector
             :begin-year.sync="postParams.beginYear"
@@ -42,8 +62,12 @@ export default {
     return {
       tableData: [],
       metaDataTree: [],
+      knownRegions: [],
+      knownGrains: [],
       postParams: {
         category: [],
+        region: null,
+        grain: null,
         beginYear: null,
         endYear: null,
       },
@@ -51,6 +75,8 @@ export default {
   },
   mounted() {
     this.loadMetaData();
+    this.loadRegions();
+    this.loadGrains();
   },
   methods: {
     loadMetaData() {
@@ -61,6 +87,16 @@ export default {
     loadExceptions() {
       this.$axios.post('/db/except/query', this.$data.postParams).then((response) => {
         this.tableData = response.data.data;
+      });
+    },
+    loadRegions() {
+      this.$axios.get('/region/query').then((response) => {
+        this.$data.knownRegions = response.data.data;
+      });
+    },
+    loadGrains() {
+      this.$axios.get('/grain/query').then((response) => {
+        this.$data.knownGrains = response.data.data;
       });
     },
   },
