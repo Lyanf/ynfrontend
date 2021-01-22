@@ -162,6 +162,7 @@ export default {
           value: 0.5,
         },
         tag: null,
+        tagType: 'STATIC_REGIONAL',
       },
       originalAllMethodsForPlace: [],
       originalAllMethodsForIndustry: [],

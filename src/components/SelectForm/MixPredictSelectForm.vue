@@ -93,6 +93,7 @@ export default {
         industry: '',
         selectedMethods: [],
         tag: null,
+        tagType: 'MIX',
       },
       graphDataInternal: [],
       tableOneDataInternal: [],

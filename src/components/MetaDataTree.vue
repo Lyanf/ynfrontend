@@ -27,7 +27,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="数据年份：">
+      <el-form-item label="年份选择：">
         <year-range-selector :begin-year.sync="postParams.beginYear"
                              :end-year.sync="postParams.endYear">
         </year-range-selector>

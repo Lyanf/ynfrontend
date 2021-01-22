@@ -280,6 +280,7 @@ export default {
         beginYear: null,
         endYear: null,
         tag: '',
+        tagType: 'MINING',
       },
     };
   },

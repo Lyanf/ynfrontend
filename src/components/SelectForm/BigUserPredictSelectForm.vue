@@ -137,6 +137,7 @@ export default {
         region: '',
         patches: [],
         tag: null,
+        tagType: 'BIGUSER',
       },
     };
   },
