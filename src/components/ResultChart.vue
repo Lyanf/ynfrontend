@@ -117,7 +117,7 @@ export default {
           y: 'top',
         },
       };
-      this.currentChart.setOption(initializeOption);
+      this.currentChart.setOption(initializeOption, true);
     },
     refreshChart2nd() {
       const param = this.$data.params2nd;
@@ -165,7 +165,7 @@ export default {
           y: 'top',
         },
       };
-      this.currentChart.setOption(initializeOption);
+      this.currentChart.setOption(initializeOption, true);
     },
     exportImage() {
       if (!this.currentChart) {

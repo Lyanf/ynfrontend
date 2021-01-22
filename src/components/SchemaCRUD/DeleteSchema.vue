@@ -11,11 +11,6 @@
       </el-select>
     </el-form-item>
     <el-form-item>
-      <el-button
-                 @click="viewSchema"
-                 :disabled="currentSchema === null">
-        查看
-      </el-button>
       <el-button type="danger"
          @click="deleteSchema"
         :disabled="currentSchema === null">
@@ -54,9 +49,6 @@ export default {
       this.$axios.get('/tags/query').then((response) => {
         this.$data.schemas = response.data.data;
       });
-    },
-    viewSchema() {
-      // ...
     },
     deleteSchema() {
       if (this.$data.currentSchema === null) {
