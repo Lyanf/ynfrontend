@@ -102,7 +102,7 @@ export default {
             data: pieData,
           },
         ],
-      });
+      }, true);
     },
     exportImage() {
       if (!this.currentChart) {
