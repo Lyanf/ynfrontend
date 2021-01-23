@@ -40,6 +40,9 @@ export default {
         title: '数据粒度',
         key: 'grain',
       }, {
+        title: '地区',
+        key: 'region',
+      }, {
         title: '键',
         key: 'key',
       }, {
