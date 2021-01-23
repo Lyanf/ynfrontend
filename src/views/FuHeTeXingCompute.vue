@@ -135,7 +135,7 @@
         </el-form-item>
         <el-form-item>
           <el-date-picker type="date"
-                          format="yyyy 年 MM 月 dd 日" value-format="yyyy 年 MM 月 dd 日"
+                          format="yyyy 年 MM 月 dd 日" value-format="yyyy/MM/dd"
                           v-model="dailyChartParams.day"></el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -380,8 +380,8 @@ export default {
       const endDay = params.dayRange[1];
       this.$axios.get('/payload/traits/daily', {
         params: {
-          beginDay: beginDay.format('yyyyMMdd'),
-          endDay: endDay.format('yyyyMMdd'),
+          beginDay: beginDay.format('yyyy/MM/dd'),
+          endDay: endDay.format('yyyy/MM/dd'),
         },
       }).then((response) => {
         this.dayTableData = response.data.data;
@@ -393,8 +393,8 @@ export default {
       const endDay = params.monthRange[1];
       this.$axios.get('/payload/traits/monthly', {
         params: {
-          beginMonth: beginDay.format('yyyyMM'),
-          endMonth: endDay.format('yyyyMM'),
+          beginMonth: beginDay.format('yyyy/MM'),
+          endMonth: endDay.format('yyyy/MM'),
         },
       }).then((response) => {
         this.monthTableData = response.data.data;

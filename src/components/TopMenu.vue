@@ -32,6 +32,7 @@
         <el-divider></el-divider>
         <el-menu-item index="2-4">全部数据</el-menu-item>
         <el-menu-item index="2-5">数据监测与更正</el-menu-item>
+        <el-menu-item index="2-7">导入数据…</el-menu-item>
       </el-submenu>
 
       <el-submenu index="3" :disabled="menuDisabled">
@@ -115,6 +116,9 @@
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
+    <el-dialog title="导入数据" :visible.sync="uploadDialogFormVisible">
+      <UploadDataBase ref="uploadDataBase"></UploadDataBase>
+    </el-dialog>
   </div>
 
 </template>
@@ -126,6 +130,8 @@ import DeleteNode from '@/components/MetadataCRUD/DeleteNode.vue';
 import UploadData from '@/components/MetadataCRUD/UploadData.vue';
 import UpdateSchema from '@/components/SchemaCRUD/UpdateSchema.vue';
 import DeleteSchema from '@/components/SchemaCRUD/DeleteSchema.vue';
+import UploadDataBase from '@/components/UploadDataBase.vue';
+
 import { saveAs } from 'file-saver';
 
 export default {
@@ -137,6 +143,7 @@ export default {
     UploadData,
     DeleteSchema,
     UpdateSchema,
+    UploadDataBase,
   },
   data() {
     return {
@@ -146,6 +153,7 @@ export default {
       activeMetadataName: '',
       dialogFormVisible: false,
       metaDataDialogFormVisible: false,
+      uploadDialogFormVisible: false,
       saveDialogVisible: false,
       knownVersions: [],
       versionName: '',
@@ -239,6 +247,9 @@ export default {
         } else if (keyPath[1] === '2-5') {
           // 数据监测与更正
           window.location = '/#/dataCheck';
+        } else if (keyPath[1] === '2-7') {
+          // 数据导入
+          this.$data.uploadDialogFormVisible = true;
         } else {
           // 元数据管理，共用一个页面
           this.triggerReloadMetas();
