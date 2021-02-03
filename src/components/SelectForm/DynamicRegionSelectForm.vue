@@ -1,6 +1,5 @@
 <template>
   <el-form label-position="right" label-width="auto">
-    {{this.$data}}
     <el-form-item label="预测区域：">
       <el-select placeholder="请选择" v-model="postParams.region">
         <el-option

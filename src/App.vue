@@ -33,6 +33,14 @@ export default {
   background-color: #4f58db;
 }
 
+.el-form-item__label {
+  color: #ffffff;
+}
+
+.el-submenu__title {
+  color: #ffffff;
+}
+
 /*#nav {*/
 /*  padding: 30px;*/
 /*}*/
