@@ -1,5 +1,6 @@
 <template>
   <el-form label-position="right" label-width="auto">
+    {{this.$data}}
     <el-form-item label="预测区域：">
       <el-select placeholder="请选择" v-model="postParams.region">
         <el-option
@@ -32,22 +33,15 @@
         :end-year.sync="postParams.endYear">
       </year-range-selector>
     </el-form-item>
-    <div v-for="(item, index) in postParams.parameters" :key="index">
-      <el-form-item :label="`参数 ${index + 1}：`">
-        <el-input clearable v-model="postParams.parameters[index]" placeholder="请输入"></el-input>
-        <el-button style="margin-left: 8px"
-                   type="danger"
-                   @click="postParams.parameters.remove(index, index)">×</el-button>
+    <div v-for="param in requiredParams" :key="param.name">
+      <el-form-item :label="param.label + '：'">
+        <el-input clearable v-model="postParams.parameters[param.name]"
+                  placeholder="请输入"></el-input>
+        <!--        <el-button style="margin-left: 8px"-->
+        <!--                   type="danger"-->
+        <!--        @click="postParams.parameters.remove(index, index)">×</el-button>-->
       </el-form-item>
     </div>
-    <el-form-item>
-      <div v-if="postParams.parameters.length < 2" style="color: #8b0000; font-size: 12px">
-        至少需要 2 个参数。
-      </div>
-      <el-form-item>
-      </el-form-item>
-      <el-button @click="postParams.parameters.push('')">增加参数</el-button>
-    </el-form-item>
     <el-form-item label="方案标签：">
       <el-input clearable placeholder="可留空" v-model="postParams.tag">
       </el-input>
@@ -82,6 +76,7 @@ export default {
   components: { YearRangeSelector },
   data() {
     return {
+      requiredParams: [],
       knownMethods: [],
       knownRegions: [],
       graphDataInternal: [],
@@ -92,7 +87,7 @@ export default {
       postParams: {
         region: '',
         method: '',
-        parameters: ['', ''],
+        parameters: {},
         beginYear: null,
         endYear: null,
         historyBeginYear: null,
@@ -157,15 +152,15 @@ export default {
       if (params.region.length === 0 || params.method.length === 0) {
         return false;
       }
-      if (params.parameters.length < 2) {
-        return false;
-      }
-      for (let i = 0; i < params.parameters.length; i += 1) {
-        const x = params.parameters[i];
-        if (x === null || x.length === 0) {
-          return false;
-        }
-      }
+      // if (params.parameters.length < 2) {
+      //   return false;
+      // }
+      // for (let i = 0; i < params.parameters.length; i += 1) {
+      //   const x = params.parameters[i];
+      //   if (x === null || x.length === 0) {
+      //     return false;
+      //   }
+      // }
       return true;
     },
     commitUrl() {
@@ -184,6 +179,26 @@ export default {
     },
     tableTwoDataInternal(value) {
       this.$emit('update:tableTwoData', value);
+    },
+    'postParams.method': function (value) {
+      this.$axios.get('/get/args', {
+        params: {
+          method: value,
+        },
+      }).then((response) => {
+        Object.keys(response.data.data).forEach((key) => {
+          if (key === 'num' || key === 'name' || key === 'StartYear' || key === 'EndYear'
+            || key === 'PreStartYear' || key === 'EndStartYear' || key === 'pretype') {
+            // skip those rubbish parameters
+          } else {
+            // whatever
+            this.$data.requiredParams.push({
+              name: key,
+              label: response.data.data[key],
+            });
+          }
+        });
+      });
     },
   },
   props: [

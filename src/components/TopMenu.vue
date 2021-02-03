@@ -5,7 +5,11 @@
       <el-button type="text" style="color: white" @click="switchToLogin">立即登录</el-button>
     </div>
     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
-             style="display: flex; justify-content: space-between; margin-bottom: 3em"
+             style="display: flex;
+             justify-content: space-between;
+             margin-bottom: 3em;
+             color: #ffffff;
+             background-color: #aaaaff"
              @select="handleSelect">
       <el-submenu index="1">
         <template slot="title">开始</template>

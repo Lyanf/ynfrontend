@@ -1,3 +1,4 @@
+import devtools from '@vue/devtools';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axiosApi from 'axios';
@@ -19,8 +20,10 @@ Vue.use(Print);
 Vue.component('LoadingView', LoadingView);
 
 const axios = axiosApi.create({
-  baseURL: 'http://dclab.club:18000/api',
+  baseURL: 'http://qf8h8w.natappfree.cc/api',
 });
+
+axios.defaults.timeout = 30000;
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
@@ -137,3 +140,7 @@ new Vue({
   render: (h) => h(App),
   store,
 }).$mount('#app');
+
+if (process.env.NODE_ENV === 'development') {
+  devtools.connect('localhost', 8098);
+}
