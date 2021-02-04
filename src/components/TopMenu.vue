@@ -9,7 +9,7 @@
              justify-content: space-between;
              margin-bottom: 3em;
              color: #ffffff;
-             background-color: #aaaaff"
+             background-color: #ddddff"
              @select="handleSelect">
       <el-submenu index="1">
         <template slot="title">开始</template>

@@ -7,7 +7,7 @@
         placeholder="起始年份"
         @change="beginChange"/>
     </el-col>
-    <el-col style="margin: auto; text-align: center; color: darkgray; font-size: 12px">
+    <el-col style="margin: auto; text-align: center; color: lightgray; font-size: 12px">
       至
     </el-col>
     <el-col>

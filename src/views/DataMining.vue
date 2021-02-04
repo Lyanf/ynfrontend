@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col style="height: 100%" :offset="1" :span="11">
+    <el-col style="height: 100%" :offset="1" :span="12">
       <el-row>
         <el-transfer
           filterable
@@ -25,7 +25,7 @@
         </el-tag>
       </el-row>
     </el-col>
-    <el-col :span="10" :offset="1" style="margin-right: 20px">
+    <el-col :span="9" :offset="1" style="margin-right: 20px">
       <el-form label-position="right" label-width="auto">
         <el-form-item label="选择地区：">
           <el-select placeholder="请选择" v-model="postParams.region">

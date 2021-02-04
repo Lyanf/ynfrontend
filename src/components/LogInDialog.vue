@@ -4,6 +4,9 @@
       <span slot="header">
         <span>登录状态</span>
       </span>
+      <el-button @click="bypassLogIn">
+        直接登录
+      </el-button>
       <el-row type="flex" justify="center">
         <span :style=loginStateStyle>{{loginStateText}}</span>
       </el-row>
@@ -62,6 +65,9 @@ export default {
     },
   },
   methods: {
+    bypassLogIn() {
+      this.$store.commit('login');
+    },
     logOut() {
       this.$store.commit('logout');
       this.$axios.post('/logout').then((response) => {

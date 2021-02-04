@@ -34,11 +34,15 @@ export default {
 }
 
 .el-form-item__label {
-  color: #ffffff;
+  color: #cccccc;
 }
 
 .el-submenu__title {
   color: #ffffff;
+}
+
+.el-tabs__item {
+  color: #aaaaaa;
 }
 
 /*#nav {*/
