@@ -182,6 +182,7 @@ export default {
       this.$emit('update:tableTwoData', value);
     },
     'postParams.method': function (value) {
+      this.$data.requiredParams = [];
       this.$axios.get('/get/args', {
         params: {
           method: value,

@@ -4,9 +4,9 @@
       <span slot="header">
         <span>登录状态</span>
       </span>
-      <el-button @click="bypassLogIn">
-        直接登录
-      </el-button>
+<!--      <el-button @click="bypassLogIn">-->
+<!--        直接登录-->
+<!--      </el-button>-->
       <el-row type="flex" justify="center">
         <span :style=loginStateStyle>{{loginStateText}}</span>
       </el-row>

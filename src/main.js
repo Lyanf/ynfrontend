@@ -1,4 +1,4 @@
-import devtools from '@vue/devtools';
+// import devtools from '@vue/devtools';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axiosApi from 'axios';
@@ -20,7 +20,7 @@ Vue.use(Print);
 Vue.component('LoadingView', LoadingView);
 
 const axios = axiosApi.create({
-  baseURL: 'http://qf8h8w.natappfree.cc/api',
+  baseURL: 'http://h3xejf.natappfree.cc/api',
 });
 
 axios.defaults.timeout = 30000;
@@ -141,6 +141,6 @@ new Vue({
   store,
 }).$mount('#app');
 
-if (process.env.NODE_ENV === 'development') {
-  devtools.connect('localhost', 8098);
-}
+// if (process.env.NODE_ENV === 'development') {
+//   devtools.connect('localhost', 8098);
+// }
