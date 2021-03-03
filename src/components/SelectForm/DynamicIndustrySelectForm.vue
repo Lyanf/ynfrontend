@@ -32,10 +32,34 @@
         :end-year.sync="postParams.endYear">
       </year-range-selector>
     </el-form-item>
-    <div v-for="param in requiredParams" :key="param.name">
+    <div v-for="param in requiredParams" :key="param.key">
       <el-form-item :label="param.label + '：'">
-        <el-input clearable v-model="postParams.parameters[param.name]"
-                  placeholder="请输入"></el-input>
+        <el-input v-if="param.kind === 'int'" :step="1" type="number"
+                  clearable v-model="postParams[param.key]"
+                  placeholder="请输入整数数字"></el-input>
+        <el-input v-else-if="param.kind === 'float'" :step="0.01" type="number"
+                  clearable v-model="postParams[param.key]"
+                  placeholder="请输入数字"></el-input>
+        <el-select v-else-if="param.kind === 'option'" placeholder="请选择一项"
+                  v-model="postParams[param.key]">
+          <el-option
+            v-for="item in param.value"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
+        <el-select v-else-if="param.kind === 'multioption'" multiple
+                   placeholder="请选择数项" v-model="postParams[param.key]">
+          <el-option
+            v-for="item in param.value"
+            :key="item"
+            :label="item"
+            :value="item">
+          </el-option>
+        </el-select>
+        <el-input v-else placeholder="请输入" v-model="postParams[param.key]">
+        </el-input>
 <!--        <el-button style="margin-left: 8px"-->
 <!--                   type="danger"-->
 <!--        @click="postParams.parameters.remove(index, index)">×</el-button>-->
@@ -91,10 +115,10 @@ export default {
       tableTwoDataInternal: [],
       knownTags: [],
       currentTag: null,
+      parameters: {},
       postParams: {
         industry: '',
         method: '',
-        parameters: {},
         beginYear: null,
         endYear: null,
         historyBeginYear: null,
@@ -134,11 +158,17 @@ export default {
       });
     },
     performPrediction() {
-      this.$axios.post('/predict/industry/single', this.$data.postParams).then((response) => {
-        this.$data.graphDataInternal = response.data.data.graphData;
-        this.$data.tableOneDataInternal = response.data.data.tableOneData;
-        this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
-      });
+      const assigns = Object.assign(this.$data.postParams, this.$data.parameters);
+      assigns.StartYear = assigns.historyBeginYear;
+      assigns.EndYear = assigns.historyEndYear;
+      assigns.PreStartYear = assigns.beginYear;
+      assigns.EndStartYear = assigns.endYear;
+      this.$axios.post('/predict/industry/single', assigns)
+        .then((response) => {
+          this.$data.graphDataInternal = response.data.data.graphData;
+          this.$data.tableOneDataInternal = response.data.data.tableOneData;
+          this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
+        });
     },
   },
   mounted() {
@@ -188,18 +218,24 @@ export default {
           method: value,
         },
       }).then((response) => {
-        Object.keys(response.data.data).forEach((key) => {
-          if (key === 'num' || key === 'name' || key === 'StartYear' || key === 'EndYear'
-          || key === 'PreStartYear' || key === 'EndStartYear' || key === 'pretype') {
+        response.data.data.para.forEach((object) => {
+          if (object.key === 'StartYear' || object.key === 'EndYear'
+          || object.key === 'PreStartYear' || object.key === 'EndStartYear') {
             // skip those rubbish parameters
           } else {
             // whatever
-            this.$data.requiredParams.push({
-              name: key,
-              label: response.data.data[key],
-            });
+            this.$data.requiredParams.push(object);
           }
         });
+        // Object.keys(response.data.data).forEach((key) => {
+        //   if (key === 'num' || key === 'name' || key === 'StartYear' || key === 'EndYear'
+        //   || key === 'PreStartYear' || key === 'EndStartYear') {
+        //     // skip those rubbish parameters
+        //   } else {
+        //     // whatever
+        //     this.$data.requiredParams.push(key);
+        //   }
+        // });
       });
     },
   },
