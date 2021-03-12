@@ -20,7 +20,7 @@ Vue.use(Print);
 Vue.component('LoadingView', LoadingView);
 
 const axios = axiosApi.create({
-  baseURL: 'http://djxhbq.natappfree.cc/api',
+  baseURL: 'http://58svzp.natappfree.cc/api',
 });
 
 axios.defaults.timeout = 30000;

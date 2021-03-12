@@ -11,16 +11,16 @@
                 :expand="true">
               </year-range-selector>
             </el-form-item>
-            <el-form-item label="季节：">
-              <el-select v-model="sokuParams.season">
-                <el-option
-                  v-for="item in seasons"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
+<!--            <el-form-item label="季节：">-->
+<!--              <el-select v-model="sokuParams.season">-->
+<!--                <el-option-->
+<!--                  v-for="item in seasons"-->
+<!--                  :key="item.value"-->
+<!--                  :label="item.label"-->
+<!--                  :value="item.value">-->
+<!--                </el-option>-->
+<!--              </el-select>-->
+<!--            </el-form-item>-->
             <el-form-item label="预测最大负荷：">
               <el-input clearable type="number" placeholder="请输入" v-model="sokuParams.maxPayload"/>
             </el-form-item>
@@ -81,16 +81,16 @@
                   :expand="true">
               </year-range-selector>
               </el-form-item>
-              <el-form-item label="季节：">
-                <el-select v-model="clampParams.season">
-                  <el-option
-                    v-for="item in seasons"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
+<!--              <el-form-item label="季节：">-->
+<!--                <el-select v-model="clampParams.season">-->
+<!--                  <el-option-->
+<!--                    v-for="item in seasons"-->
+<!--                    :key="item.value"-->
+<!--                    :label="item.label"-->
+<!--                    :value="item.value">-->
+<!--                  </el-option>-->
+<!--                </el-select>-->
+<!--              </el-form-item>-->
               <el-form-item label="预测最大负荷：">
                 <el-input clearable type="number"
                           placeholder="请输入" v-model="clampParams.maxPayload"></el-input>
@@ -148,16 +148,16 @@
                   :expand="true">
                 </year-range-selector>
               </el-form-item>
-              <el-form-item label="季节：">
-                <el-select v-model="interpParams.season">
-                  <el-option
-                    v-for="item in seasons"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
+<!--              <el-form-item label="季节：">-->
+<!--                <el-select v-model="interpParams.season">-->
+<!--                  <el-option-->
+<!--                    v-for="item in seasons"-->
+<!--                    :key="item.value"-->
+<!--                    :label="item.label"-->
+<!--                    :value="item.value">-->
+<!--                  </el-option>-->
+<!--                </el-select>-->
+<!--              </el-form-item>-->
               <el-form-item label="预测最大负荷：">
                 <el-input clearable type="number"
                           placeholder="请输入" v-model="interpParams.maxPayload"></el-input>
@@ -482,7 +482,7 @@ export default {
       let isOk = true;
       [param.beginYear,
         param.endYear,
-        param.season,
+        // param.season,
         param.maxPayload,
         param.dailyAmount,
         param.gamma,
@@ -498,7 +498,7 @@ export default {
       let isOk = true;
       [param.beginYear,
         param.endYear,
-        param.season,
+        // param.season,
         param.maxPayload,
         param.dailyAmount].forEach((elem) => {
         if (elem === null) {
@@ -512,7 +512,7 @@ export default {
       let isOk = true;
       [param.beginYear,
         param.endYear,
-        param.season,
+        // param.season,
         param.maxPayload,
         param.dailyAmount].forEach((elem) => {
         if (elem === null) {
