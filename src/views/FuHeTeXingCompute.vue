@@ -195,7 +195,7 @@
           <div id="monthlyChart" style="width: 680px; height: 300px"></div>
         </el-form-item>
         <el-form-item label="年份：">
-          <el-date-picker type="date"
+          <el-date-picker type="year"
                           format="yyyy 年" value-format="yyyy"
                           v-model="monthlyChartParams.year"></el-date-picker>
         </el-form-item>
