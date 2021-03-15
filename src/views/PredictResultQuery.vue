@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="11" :offset="1">
+      <el-col :span="22" :offset="1">
         <el-form inline>
           <el-form-item label="方案标签：">
             <el-select v-model="selectedTag">
@@ -19,9 +19,11 @@
           </el-form-item>
         </el-form>
         <el-form label-position="right" label-width="auto">
-          <el-form-item v-for="pair in knownKVs" :label="pair.key + '：'" :key="pair.key">
-            <a>{{pair.value}}</a>
-          </el-form-item>
+          <el-col :span="8">
+            <el-form-item v-for="pair in knownKVs" :label="pair.key + '：'" :key="pair.key">
+              <a>{{pair.value}}</a>
+            </el-form-item>
+          </el-col>
         </el-form>
       </el-col>
       <el-col :span="12">
@@ -79,7 +81,15 @@ export default {
           tag: this.$data.selectedTag,
         },
       }).then((response) => {
-        this.$data.knownKVs = response.data.data.parameters;
+        this.$data.knownKVs = [];
+        Object.keys(response.data.data.parameters).forEach((key) => {
+          if (response.data.data.parameters[key]) {
+            this.$data.knownKVs.push({
+              key,
+              value: response.data.data.parameters[key],
+            });
+          }
+        });
         this.$refs.resultChart.graphData = response.data.data.graphData;
         this.$refs.resultChart.refreshChart();
         this.$refs.resultTable.tableOneData = response.data.data.tableOneData;
