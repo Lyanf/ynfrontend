@@ -11,7 +11,7 @@
       </el-select>
     </el-form-item>
     <el-form-item label="预测方法：">
-      <el-select placeholder="请选择" v-model="postParams.method">
+      <el-select placeholder="请选择" v-model="postParams.method" :disabled="isWired">
         <el-option
           v-for="item in knownMethods"
           :key="item"
@@ -154,7 +154,8 @@ export default {
       assigns.StartYear = assigns.historyBeginYear;
       assigns.EndYear = assigns.historyEndYear;
       assigns.PreStartYear = assigns.beginYear;
-      assigns.EndStartYear = assigns.endYear;
+      assigns.PreEndYear = assigns.endYear;
+      assigns['city*'] = assigns.region;
       this.$axios.post(this.commitUrl, assigns)
         .then((response) => {
           this.$data.graphDataInternal = response.data.data.graphData;
@@ -168,8 +169,15 @@ export default {
     this.loadRegions();
     this.loadIndustrialMethods();
     this.loadTags();
+    if (this.isWired) {
+      this.postParams.method = this.wiredMethod;
+      this.loadParameters();
+    }
   },
   computed: {
+    isWired() {
+      return this.wiredMethod !== undefined;
+    },
     canCommitQuery() {
       const params = this.$data.postParams;
       if (params.beginYear === null || params.endYear === null) {
@@ -218,7 +226,7 @@ export default {
       }).then((response) => {
         response.data.data.para.forEach((object) => {
           if (object.key === 'StartYear' || object.key === 'EndYear'
-          || object.key === 'PreStartYear' || object.key === 'EndStartYear') {
+          || object.key === 'PreStartYear' || object.key === 'PreEndYear' || object.key === 'city*') {
             // skip those rubbish parameters
           } else {
             // whatever
@@ -242,6 +250,7 @@ export default {
     'graphData',
     'tableOneData',
     'tableTwoData',
+    'wiredMethod',
   ],
 };
 </script>

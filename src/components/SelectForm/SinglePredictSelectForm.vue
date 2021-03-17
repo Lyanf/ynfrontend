@@ -75,67 +75,67 @@
 <!--        @click="postParams.parameters.remove(index, index)">×</el-button>-->
       </el-form-item>
     </div>
-      <el-form-item label="自变量：">
-        <el-select placeholder="请选择" v-model="postParams.factor1.name">
-          <el-option
-            v-for="item in variadicFactors"
-            :key="item"
-            :label="item"
-            :value="item">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="自变量是否有规划值：">
-        <el-checkbox v-model="postParams.factor1.hasValue">
-          {{ postParams.factor1.hasValue ? '有' : '无' }}
-        </el-checkbox>
-      </el-form-item>
-       <el-form-item label="自变量规划值：" v-if="postParams.factor1.hasValue">
-         <el-slider
-           v-model="postParams.factor1.value"
-           show-input
-           :step="0.01"
-           :max="1"
-           :min="0">
-         </el-slider>
-       </el-form-item>
+<!--      <el-form-item label="自变量：">-->
+<!--        <el-select placeholder="请选择" v-model="postParams.factor1.name">-->
+<!--          <el-option-->
+<!--            v-for="item in variadicFactors"-->
+<!--            :key="item"-->
+<!--            :label="item"-->
+<!--            :value="item">-->
+<!--          </el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="自变量是否有规划值：">-->
+<!--        <el-checkbox v-model="postParams.factor1.hasValue">-->
+<!--          {{ postParams.factor1.hasValue ? '有' : '无' }}-->
+<!--        </el-checkbox>-->
+<!--      </el-form-item>-->
+<!--       <el-form-item label="自变量规划值：" v-if="postParams.factor1.hasValue">-->
+<!--         <el-slider-->
+<!--           v-model="postParams.factor1.value"-->
+<!--           show-input-->
+<!--           :step="0.01"-->
+<!--           :max="1"-->
+<!--           :min="0">-->
+<!--         </el-slider>-->
+<!--       </el-form-item>-->
 
-       <el-form-item label="第二自变量：" v-if="shouldDisplaySecondFactor">
-         <el-select placeholder="请选择" v-model="postParams.factor2.name">
-           <el-option
-             v-for="item in variadicFactors"
-             :key="item"
-             :label="item"
-             :value="item">
-           </el-option>
-         </el-select>
-       </el-form-item>
-       <el-form-item>
-         <div v-if="shouldDisplaySecondFactor
-         &&
-         postParams.factor1.name.length > 0
-         &&
-         postParams.factor1.name === postParams.factor2.name"
-         style="color: darkred; font-size: 12px">
-           第二自变量不能和第一自变量相同。
-         </div>
-       </el-form-item>
-       <el-form-item label="第二自变量是否有规划值：" v-if="shouldDisplaySecondFactor">
-         <el-checkbox v-model="postParams.factor2.hasValue">
-           {{ postParams.factor2.hasValue ? '有' : '无' }}
-         </el-checkbox>
-       </el-form-item>
+<!--       <el-form-item label="第二自变量：" v-if="shouldDisplaySecondFactor">-->
+<!--         <el-select placeholder="请选择" v-model="postParams.factor2.name">-->
+<!--           <el-option-->
+<!--             v-for="item in variadicFactors"-->
+<!--             :key="item"-->
+<!--             :label="item"-->
+<!--             :value="item">-->
+<!--           </el-option>-->
+<!--         </el-select>-->
+<!--       </el-form-item>-->
+<!--       <el-form-item>-->
+<!--         <div v-if="shouldDisplaySecondFactor-->
+<!--         &&-->
+<!--         postParams.factor1.name.length > 0-->
+<!--         &&-->
+<!--         postParams.factor1.name === postParams.factor2.name"-->
+<!--         style="color: darkred; font-size: 12px">-->
+<!--           第二自变量不能和第一自变量相同。-->
+<!--         </div>-->
+<!--       </el-form-item>-->
+<!--       <el-form-item label="第二自变量是否有规划值：" v-if="shouldDisplaySecondFactor">-->
+<!--         <el-checkbox v-model="postParams.factor2.hasValue">-->
+<!--           {{ postParams.factor2.hasValue ? '有' : '无' }}-->
+<!--         </el-checkbox>-->
+<!--       </el-form-item>-->
 
-       <el-form-item label="第二自变量规划值："
-                     v-if="postParams.factor2.hasValue && shouldDisplaySecondFactor">
-         <el-slider
-           v-model="postParams.factor2.value"
-           show-input
-           :step="0.01"
-           :max="1"
-           :min="0">
-         </el-slider>
-       </el-form-item>
+<!--       <el-form-item label="第二自变量规划值："-->
+<!--                     v-if="postParams.factor2.hasValue && shouldDisplaySecondFactor">-->
+<!--         <el-slider-->
+<!--           v-model="postParams.factor2.value"-->
+<!--           show-input-->
+<!--           :step="0.01"-->
+<!--           :max="1"-->
+<!--           :min="0">-->
+<!--         </el-slider>-->
+<!--       </el-form-item>-->
        <el-form-item label="方案标签：">
          <el-input clearable placeholder="可留空" v-model="postParams.tag">
          </el-input>
@@ -310,7 +310,8 @@ export default {
       assigns.StartYear = assigns.historyBeginYear;
       assigns.EndYear = assigns.historyEndYear;
       assigns.PreStartYear = assigns.beginYear;
-      assigns.EndStartYear = assigns.endYear;
+      assigns.PreEndYear = assigns.endYear;
+      assigns['city*'] = assigns.region;
       this.$axios.post('/predict/region/single', assigns).then((response) => {
         this.$data.graphDataInternal = response.data.data.graphData;
         this.$data.tableOneDataInternal = response.data.data.tableOneData;
@@ -337,7 +338,7 @@ export default {
       }).then((response) => {
         response.data.data.para.forEach((object) => {
           if (object.key === 'StartYear' || object.key === 'EndYear'
-          || object.key === 'PreStartYear' || object.key === 'EndStartYear') {
+          || object.key === 'PreStartYear' || object.key === 'PreEndYear' || object.key === 'city*') {
             // skip those rubbish parameters
           } else {
             // whatever

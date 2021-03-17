@@ -5,7 +5,8 @@
         <DynamicSelectForm type="payload" placeOrIndustry="place" longTerm
                            :graph-data.sync="graphData"
                            :table-one-data.sync="tableOneData"
-                           :table-two-data.sync="tableTwoData"></DynamicSelectForm>
+                           :table-two-data.sync="tableTwoData"
+                            wired-method="负荷密度法"></DynamicSelectForm>
       </el-col>
       <el-col :span="12" >
         <el-row>

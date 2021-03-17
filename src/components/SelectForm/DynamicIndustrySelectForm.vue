@@ -162,7 +162,8 @@ export default {
       assigns.StartYear = assigns.historyBeginYear;
       assigns.EndYear = assigns.historyEndYear;
       assigns.PreStartYear = assigns.beginYear;
-      assigns.EndStartYear = assigns.endYear;
+      assigns.PreEndYear = assigns.endYear;
+      assigns['city*'] = assigns.region;
       this.$axios.post('/predict/industry/single', assigns)
         .then((response) => {
           this.$data.graphDataInternal = response.data.data.graphData;
@@ -220,7 +221,7 @@ export default {
       }).then((response) => {
         response.data.data.para.forEach((object) => {
           if (object.key === 'StartYear' || object.key === 'EndYear'
-          || object.key === 'PreStartYear' || object.key === 'EndStartYear') {
+          || object.key === 'PreStartYear' || object.key === 'PreEndYear' || object.key === 'city*') {
             // skip those rubbish parameters
           } else {
             // whatever
