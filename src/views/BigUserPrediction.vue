@@ -2,11 +2,12 @@
   <div>
     <el-row>
       <el-col :span="11" :offset="1">
-        <BigUserPredictSelectForm
+        <DynamicRegionSelectForm
           :graph-data.sync="graphData"
           :table-one-data.sync="tableOneData"
-          :table-two-data.sync="tableTwoData">
-        </BigUserPredictSelectForm>
+          :table-two-data.sync="tableTwoData"
+           wired-method="大用户法">
+        </DynamicRegionSelectForm>
       </el-col>
       <el-col :span="12">
         <el-row>
@@ -23,13 +24,13 @@
 </template>
 
 <script>
-import BigUserPredictSelectForm from '@/components/SelectForm/BigUserPredictSelectForm.vue';
 import ResultChart from '@/components/ResultChart.vue';
 import ResultTable from '@/components/ResultTable.vue';
+import DynamicRegionSelectForm from '@/components/SelectForm/DynamicRegionSelectForm.vue';
 
 export default {
   name: 'BigUserPrediction',
-  components: { ResultTable, ResultChart, BigUserPredictSelectForm },
+  components: { DynamicRegionSelectForm, ResultTable, ResultChart },
   data() {
     return {
       graphData: [],
