@@ -41,6 +41,8 @@
             <el-button @click="dailyTypicalChartVisible = true;
                        dailyTypicalChart = undefined"
                        :disabled="dayTableData.length === 0">典型日负荷曲线</el-button>
+            <el-button @click="exportDayTableData"
+              :disabled="dayTableData.length === 0">导出表格</el-button>
             <el-button v-print>打印</el-button>
           </el-form-item>
         </el-form>
@@ -72,7 +74,7 @@
             <el-table-column prop="monthAverageDailyPayload" label="月平均日负荷"></el-table-column>
             <el-table-column prop="monthMaxPeekValleyDiff" label="月最大峰谷差"></el-table-column>
             <el-table-column prop="monthAverageDailyPayloadRate" label="月平均日负荷率"></el-table-column>
-            <el-table-column prop="monthImbaRate" label="月不均衡率系数"></el-table-column>
+<!--            <el-table-column prop="monthImbaRate" label="月不均衡率系数"></el-table-column>-->
             <el-table-column prop="monthMinPayloadRate" label="月最小负荷率"></el-table-column>
             <el-table-column prop="monthMaxPeekValleyDiffRate" label="月平均峰谷差率"></el-table-column>
           </el-table>
@@ -83,6 +85,8 @@
                        monthlyChart = undefined"
                        :disabled="monthTableData.length === 0">月负荷曲线</el-button>
             <el-button v-print>打印</el-button>
+            <el-button @click="exportMonthTableData"
+                       :disabled="monthTableData.length === 0">导出表格</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -124,6 +128,8 @@
                        yearlyChart = undefined"
                        :disabled="yearTableData.length === 0">年负荷曲线</el-button>
             <el-button v-print>打印</el-button>
+            <el-button @click="exportYearTableData"
+                       :disabled="yearTableData.length === 0">导出表格</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -254,6 +260,7 @@ import ResultChart from '@/components/ResultChart.vue';
 import * as echarts from 'echarts';
 import { saveAs } from 'file-saver';
 import YearRangeSelector from '@/components/YearRangeSelector.vue';
+import * as json2csv from 'json2csv';
 
 function base64ToBlob(code) {
   const parts = code.split(';base64,');
@@ -373,6 +380,25 @@ export default {
       }).then((response) => {
         this.refreshChart(response.data.data, this.$data.yearlyChart);
       });
+    },
+    exportDayTableData() {
+      this.exportTableSheet(this.$data.dayTableData, ['day', 'dayMaxPayload', 'dayAveragePayload',
+        'dayMinPayloadRate', 'dayPeekValleyDiff', 'dayPeekValleyDiffRate']);
+    },
+    exportMonthTableData() {
+      this.exportTableSheet(this.$data.monthTableData, ['month', 'monthAverageDailyPayload', 'monthMaxPeekValleyDiff',
+        'monthAverageDailyPayloadRate', 'monthMinPayloadRate', 'monthMaxPeekValleyDiffRate']);
+    },
+    exportYearTableData() {
+      this.exportTableSheet(this.$data.yearTableData, ['year', 'yearMaxPayload', 'yearAverageDailyPayloadRate',
+        'seasonImbaRate', 'yearMaxPeekValleyDiff', 'yearMaxPeekValleyDiffRate', 'yearMaxPayloadUsageHours']);
+    },
+    exportTableSheet(rawData, fields) {
+      const data = json2csv.parse(rawData, {
+        fields,
+      });
+      const blob = new Blob([data], { type: 'text/csv' });
+      saveAs(blob, 'database.csv');
     },
     dayDataRequest() {
       const params = this.$data.dayParams;

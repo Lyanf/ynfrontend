@@ -507,8 +507,15 @@ export default {
     },
     yearContPredict() {
       this.$axios.post('/payload/predict/yearly', this.$data.yearContParams).then((response) => {
-        this.$data.yearContTableData = response.data.data;
-        this.$refs.yearContResultChart.graphData = response.data.data;
+        const tableData = [];
+        for (let i = 0; i < response.data.data.xData.length; i += 1) {
+          tableData.push({
+            time: response.data.data.xData[i],
+            payload: response.data.data.yData[0].data[i],
+          });
+        }
+        this.$data.yearContTableData = tableData;
+        this.$refs.yearContResultChart.graphData = tableData;
         this.$refs.yearContResultChart.params1st = {
           xTag: 'time',
           yTag: 'payload',

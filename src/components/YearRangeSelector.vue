@@ -1,5 +1,11 @@
 <template>
   <el-row type="flex" justify="left" :style="mainStyle">
+<!--    <div>-->
+<!--      {{ this.$data }}-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      {{ this.$props }}-->
+<!--    </div>-->
     <el-col>
       <el-date-picker
         v-model="beginYearInternal"
@@ -53,11 +59,11 @@ export default {
         return;
       }
       this.$emit('update:beginYear', value.getFullYear());
-      if (this.$data.endYearInternal === null
-        || this.$data.endYearInternal < value) {
-        this.$data.endYearInternal = value;
-        this.$emit('update:endYear', value.getFullYear());
-      }
+      // if (this.$data.endYearInternal === null
+      //   || this.$data.endYearInternal < value) {
+      //   this.$data.endYearInternal = value;
+      //   this.$emit('update:endYear', value.getFullYear());
+      // }
     },
     endYearInternal(value) {
       if (value === null) {
@@ -65,11 +71,11 @@ export default {
         return;
       }
       this.$emit('update:endYear', value.getFullYear());
-      if (this.$data.beginYearInternal === null
-        || this.$data.beginYearInternal > value) {
-        this.$data.beginYearInternal = value;
-        this.$emit('update:beginYear', value.getFullYear());
-      }
+      // if (this.$data.beginYearInternal === null
+      //   || this.$data.beginYearInternal > value) {
+      //   this.$data.beginYearInternal = value;
+      //   this.$emit('update:beginYear', value.getFullYear());
+      // }
     },
     beginYear(value) {
       if (value !== null) {
