@@ -115,11 +115,12 @@
           <el-table title='年负荷特性指标表' :data="yearTableData">
             <el-table-column prop="year" label="年份"></el-table-column>
             <el-table-column prop="yearMaxPayload" label="年最大负荷"></el-table-column>
+            <el-table-column prop="yearRate" label="年负载率"></el-table-column>
             <el-table-column prop="yearAverageDailyPayloadRate" label="年平均日负荷率"></el-table-column>
             <el-table-column prop="seasonImbaRate" label="季不均衡系数"></el-table-column>
-            <el-table-column prop="yearMaxPeekValleyDiff" label="年最大峰谷差"></el-table-column>
-            <el-table-column prop="yearMaxPeekValleyDiffRate" label="年最大峰谷差率"></el-table-column>
-            <el-table-column prop="yearMaxPayloadUsageHours" label="年最大负载小时数"></el-table-column>
+            <el-table-column prop="monthImbaRate" label="月不均衡系数"></el-table-column>
+            <el-table-column prop="yearMaxPeekValleyDiff" label="年最大峰谷差率"></el-table-column>
+            <el-table-column prop="yearMinPayload" label="年最小负载"></el-table-column>
           </el-table>
         </el-row>
         <el-form>
