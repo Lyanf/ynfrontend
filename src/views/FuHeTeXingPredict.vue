@@ -11,6 +11,12 @@
                 :expand="true">
               </year-range-selector>
             </el-form-item>
+            <el-form-item>
+              <el-button size="mini" @click="loadSokuDefault"
+              :disabled="sokuParams.beginYear === null || sokuParams.endYear === null">
+                加载默认参数
+              </el-button>
+            </el-form-item>
             <el-form-item label="季节：">
               <el-select v-model="sokuParams.season">
                 <el-option
@@ -70,12 +76,21 @@
           <ResultChart ref="sokuResultChart" typee="dirty" uid="sokuChart"></ResultChart>
         </el-col>
       </el-row>
-      <el-row>
-        <el-table :data="sokuTableData">
-          <el-table-column prop="time" label="时间"/>
-          <el-table-column prop="payload" label="负荷"/>
-        </el-table>
-      </el-row>
+      <el-form>
+        <el-form-item>
+          <el-button
+            :disabled="sokuTableData.length === 0"
+            @click="exportTableSheet(sokuTableData)">
+            导出表格
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-table :data="sokuTableData">
+            <el-table-column prop="time" label="时间"/>
+            <el-table-column prop="payload" label="负荷"/>
+          </el-table>
+        </el-form-item>
+      </el-form>
     </el-tab-pane>
 
     <el-tab-pane label="双向夹逼法">
@@ -89,6 +104,13 @@
                   :end-year.sync="clampParams.endYear"
                   :expand="true">
               </year-range-selector>
+              </el-form-item>
+              <el-form-item>
+                <el-button size="mini" @click="loadClampDefault"
+                           :disabled="clampParams.beginYear === null ||
+                            clampParams.endYear === null">
+                  加载默认参数
+                </el-button>
               </el-form-item>
               <el-form-item label="季节：">
                 <el-select v-model="clampParams.season">
@@ -146,12 +168,21 @@
           <ResultChart ref="clampResultChart" typee="dirty" uid="clampChart"></ResultChart>
         </el-col>
       </el-row>
-      <el-row>
-        <el-table :data="clampTableData">
-          <el-table-column prop="time" label="时间"/>
-          <el-table-column prop="payload" label="负荷"/>
-        </el-table>
-      </el-row>
+      <el-form>
+        <el-form-item>
+          <el-button
+            :disabled="clampTableData.length === 0"
+            @click="exportTableSheet(clampTableData)">
+            导出表格
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-table :data="clampTableData">
+            <el-table-column prop="time" label="时间"/>
+            <el-table-column prop="payload" label="负荷"/>
+          </el-table>
+        </el-form-item>
+      </el-form>
     </el-tab-pane>
 
     <el-tab-pane label="分型插值法">
@@ -165,6 +196,13 @@
                   :end-year.sync="interpParams.endYear"
                   :expand="true">
                 </year-range-selector>
+              </el-form-item>
+              <el-form-item>
+                <el-button size="mini" @click="loadInterpDefault"
+                           :disabled="interpParams.beginYear === null ||
+                            interpParams.endYear === null">
+                  加载默认参数
+                </el-button>
               </el-form-item>
               <el-form-item label="季节：">
                 <el-select v-model="interpParams.season">
@@ -222,12 +260,21 @@
           <ResultChart ref="interpResultChart" typee="dirty" uid="interpChart"></ResultChart>
         </el-col>
       </el-row>
-      <el-row>
-        <el-table :data="interpTableData">
-          <el-table-column prop="time" label="时间"/>
-          <el-table-column prop="payload" label="负荷"/>
-        </el-table>
-      </el-row>
+      <el-form>
+        <el-form-item>
+          <el-button
+            :disabled="interpTableData.length === 0"
+            @click="exportTableSheet(interpTableData)">
+            导出表格
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-table :data="interpTableData">
+            <el-table-column prop="time" label="时间"/>
+            <el-table-column prop="payload" label="负荷"/>
+          </el-table>
+        </el-form-item>
+      </el-form>
     </el-tab-pane>
 
     <el-tab-pane label="年持续负荷曲线预测">
@@ -241,6 +288,13 @@
                   :end-year.sync="yearContParams.endYear"
                   :expand="true">
                 </year-range-selector>
+              </el-form-item>
+              <el-form-item>
+                <el-button size="mini" @click="loadYearContDefault"
+                           :disabled="yearContParams.beginYear === null ||
+                            yearContParams.endYear === null">
+                  加载默认参数
+                </el-button>
               </el-form-item>
               <el-form-item label="预测最大负荷：">
                 <el-input clearable type="number"
@@ -274,12 +328,21 @@
           <ResultChart ref="yearContResultChart" uid="yearContChart"></ResultChart>
         </el-col>
       </el-row>
-      <el-row>
-        <el-table :data="yearContTableData">
-          <el-table-column prop="time" label="时间"/>
-          <el-table-column prop="payload" label="负荷"/>
-        </el-table>
-      </el-row>
+      <el-form>
+        <el-form-item>
+          <el-button
+            :disabled="yearContTableData.length === 0"
+            @click="exportTableSheet(yearContTableData)">
+            导出表格
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-table :data="yearContTableData">
+            <el-table-column prop="time" label="时间"/>
+            <el-table-column prop="payload" label="负荷"/>
+          </el-table>
+        </el-form-item>
+      </el-form>
     </el-tab-pane>
   </el-tabs>
 
@@ -287,6 +350,8 @@
 
 <script>
 import ResultChart from '@/components/ResultChart.vue';
+import * as json2csv from 'json2csv';
+import { saveAs } from 'file-saver';
 import YearRangeSelector from '../components/YearRangeSelector.vue';
 
 export default {
@@ -522,6 +587,32 @@ export default {
         });
       }
       return tableSheet;
+    },
+    loadSokuDefault() {
+      this.$axios.get('/get/default', {
+        params: {
+          start: this.$data.sokuParams.beginYear,
+          end: this.$data.sokuParams.endYear,
+        },
+      }).then((response) => {
+        this.$data.sokuDefault = response;
+      });
+    },
+    loadClampDefault() {
+      // ...
+    },
+    loadInterpDefault() {
+      // ...
+    },
+    loadYearContDefault() {
+      // ...
+    },
+    exportTableSheet(rawData) {
+      const data = json2csv.parse(rawData, {
+        fields: ['time', 'payload'],
+      });
+      const blob = new Blob([data], { type: 'text/csv' });
+      saveAs(blob, 'database.csv');
     },
   },
   computed: {
