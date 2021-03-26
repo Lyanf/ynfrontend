@@ -2,10 +2,12 @@
   <div>
     <el-row>
       <el-col :span="11" :offset="1">
-        <MixPredictSelectForm placeOrIndustry="industry"
-                              :graph-data.sync="graphData"
-                              :table-one-data.sync="tableOneData"
-                              :table-two-data.sync="tableTwoData"></MixPredictSelectForm>
+        <MutableForm wired-method="行业组合预测模型"
+                     tag-type="MIX"
+                     :graph-data.sync="graphData"
+                     :table-one-data.sync="tableOneData"
+                     :table-two-data.sync="tableTwoData">
+        </MutableForm>
       </el-col>
       <el-col :span="12">
         <el-row>
@@ -22,13 +24,13 @@
 </template>
 
 <script>
-import MixPredictSelectForm from '@/components/SelectForm/MixPredictSelectForm.vue';
+import MutableForm from '@/components/SelectForm/MutableForm.vue';
 import ResultChart from '@/components/ResultChart.vue';
 import ResultTable from '@/components/ResultTable.vue';
 
 export default {
   name: 'IndustryMixPrediction',
-  components: { ResultTable, ResultChart, MixPredictSelectForm },
+  components: { ResultTable, ResultChart, MutableForm },
   data() {
     return {
       graphData: [],

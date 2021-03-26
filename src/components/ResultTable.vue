@@ -2,9 +2,9 @@
   <el-form>
     <el-form-item label="评价指标表：">
       <el-table :data="tableOneData">
-        <el-table-column prop="index" label="评价指标"></el-table-column>
-        <el-table-column prop="r2" label="R2"></el-table-column>
-        <el-table-column prop="mape" label="MAPE"></el-table-column>
+<!--        <el-table-column prop="index" label="评价指标"></el-table-column>-->
+<!--        <el-table-column prop="r2" label="R2"></el-table-column>-->
+        <el-table-column prop="mape" label="MAPE（%）"></el-table-column>
         <el-table-column prop="rmse" label="RMSE"></el-table-column>
       </el-table>
     </el-form-item>

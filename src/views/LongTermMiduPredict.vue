@@ -2,11 +2,11 @@
   <div>
     <el-row type="flex" justify="center">
       <el-col :span="11" :offset="1">
-        <DynamicSelectForm type="payload" placeOrIndustry="place" longTerm
-                           :graph-data.sync="graphData"
-                           :table-one-data.sync="tableOneData"
-                           :table-two-data.sync="tableTwoData"
-                            wired-method="负荷密度法"></DynamicSelectForm>
+        <MutableForm        tag-url="LONGTERM"
+                            :graph-data.sync="graphData"
+                            :table-one-data.sync="tableOneData"
+                            :table-two-data.sync="tableTwoData"
+                            wired-method="负荷密度法"></MutableForm>
       </el-col>
       <el-col :span="12" >
         <el-row>
@@ -25,14 +25,14 @@
 <script>
 import ResultChart from '@/components/ResultChart.vue';
 import ResultTable from '@/components/ResultTable.vue';
-import DynamicSelectForm from '@/components/SelectForm/DynamicRegionSelectForm.vue';
+import MutableForm from '@/components/SelectForm/MutableForm.vue';
 
 export default {
   name: 'LongTermMiduPredict',
   components: {
     ResultTable,
     ResultChart,
-    DynamicSelectForm,
+    MutableForm,
   },
   data() {
     return {

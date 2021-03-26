@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-left: 20px" v-show="graphData.length > 0">
+  <div style="margin-left: 20px" v-show="graphData.length !== 0 || graphData.yData !== undefined">
     <el-row>
       <div :id="uniqueId" style="width: 680px;height: 300px"></div>
     </el-row>
@@ -80,6 +80,41 @@ export default {
     };
   },
   methods: {
+    refreshChartDirty() {
+      const param = this.$data.params1st;
+      if (this.currentChart === undefined) {
+        this.currentChart = echarts.init(document.getElementById(this.uniqueId));
+      }
+
+      const xD = this.graphData.xData;
+      const yData = this.graphData.yData[0].data;
+
+      const initializeOption = {
+        xAxis: {
+          type: 'category',
+          name: param.xName,
+          data: xD,
+        },
+        yAxis: {
+          type: 'value',
+          name: param.yName,
+        },
+        series: [{
+          data: yData,
+          name: param.yName,
+          type: this.$data.currentDisplayMethod,
+        }],
+        legend: {
+          // orient 设置布局方式，默认水平布局，可选值：'horizontal'（水平） ¦ 'vertical'（垂直）
+          orient: 'horizontal',
+          // x 设置水平安放位置，默认全图居中，可选值：'center' ¦ 'left' ¦ 'right' ¦ {number}（x坐标，单位px）
+          x: 'center',
+          // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
+          y: 'top',
+        },
+      };
+      this.currentChart.setOption(initializeOption, true);
+    },
     refreshChart() {
       const param = this.$data.params1st;
       if (this.currentChart === undefined) {
@@ -88,9 +123,17 @@ export default {
       const xData = [];
       const yData = [];
 
-      this.$data.graphData.forEach((elem) => {
-        xData.push(elem[param.xTag]);
-        yData.push(elem[param.yTag]);
+      this.graphData.forEach((elem) => {
+        if (elem.year) {
+          xData.push(elem.year);
+        } else if (elem.time) {
+          xData.push(elem.time);
+        }
+        if (elem.predict) {
+          yData.push(elem.predict);
+        } else if (elem.payload) {
+          yData.push(elem.payload);
+        }
       });
 
       const initializeOption = {
@@ -180,6 +223,8 @@ export default {
     currentDisplayMethod() {
       if (this.typee === '2nd') {
         this.refreshChart2nd();
+      } else if (this.typee === 'dirty') {
+        this.refreshChartDirty();
       } else {
         this.refreshChart();
       }

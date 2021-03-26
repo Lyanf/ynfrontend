@@ -1,15 +1,5 @@
 <template>
   <el-form label-position="right" label-width="auto">
-    <el-form-item label="预测区域：">
-      <el-select placeholder="请选择" v-model="postParams.region">
-        <el-option
-          v-for="item in knownRegions"
-          :key="item"
-          :label="item"
-          :value="item">
-        </el-option>
-      </el-select>
-    </el-form-item>
     <el-form-item label="预测方法：">
       <el-select placeholder="请选择" v-model="postParams.method" :disabled="isWired">
         <el-option
@@ -155,10 +145,9 @@ export default {
       assigns.EndYear = assigns.historyEndYear;
       assigns.PreStartYear = assigns.beginYear;
       assigns.PreEndYear = assigns.endYear;
-      assigns['city*'] = assigns.region;
       this.$axios.post(this.commitUrl, assigns)
         .then((response) => {
-          this.$data.graphDataInternal = response.data.data.graphData;
+          this.$data.graphDataInternal = response.data.data.tableTwoData;
           this.$data.tableOneDataInternal = response.data.data.tableOneData;
           this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
         });
@@ -184,9 +173,6 @@ export default {
         return false;
       }
       if (params.historyBeginYear === null || params.historyEndYear === null) {
-        return false;
-      }
-      if (params.region.length === 0 || params.method.length === 0) {
         return false;
       }
       // if (params.parameters.length < 2) {
@@ -226,7 +212,7 @@ export default {
       }).then((response) => {
         response.data.data.para.forEach((object) => {
           if (object.key === 'StartYear' || object.key === 'EndYear'
-          || object.key === 'PreStartYear' || object.key === 'PreEndYear' || object.key === 'city*') {
+          || object.key === 'PreStartYear' || object.key === 'PreEndYear') {
             // skip those rubbish parameters
           } else {
             // whatever

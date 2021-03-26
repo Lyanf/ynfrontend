@@ -58,20 +58,20 @@
           <el-submenu index="5-1-1">
             <template slot="title">地区预测</template>
             <el-menu-item index="5-1-1-1">单预测模型</el-menu-item>
-            <el-menu-item index="5-1-1-2">组合预测模型</el-menu-item>
+            <el-menu-item index="5-DQZHYC">组合预测模型</el-menu-item>
           </el-submenu>
           <el-submenu index="5-1-2">
             <template slot="title">行业预测</template>
             <el-menu-item index="5-1-2-1">单预测模型</el-menu-item>
-            <el-menu-item index="5-1-2-2">组合预测模型</el-menu-item>
+            <el-menu-item index="5-HYZHYC">组合预测模型</el-menu-item>
           </el-submenu>
-          <el-menu-item index="5-1-3">省市总分协调预测</el-menu-item>
         </el-submenu>
         <el-submenu index="5-2">
           <template slot="title">远期预测</template>
           <el-menu-item index="5-2-1">饱和曲线预测</el-menu-item>
           <el-menu-item index="5-2-2">负荷密度预测</el-menu-item>
         </el-submenu>
+        <el-menu-item index="5-SSZF">省市总分协调预测</el-menu-item>
         <el-menu-item index="5-3">大用户预测</el-menu-item>
       </el-submenu>
 
@@ -286,13 +286,13 @@ export default {
         } else if (key === '5-1-2-1') {
           // 近中期预测、行业预测、单预测模型
           window.location = '/#/IndustrySinglePrediction';
-        } else if (key === '5-1-1-2') {
+        } else if (key === '5-DQZHYC') {
           // 近中期预测、地区预测、组合预测模型
           window.location = '/#/PlaceMixPrediction';
-        } else if (key === '5-1-2-2') {
-          // 近中期预测、行业预测、组合预测模型
+        } else if (key === '5-HYZHYC') {
+          // 近中期预测、地区预测、组合预测模型
           window.location = '/#/IndustryMixPrediction';
-        } else if (key === '5-1-3') {
+        } else if (key === '5-SSZF') {
           // 省、市总分协调预测
           window.location = '/#/ProvMuniCoordPredict';
         } else if (key === '5-2-1') {

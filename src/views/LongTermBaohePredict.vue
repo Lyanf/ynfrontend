@@ -2,11 +2,11 @@
   <div>
     <el-row type="flex" justify="center">
       <el-col :span="11" :offset="1">
-        <DynamicSelectForm type="saturation" placeOrIndustry="place" longTerm
+        <MutableForm        tag-url="LONGTERM"
                            :graph-data.sync="graphData"
                            :table-one-data.sync="tableOneData"
                            :table-two-data.sync="tableTwoData"
-                            wired-method="饱和曲线法"></DynamicSelectForm>
+                            wired-method="饱和曲线法"></MutableForm>
       </el-col>
       <el-col :span="12">
         <el-row>
@@ -25,12 +25,12 @@
 <script>
 import ResultChart from '@/components/ResultChart.vue';
 import ResultTable from '@/components/ResultTable.vue';
-import DynamicSelectForm from '@/components/SelectForm/DynamicRegionSelectForm.vue';
+import MutableForm from '@/components/SelectForm/MutableForm.vue';
 
 export default {
   name: 'LongTermBaohePredict',
   components: {
-    DynamicSelectForm,
+    MutableForm,
     ResultTable,
     ResultChart,
   },

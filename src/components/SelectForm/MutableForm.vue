@@ -120,9 +120,6 @@ export default {
   },
   mounted() {
     this.$data.postParams.method = this.wiredMethod;
-    if (this.wiredMethod) {
-      this.loadParameters();
-    }
     this.loadTags();
   },
   methods: {
@@ -145,6 +142,15 @@ export default {
         this.$data.graphDataInternal = response.data.data.tableTwoData;
         this.$data.tableOneDataInternal = response.data.data.tableOneData;
         this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
+      });
+    },
+    loadParameters() {
+      this.$axios.get('/params/predict/static/region', {
+        params: {
+          tag: this.$data.currentTag,
+        },
+      }).then((response) => {
+        this.$data.postParams = response.data.data;
       });
     },
   },

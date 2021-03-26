@@ -1,15 +1,5 @@
 <template>
   <el-form label-position="right" label-width="auto">
-    <el-form-item label="预测地区：">
-      <el-select v-model="postParams.region" placeholder="请选择">
-        <el-option
-          v-for="item in knownRegions"
-          :key="item"
-          :label="item"
-          :value="item">
-        </el-option>
-      </el-select>
-    </el-form-item>
     <el-form-item label="历史年份：">
       <year-range-selector
         :begin-year.sync='postParams.historyBeginYear'
@@ -51,7 +41,7 @@
     </el-form-item>
     <el-form-item v-if="postParams.historyBeginYear === null
                   || postParams.historyEndYear === null">
-      <div style="color: darkred; font-size: 12px">
+      <div style="color: #8b0000; font-size: 12px">
         请先指定历史数据年份范围。
       </div>
     </el-form-item>
@@ -211,7 +201,7 @@ export default {
       if (param.beginYear === null || param.endYear === null) {
         return false;
       }
-      if (param.method.length === 0 || param.region.length === 0) {
+      if (param.method.length === 0) {
         return false;
       }
       return true;

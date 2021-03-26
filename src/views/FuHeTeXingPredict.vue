@@ -67,14 +67,13 @@
           </el-form>
         </el-col>
         <el-col :span="14" :offset="1">
-          <ResultChart ref="sokuResultChart" typee="2nd" uid="sokuChart"></ResultChart>
+          <ResultChart ref="sokuResultChart" typee="dirty" uid="sokuChart"></ResultChart>
         </el-col>
       </el-row>
       <el-row>
         <el-table :data="sokuTableData">
           <el-table-column prop="time" label="时间"/>
-          <el-table-column prop="predictPayload" label="预期负荷"/>
-          <el-table-column prop="actualPayload" label="实际负荷"/>
+          <el-table-column prop="payload" label="负荷"/>
         </el-table>
       </el-row>
     </el-tab-pane>
@@ -144,14 +143,13 @@
           </el-form>
         </el-col>
         <el-col :span="14" :offset="1">
-          <ResultChart ref="clampResultChart" typee="2nd" uid="clampChart"></ResultChart>
+          <ResultChart ref="clampResultChart" typee="dirty" uid="clampChart"></ResultChart>
         </el-col>
       </el-row>
       <el-row>
         <el-table :data="clampTableData">
           <el-table-column prop="time" label="时间"/>
-          <el-table-column prop="predictPayload" label="预期负荷"/>
-          <el-table-column prop="actualPayload" label="实际负荷"/>
+          <el-table-column prop="payload" label="负荷"/>
         </el-table>
       </el-row>
     </el-tab-pane>
@@ -221,14 +219,13 @@
           </el-form>
         </el-col>
         <el-col :span="14" :offset="1">
-          <ResultChart ref="interpResultChart" typee="2nd" uid="interpChart"></ResultChart>
+          <ResultChart ref="interpResultChart" typee="dirty" uid="interpChart"></ResultChart>
         </el-col>
       </el-row>
       <el-row>
         <el-table :data="interpTableData">
           <el-table-column prop="time" label="时间"/>
-          <el-table-column prop="predictPayload" label="预期负荷"/>
-          <el-table-column prop="actualPayload" label="实际负荷"/>
+          <el-table-column prop="payload" label="负荷"/>
         </el-table>
       </el-row>
     </el-tab-pane>
@@ -405,18 +402,15 @@ export default {
     },
     sokuPredict() {
       this.$axios.post('/payload/predict/dbquery', this.$data.sokuParams).then((response) => {
-        this.$data.sokuTableData = response.data.data;
+        this.$data.sokuTableData = this.parseToTable(response.data.data);
         this.$refs.sokuResultChart.graphData = response.data.data;
-        this.$refs.sokuResultChart.params2nd = {
-          xTag: 'time',
-          yTag1st: 'actualPayload',
-          yTag2nd: 'predictPayload',
+        this.$refs.sokuResultChart.params1st = {
+          xTag: 'xData',
+          yTag: 'yData',
           xName: '时间',
           yName: '负载',
-          yName1st: '实际负载',
-          yName2nd: '预期负载',
         };
-        this.$refs.sokuResultChart.refreshChart2nd();
+        this.$refs.sokuResultChart.refreshChartDirty();
       });
     },
     loadClampTags() {
@@ -439,18 +433,15 @@ export default {
     },
     clampPredict() {
       this.$axios.post('/payload/predict/clamping', this.$data.clampParams).then((response) => {
-        this.$data.clampTableData = response.data.data;
+        this.$data.clampTableData = this.parseToTable(response.data.data);
         this.$refs.clampResultChart.graphData = response.data.data;
-        this.$refs.clampResultChart.params2nd = {
+        this.$refs.clampResultChart.params1st = {
           xTag: 'time',
-          yTag1st: 'actualPayload',
-          yTag2nd: 'predictPayload',
+          yTag: 'payload',
           xName: '时间',
           yName: '负载',
-          yName1st: '实际负载',
-          yName2nd: '预期负载',
         };
-        this.$refs.clampResultChart.refreshChart2nd();
+        this.$refs.clampResultChart.refreshChartDirty();
       });
     },
     loadInterpTags() {
@@ -473,18 +464,15 @@ export default {
     },
     interpPredict() {
       this.$axios.post('/payload/predict/interp', this.$data.interpParams).then((response) => {
-        this.$data.interpTableData = response.data.data;
+        this.$data.interpTableData = this.parseToTable(response.data.data);
         this.$refs.interpResultChart.graphData = response.data.data;
-        this.$refs.interpResultChart.params2nd = {
+        this.$refs.interpResultChart.params1st = {
           xTag: 'time',
-          yTag1st: 'actualPayload',
-          yTag2nd: 'predictPayload',
+          yTag: 'payload',
           xName: '时间',
           yName: '负载',
-          yName1st: '实际负载',
-          yName2nd: '预期负载',
         };
-        this.$refs.interpResultChart.refreshChart2nd();
+        this.$refs.interpResultChart.refreshChartDirty();
       });
     },
     loadYearContTags() {
@@ -524,6 +512,16 @@ export default {
         };
         this.$refs.yearContResultChart.refreshChart();
       });
+    },
+    parseToTable(data) {
+      const tableSheet = [];
+      for (let i = 0; i < data.xData.length; i += 1) {
+        tableSheet.push({
+          time: data.xData[i],
+          payload: data.yData[0].data[i],
+        });
+      }
+      return tableSheet;
     },
   },
   computed: {

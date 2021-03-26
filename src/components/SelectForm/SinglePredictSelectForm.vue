@@ -1,15 +1,5 @@
 <template>
      <el-form label-position="right" label-width="auto">
-        <el-form-item v-if="placeOrIndustry === 'place'" label="预测地区：">
-          <el-select placeholder="请选择" v-model="postParams.region">
-            <el-option
-              v-for="item in predictRegions"
-              :key="item"
-              :value="item"
-              :label="item">
-            </el-option>
-          </el-select>
-        </el-form-item>
        <el-form-item v-if="placeOrIndustry === 'industry'" label="预测行业：">
          <el-select placeholder="请选择" v-model="postParams.industry">
            <el-option
@@ -223,23 +213,6 @@ export default {
       if (params.historyBeginYear === null || params.historyEndYear === null) {
         return false;
       }
-      if (params.region.length === 0) {
-        return false;
-      }
-      if (!this.longTerm) {
-        if (params.method.length === 0) {
-          return false;
-        }
-      }
-      if (!this.validateFactor(params.factor1)) {
-        return false;
-      }
-      if (this.shouldDisplaySecondFactor) {
-        if (params.factor1.name === params.factor2.name) {
-          return false;
-        }
-        return this.validateFactor(params.factor2);
-      }
       return true;
     },
     shouldDisplaySecondFactor() {
@@ -313,7 +286,7 @@ export default {
       assigns.PreEndYear = assigns.endYear;
       assigns['city*'] = assigns.region;
       this.$axios.post('/predict/region/single', assigns).then((response) => {
-        this.$data.graphDataInternal = response.data.data.graphData;
+        this.$data.graphDataInternal = response.data.data.tableTwoData;
         this.$data.tableOneDataInternal = response.data.data.tableOneData;
         this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
       });
@@ -338,7 +311,7 @@ export default {
       }).then((response) => {
         response.data.data.para.forEach((object) => {
           if (object.key === 'StartYear' || object.key === 'EndYear'
-          || object.key === 'PreStartYear' || object.key === 'PreEndYear' || object.key === 'city*') {
+          || object.key === 'PreStartYear' || object.key === 'PreEndYear') {
             // skip those rubbish parameters
           } else {
             // whatever
