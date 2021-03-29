@@ -10,7 +10,6 @@
           :titles="['待选择影响因素', '已选择影响因素']"
           :button-texts="['移除', '添加']"
           style="height: 100%"
-          @change="loadSuggestedCategoryCount"
         >
         </el-transfer>
       </el-row>
@@ -27,15 +26,10 @@
     </el-col>
     <el-col :span="9" :offset="1" style="margin-right: 20px">
       <el-form label-position="right" label-width="auto">
-        <el-form-item label="选择地区：">
-          <el-select placeholder="请选择" v-model="postParams.region">
-            <el-option
-              v-for="item in knownRegions"
-              :key="item"
-              :label="item"
-              :value="item">
-            </el-option>
-          </el-select>
+        <el-form-item label="数据年份：">
+          <year-range-selector :begin-year.sync="postParams.beginYear"
+                               :end-year.sync="postParams.endYear">
+          </year-range-selector>
         </el-form-item>
         <el-form-item label="挖掘方法：">
           <el-select placeholder="请选择" v-model="postParams.method">
@@ -47,67 +41,36 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item v-if="postParams.method==='Pearson'" label="皮尔逊系数阈值：">
-          <el-slider
-            v-model="postParams.pearson.threshold"
-            show-input
-            :step="0.01"
-            :max="1"
-            :min="0">
-          </el-slider>
-        </el-form-item>
-        <el-form-item v-if="postParams.method==='KMeans'" label="分类数：">
-          <el-slider
-            v-model="postParams.kMeans.categoryCount"
-            show-input
-            show-stops="true"
-            :max="postParams.factors.length"
-            :min="0"
-            :disabled="postParams.factors.length === 0">
-          </el-slider>
-        </el-form-item>
-        <el-form-item
-          v-if="postParams.method==='KMeans' && postParams.factors.length === 0">
-          <div style="color: darkred; font-size: 13px">请至少先加入一个影响因素。</div>
-        </el-form-item>
-        <el-form-item
-          v-if="postParams.method==='KMeans' && postParams.factors.length !== 0">
-          <div style="font-size: 13px">
-            推荐您将分类数设置为 {{suggestCategoryCount}}。
-          </div>
-        </el-form-item>
-        <el-form-item v-if="postParams.method==='PCA'" label="系数绝对值阈值：">
-          <el-slider
-            v-model="postParams.PCA.absThreshold"
-            show-input
-            :step="0.01"
-            :max="1"
-            :min="0">
-          </el-slider>
-        </el-form-item>
-        <el-form-item v-if="postParams.method==='ARL'" label="最小支持度：">
-          <el-slider
-            v-model="postParams.ARL.minSupport"
-            show-input
-            :step="0.01"
-            :max="1"
-            :min="0">
-          </el-slider>
-        </el-form-item>
-        <el-form-item v-if="postParams.method==='ARL'" label="最小置信度：">
-          <el-slider
-            v-model="postParams.ARL.minConfidence"
-            show-input
-            :step="0.01"
-            :max="1"
-            :min="0">
-          </el-slider>
-        </el-form-item>
-        <el-form-item label="数据年份：">
-          <year-range-selector :begin-year.sync="postParams.beginYear"
-                               :end-year.sync="postParams.endYear">
-          </year-range-selector>
-        </el-form-item>
+        <div v-for="param in requiredParams" :key="param.key">
+          <el-form-item :label="param.label + '：'">
+            <el-input v-if="param.kind === 'int'" :step="1" type="number"
+                      clearable v-model="postParams[param.key]"
+                      placeholder="请输入整数数字"></el-input>
+            <el-input v-else-if="param.kind === 'float'" :step="0.01" type="number"
+                      clearable v-model="postParams[param.key]"
+                      placeholder="请输入数字"></el-input>
+            <el-select v-else-if="param.kind === 'option'" placeholder="请选择一项"
+                       v-model="postParams[param.key]">
+              <el-option
+                v-for="item in param.value"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
+            </el-select>
+            <el-select v-else-if="param.kind === 'multioption'" multiple
+                       placeholder="请选择数项" v-model="postParams[param.key]">
+              <el-option
+                v-for="item in param.value"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
+            </el-select>
+            <el-input v-else placeholder="请输入" v-model="postParams[param.key]">
+            </el-input>
+          </el-form-item>
+        </div>
         <el-form-item label="方案标签：">
           <el-input clearable placeholder="可留空" v-model="postParams.tag">
           </el-input>
@@ -148,8 +111,6 @@ export default {
   },
   mounted() {
     this.loadFactors();
-    this.loadRegions();
-    this.loadSuggestedCategoryCount();
     this.loadTags();
   },
   computed: {
@@ -158,32 +119,10 @@ export default {
       if (params.beginYear === null || params.endYear === null) {
         return false;
       }
-      if (params.factors.length === 0) {
-        return false;
-      }
-      if (params.region.length === 0) {
-        return false;
-      }
       if (params.method.length === 0) {
         return false;
       }
-      // if (params.tag.length === 0) {
-      //   return false;
-      // }
-      if (params.method === 'Pearson') {
-        return params.pearson.threshold.length !== 0;
-      }
-      if (params.method === 'KMeans') {
-        return params.kMeans.categoryCount !== 0;
-      }
-      if (params.method === 'PCA') {
-        return params.PCA.absThreshold.length !== 0;
-      }
-      if (params.method === 'ARL') {
-        return params.ARL.minConfidence.length !== 0
-          && params.ARL.minSupport.length !== 0;
-      }
-      return false;
+      return true;
     },
   },
   methods: {
@@ -205,11 +144,6 @@ export default {
         this.$data.postParams = response.data.data;
       });
     },
-    loadRegions() {
-      this.$axios.get('/region/query').then((response) => {
-        this.$data.knownRegions = response.data.data;
-      });
-    },
     loadFactors() {
       this.$axios.get('/factor/query').then((response) => {
         response.data.data.forEach((element) => {
@@ -218,15 +152,6 @@ export default {
             key: element,
           });
         });
-      });
-    },
-    loadSuggestedCategoryCount() {
-      this.$axios.get('/mining/factor/kmeans/suggest', {
-        params: {
-          factors: this.$data.postParams.factors.join(),
-        },
-      }).then((response) => {
-        this.$data.suggestCategoryCount = response.data.data.count;
       });
     },
     commitMining() {
@@ -242,47 +167,52 @@ export default {
   data() {
     return {
       allMethods: [{
-        label: '皮尔逊相关系数算法',
-        value: 'Pearson',
-      }, {
         label: 'K均值算法',
-        value: 'KMeans',
+        value: 'K均值算法',
       }, {
         label: '主成分分析算法',
-        value: 'PCA',
+        value: '主成分分析算法',
       }, {
         label: '关联规则分析算法',
-        value: 'ARL',
+        value: '关联规则分析算法',
       }],
-      knownRegions: [],
       knownFactors: [],
       knownTags: [],
+      requiredParams: [],
       currentTag: null,
       suggestCategoryCount: null,
       miningResults: [],
       postParams: {
-        region: '',
-        factors: [],
         method: '',
-        pearson: {
-          threshold: 0.5,
-        },
-        kMeans: {
-          categoryCount: 0,
-        },
-        PCA: {
-          absThreshold: 0.5,
-        },
-        ARL: {
-          minSupport: 0.5,
-          minConfidence: 0.5,
-        },
-        beginYear: null,
-        endYear: null,
+        StartYear: null,
+        EndYear: null,
         tag: '',
         tagType: 'MINING',
       },
     };
+  },
+  watch: {
+    'postParams.method': function (value) {
+      this.$data.requiredParams = [];
+      this.$axios.get('/get/args', {
+        params: {
+          method: value,
+        },
+      }).then((response) => {
+        response.data.data.para.forEach((object) => {
+          if (object.key === 'StartYear' || object.key === 'EndYear'
+            || object.key === 'PreStartYear' || object.key === 'PreEndYear') {
+            // skip those rubbish parameters
+          } else {
+            // whatever
+            this.$data.requiredParams.push(object);
+            if (object.default) {
+              this.$data.postParams[object.key] = object.default;
+            }
+          }
+        });
+      });
+    },
   },
 };
 </script>

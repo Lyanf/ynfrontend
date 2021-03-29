@@ -316,6 +316,9 @@ export default {
           } else {
             // whatever
             this.$data.requiredParams.push(object);
+            if (object.default) {
+              this.$set(this.postParams, object.key, object.default);
+            }
           }
         });
         // Object.keys(response.data.data).forEach((key) => {
