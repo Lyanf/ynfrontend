@@ -27,8 +27,8 @@
     <el-col :span="9" :offset="1" style="margin-right: 20px">
       <el-form label-position="right" label-width="auto">
         <el-form-item label="数据年份：">
-          <year-range-selector :begin-year.sync="postParams.beginYear"
-                               :end-year.sync="postParams.endYear">
+          <year-range-selector :begin-year.sync="postParams.StartYear"
+                               :end-year.sync="postParams.EndYear">
           </year-range-selector>
         </el-form-item>
         <el-form-item label="挖掘方法：">
@@ -116,7 +116,10 @@ export default {
   computed: {
     isFormComplete() {
       const params = this.$data.postParams;
-      if (params.beginYear === null || params.endYear === null) {
+      if (params.StartYear === null || params.EndYear === null) {
+        return false;
+      }
+      if (params.factors.length === 0) {
         return false;
       }
       if (params.method.length === 0) {
@@ -184,6 +187,7 @@ export default {
       miningResults: [],
       postParams: {
         method: '',
+        factors: [],
         StartYear: null,
         EndYear: null,
         tag: '',

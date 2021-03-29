@@ -94,7 +94,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     store.commit('finishLoad');
-    messenger.error('请求失败！无法连接到服务器。');
+    messenger.error(`请求失败！${error}`);
     return Promise.reject(error);
   },
 );
