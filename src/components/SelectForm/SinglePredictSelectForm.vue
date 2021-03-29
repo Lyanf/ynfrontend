@@ -1,15 +1,15 @@
 <template>
      <el-form label-position="right" label-width="auto">
-       <el-form-item v-if="placeOrIndustry === 'industry'" label="预测行业：">
-         <el-select placeholder="请选择" v-model="postParams.industry">
-           <el-option
-             v-for="item in predictIndustries"
-             :key="item"
-             :value="item"
-             :label="item">
-           </el-option>
-         </el-select>
-       </el-form-item>
+<!--       <el-form-item v-if="placeOrIndustry === 'industry'" label="预测行业：">-->
+<!--         <el-select placeholder="请选择" v-model="postParams.industry">-->
+<!--           <el-option-->
+<!--             v-for="item in predictIndustries"-->
+<!--             :key="item"-->
+<!--             :value="item"-->
+<!--             :label="item">-->
+<!--           </el-option>-->
+<!--         </el-select>-->
+<!--       </el-form-item>-->
         <el-form-item v-if="!longTerm" label="预测方法：">
           <el-select placeholder="请选择" v-model="postParams.method">
             <el-option

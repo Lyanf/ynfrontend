@@ -1,7 +1,7 @@
 <template>
   <el-form label-position="right" label-width="auto">
     <el-form-item label="预测方法：">
-      <el-select placeholder="请选择" v-model="postParams.method" :disabled="wiredMethod">
+      <el-select placeholder="请选择" v-model="postParams.method" :disabled="wiredMethod !== null">
         <el-option
           v-for="item in allMethods"
           :key="item.value"
@@ -48,11 +48,18 @@
             :value="item">
           </el-option>
         </el-select>
+        <el-upload v-else-if="param.kind === 'file'"
+          ref="upload"
+          action="/"
+          :on-change="getUploader(param.key, rawFileNames, rawFiles)"
+          :auto-upload="false" :multiple="false"
+                   list-type="text"
+          :show-file-list="false">
+          <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
+          <div v-if="rawFileNames[param.key]"> {{ rawFileNames[param.key] }} </div>
+        </el-upload>
         <el-input v-else placeholder="请输入" v-model="postParams[param.key]">
         </el-input>
-        <!--        <el-button style="margin-left: 8px"-->
-        <!--                   type="danger"-->
-        <!--        @click="postParams.parameters.remove(index, index)">×</el-button>-->
       </el-form-item>
     </div>
     <el-form-item label="方案标签：">
@@ -63,9 +70,9 @@
       <el-select placeholder="选择标签" v-model="currentTag" size="small" style="width: 50%">
         <el-option
           v-for="item in knownTags"
-          :key="item.id"
-          :label="item.id"
-          :value="item.id">
+          :key="item.tag"
+          :label="item.tag"
+          :value="item.tag">
         </el-option>
       </el-select>
       <el-button size="small" @click="loadParameters"
@@ -92,7 +99,9 @@ export default {
       tableOneDataInternal: [],
       tableTwoDataInternal: [],
       requiredParams: [],
-      parameters: {},
+      rawFiles: {},
+      rawFileNames: {},
+      allMethods: [],
       postParams: {
         historyBeginYear: null,
         historyEndYear: null,
@@ -123,6 +132,17 @@ export default {
     this.loadTags();
   },
   methods: {
+    getUploader(key, param, raw) {
+      const vm = this;
+      return function (file) {
+        // eslint-disable-next-line no-param-reassign
+        param[key] = file.name;
+        // eslint-disable-next-line no-param-reassign
+        raw[key] = file.raw;
+        // eslint-disable-next-line no-underscore-dangle
+        vm._watcher.update();
+      };
+    },
     loadTags() {
       this.$axios.get('/tags/query', {
         params: {
@@ -133,11 +153,20 @@ export default {
       });
     },
     performPrediction() {
-      const assigns = Object.assign(this.$data.postParams, this.$data.parameters);
-      assigns.StartYear = assigns.historyBeginYear;
-      assigns.EndYear = assigns.historyEndYear;
-      assigns.PreStartYear = assigns.beginYear;
-      assigns.PreEndYear = assigns.endYear;
+      const assigns = new FormData();
+      Object.keys(this.$data.postParams).forEach((key) => {
+        assigns.append(key, this.$data.postParams[key]);
+      });
+
+      assigns.append('StartYear', this.$data.postParams.historyBeginYear);
+      assigns.append('EndYear', this.$data.postParams.historyEndYear);
+      assigns.append('PreStartYear', this.$data.postParams.beginYear);
+      assigns.append('PreEndYear', this.$data.postParams.endYear);
+
+      Object.keys(this.$data.rawFiles).forEach((key) => {
+        assigns.append(key, this.$data.rawFiles[key]);
+      });
+
       this.$axios.post('/predict/region/single', assigns).then((response) => {
         this.$data.graphDataInternal = response.data.data.tableTwoData;
         this.$data.tableOneDataInternal = response.data.data.tableOneData;
