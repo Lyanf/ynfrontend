@@ -207,7 +207,7 @@ export default {
             // whatever
             this.$data.requiredParams.push(object);
             if (object.default) {
-              this.$data.postParams[object.key] = object.default;
+              this.$set(this.postParams, object.key, object.default);
             }
           }
         });
