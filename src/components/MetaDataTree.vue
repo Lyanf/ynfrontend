@@ -46,7 +46,7 @@ import YearRangeSelector from '@/components/YearRangeSelector.vue';
 
 export default {
   name: 'MetaDataTree',
-  props: ['category', 'dataResult'],
+  props: ['category', 'dataResult', 'context'],
   components: {
     YearRangeSelector,
   },
@@ -89,6 +89,12 @@ export default {
     },
     'postParams.category': function (value) {
       this.$emit('update:category', value);
+    },
+    postParams: {
+      handler(value) {
+        this.$emit('update:context', value);
+      },
+      deep: true,
     },
   },
   methods: {

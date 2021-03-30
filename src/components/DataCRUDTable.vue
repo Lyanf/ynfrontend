@@ -28,7 +28,7 @@ import { saveAs } from 'file-saver';
 
 export default {
   name: 'DataCRUDTable',
-  props: ['displayData', 'category'],
+  props: ['displayData', 'category', 'context'],
   computed: {
     dataEntryLength() {
       if (this.displayData === undefined) {
@@ -99,7 +99,7 @@ export default {
         },
         handleRowAdd(row, done) {
           this.$axios.post('/db/create', {
-            category: this.category,
+            context: this.context,
             newData: {
               key: row.key,
               value: row.value,

@@ -1,10 +1,14 @@
 <template>
   <el-row>
     <el-col :offset="1" :span="9">
-      <MetaDataTree :category.sync="category" :data-result.sync="tableData"></MetaDataTree>
+      <MetaDataTree :category.sync="category"
+                    :data-result.sync="tableData"
+                    :context.sync="context"></MetaDataTree>
     </el-col>
     <el-col :span="14">
-      <DataCRUDTable :category.sync="category" :display-data.sync="tableData"></DataCRUDTable>
+      <DataCRUDTable :category.sync="category"
+                     :display-data.sync="tableData"
+                     :context.sync="context"></DataCRUDTable>
     </el-col>
   </el-row>
 </template>
@@ -22,6 +26,7 @@ export default {
     return {
       tableData: [],
       category: [],
+      context: {},
     };
   },
 };
