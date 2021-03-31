@@ -30,7 +30,7 @@
         <el-input v-else-if="param.kind === 'float'" :step="0.01" type="number"
                   clearable v-model="postParams[param.key]"
                   placeholder="请输入数字"></el-input>
-        <el-select v-else-if="param.kind === 'option'" placeholder="请选择一项"
+        <el-select v-else-if="param.kind.startsWith('option')" placeholder="请选择一项"
                    v-model="postParams[param.key]">
           <el-option
             v-for="item in param.value"

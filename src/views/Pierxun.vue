@@ -20,7 +20,7 @@
 import ChooseInfluenceFactor from '@/components/ChooseInfluenceFactor.vue';
 
 export default {
-  name: 'Pierxun',
+  name: 'Pearson',
   components: { ChooseInfluenceFactor },
 };
 </script>
