@@ -284,7 +284,6 @@ export default {
       assigns.EndYear = assigns.historyEndYear;
       assigns.PreStartYear = assigns.beginYear;
       assigns.PreEndYear = assigns.endYear;
-      assigns['city*'] = assigns.region;
       this.$axios.post('/predict/region/single', assigns).then((response) => {
         this.$data.graphDataInternal = response.data.data.tableTwoData;
         this.$data.tableOneDataInternal = response.data.data.tableOneData;
