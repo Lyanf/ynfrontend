@@ -150,6 +150,8 @@
                      :disabled="dailyChartParams.day === null">显示</el-button>
           <el-button @click="exportImage(dailyChart)"
                      :disabled="dailyChart === undefined">导出图像</el-button>
+          <el-button @click="exportImageAsTable(dailyChartData)"
+                     :disabled="dailyChart === undefined">导出数据</el-button>
         </el-form-item>
       </el-form>
       <el-form inline>
@@ -193,6 +195,8 @@
                       || dailyTypicalChartParams.year === null">显示</el-button>
           <el-button @click="exportImage(dailyTypicalChart)"
                      :disabled="dailyTypicalChart === undefined">导出图像</el-button>
+          <el-button @click="exportImageAsTable(dailyTypicalChartData)"
+                     :disabled="dailyTypicalChart === undefined">导出数据</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -221,6 +225,8 @@
                       || monthlyChartParams.year === null">显示</el-button>
           <el-button @click="exportImage(monthlyChart)"
                      :disabled="monthlyChart === undefined">导出图像</el-button>
+          <el-button @click="exportImageAsTable(monthlyChartData)"
+                     :disabled="monthlyChart === undefined">导出数据</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -250,6 +256,8 @@
                       || yearlyChartParams.endYear === null">显示</el-button>
           <el-button @click="exportImage(yearlyChart)"
                      :disabled="yearlyChart === undefined">导出图像</el-button>
+          <el-button @click="exportImageAsTable(yearlyChartData)"
+                     :disabled="yearlyChart === undefined">导出数据</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -283,12 +291,14 @@ export default {
   components: { YearRangeSelector, ResultChart },
   data() {
     return {
+      dailyChartData: [],
       dailyChartVisible: false,
       dailyChart: undefined,
       dailyChartParams: {
         day: null,
       },
       dailyChartMetaData: [],
+      dailyTypicalChartData: [],
       dailyTypicalChartVisible: false,
       dailyTypicalChart: undefined,
       dailyTypicalChartParams: {
@@ -298,6 +308,7 @@ export default {
       },
       knownPeriods: ['丰水期', '汛前枯期', '汛后枯期'],
       knownCategories: ['最大负荷', '最小负荷', '中位负荷'],
+      monthlyChartData: [],
       monthlyChartVisible: false,
       monthlyChart: undefined,
       monthlyChartParams: {
@@ -305,6 +316,7 @@ export default {
         category: null,
       },
       knownMonthCategories: ['年负荷曲线', '年连续负荷曲线', '月平均日负荷曲线', '月平均日负荷率曲线', '月最大峰谷差曲线', '月最大峰谷差率曲线', '月不均衡系数曲线'],
+      yearlyChartData: [],
       yearlyChartVisible: false,
       yearlyChart: undefined,
       yearlyChartParams: {
@@ -349,7 +361,7 @@ export default {
         params: this.$data.dailyChartParams,
       }).then((response) => {
         this.refreshChart(response.data.data, this.$data.dailyChart);
-        this.$data.dailyChartMetaData = response.data.data.metaData;
+        this.$data.dailyChartData = response.data.data;
       });
     },
     showDailyTypicalChart() {
@@ -360,6 +372,7 @@ export default {
         params: this.$data.dailyTypicalChartParams,
       }).then((response) => {
         this.refreshChart(response.data.data, this.$data.dailyTypicalChart);
+        this.$data.dailyTypicalChartData = response.data.data;
       });
     },
     showMonthlyChart() {
@@ -370,6 +383,7 @@ export default {
         params: this.$data.monthlyChartParams,
       }).then((response) => {
         this.refreshChart(response.data.data, this.$data.monthlyChart);
+        this.$data.monthlyChartData = response.data.data;
       });
     },
     showYearlyChart() {
@@ -380,6 +394,7 @@ export default {
         params: this.$data.yearlyChartParams,
       }).then((response) => {
         this.refreshChart(response.data.data, this.$data.yearlyChart);
+        this.$data.yearlyChartData = response.data.data;
       });
     },
     exportDayTableData() {
@@ -475,6 +490,22 @@ export default {
       const content = chart.getDataURL();
       const blob = base64ToBlob(content);
       saveAs(blob, 'chart.png');
+    },
+    exportImageAsTable(raw) {
+      console.log(raw);
+
+      const fields = [];
+      for (let i = 0; i < raw.xData.length; i += 1) {
+        fields.push({
+          time: raw.xData[i],
+          payload: raw.yData[0].data[i],
+        });
+      }
+      const data = json2csv.parse(fields, {
+        fields: ['time', 'payload'],
+      });
+      const blob = new Blob([data], { type: 'text/csv' });
+      saveAs(blob, 'database.csv');
     },
   },
 };
