@@ -595,7 +595,9 @@ export default {
           end: this.$data.sokuParams.endYear,
         },
       }).then((response) => {
-        this.$data.sokuParams.assign(response.data.data.souku);
+        Object.keys(response.data.data.souku).forEach((key) => {
+          this.$data.sokuParams[key] = response.data.data.souku[key];
+        });
       });
     },
     loadClampDefault() {
@@ -605,7 +607,9 @@ export default {
           end: this.$data.clampParams.endYear,
         },
       }).then((response) => {
-        this.$data.sokuParams.assign(response.data.data.jiabi);
+        Object.keys(response.data.data.jiabi).forEach((key) => {
+          this.$data.clampParams[key] = response.data.data.jiabi[key];
+        });
       });
     },
     loadInterpDefault() {
@@ -615,7 +619,9 @@ export default {
           end: this.$data.interpParams.endYear,
         },
       }).then((response) => {
-        this.$data.sokuParams.assign(response.data.data.fenxing);
+        Object.keys(response.data.data.fenxing).forEach((key) => {
+          this.$data.interpParams[key] = response.data.data.fenxing[key];
+        });
       });
     },
     loadYearContDefault() {
