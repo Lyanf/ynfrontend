@@ -289,13 +289,13 @@
                   :expand="true">
                 </year-range-selector>
               </el-form-item>
-              <el-form-item>
-                <el-button size="mini" @click="loadYearContDefault"
-                           :disabled="yearContParams.beginYear === null ||
-                            yearContParams.endYear === null">
-                  加载默认参数
-                </el-button>
-              </el-form-item>
+<!--              <el-form-item>-->
+<!--                <el-button size="mini" @click="loadYearContDefault"-->
+<!--                           :disabled="yearContParams.beginYear === null ||-->
+<!--                            yearContParams.endYear === null">-->
+<!--                  加载默认参数-->
+<!--                </el-button>-->
+<!--              </el-form-item>-->
               <el-form-item label="预测最大负荷：">
                 <el-input clearable type="number"
                           placeholder="请输入" v-model="yearContParams.maxPayload"></el-input>
@@ -595,17 +595,31 @@ export default {
           end: this.$data.sokuParams.endYear,
         },
       }).then((response) => {
-        this.$data.sokuDefault = response;
+        this.$data.sokuParams.assign(response.data.data.souku);
       });
     },
     loadClampDefault() {
-      // ...
+      this.$axios.get('/get/default', {
+        params: {
+          start: this.$data.clampParams.beginYear,
+          end: this.$data.clampParams.endYear,
+        },
+      }).then((response) => {
+        this.$data.sokuParams.assign(response.data.data.jiabi);
+      });
     },
     loadInterpDefault() {
-      // ...
+      this.$axios.get('/get/default', {
+        params: {
+          start: this.$data.interpParams.beginYear,
+          end: this.$data.interpParams.endYear,
+        },
+      }).then((response) => {
+        this.$data.sokuParams.assign(response.data.data.fenxing);
+      });
     },
     loadYearContDefault() {
-      // ...
+      // not exist
     },
     exportTableSheet(rawData) {
       const data = json2csv.parse(rawData, {
