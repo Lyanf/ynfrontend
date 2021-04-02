@@ -1,6 +1,6 @@
 <template>
   <div style="width: 600px">
-    <el-card>
+    <el-card :hidden="isLogin">
       <span slot="header">
         <span>登录状态</span>
       </span>
@@ -59,6 +59,9 @@ export default {
     },
     logoutButtonDisabled() {
       return !this.$store.state.isLogin;
+    },
+    isLogin() {
+      return this.$store.state.isLogin;
     },
     loginButtonText() {
       return this.$store.state.isLogin ? '切换用户' : '登录';
