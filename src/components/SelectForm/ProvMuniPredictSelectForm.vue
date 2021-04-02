@@ -26,7 +26,7 @@
         <el-option :key="'__byUpload__'" label="通过文件上传" :value="'__byUpload__'"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="云南省：" v-if="postParams.provPlan === '__byUpload__'">
+    <el-form-item label="选择文件：" v-if="postParams.provPlan === '__byUpload__'">
       <el-select placeholder="请选择" v-model="postParams.provFile">
         <el-option
           v-for="subitem in knownUploadFiles"
@@ -36,7 +36,7 @@
         </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="地级市负荷预测方案选择：">
+    <el-form-item>
       <el-upload
         multiple
         :file-list="postParams.fileList"
@@ -47,20 +47,8 @@
         :before-upload="beforeUpload"
         :action="baseURL + '/predict/munidata/upload'"
       >
-        <el-button :disabled="!enabledUploadButton">上传文件</el-button>
+        <el-button size="small" :disabled="!enabledUploadButton">上传文件</el-button>
       </el-upload>
-    </el-form-item>
-    <el-form-item v-for='(value, key) in postParams.muniData'
-                  :key="key"
-                  :label="(key + '：')">
-      <el-select placeholder="请选择" v-model="postParams.muniData[key]">
-        <el-option
-          v-for="subitem in knownUploadFiles"
-          :key="value + subitem"
-          :label="subitem"
-          :value="subitem">
-        </el-option>
-      </el-select>
     </el-form-item>
     <el-form-item>
       <el-button @click="performPrediction"
@@ -85,7 +73,6 @@ export default {
         predictYear: null,
         provPlan: '',
         provFile: '',
-        muniData: {},
       },
       knownTags: [],
       knownUploadFiles: [],
@@ -160,19 +147,10 @@ export default {
       if (param.provPlan.length === 0) {
         return false;
       }
-      if (param.muniData.length === 0) {
-        return false;
-      }
       if (param.provPlan === '__byUpload__' && param.provFile.length === 0) {
         return false;
       }
-      let isOk = true;
-      Object.keys(param.muniData).forEach((key) => {
-        if (param.muniData[key].length === 0) {
-          isOk = false;
-        }
-      });
-      return isOk;
+      return true;
     },
     baseURL() {
       return this.$axios.defaults.baseURL;
