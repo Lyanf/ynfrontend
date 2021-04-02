@@ -148,9 +148,9 @@
         <el-form-item>
           <el-button type="primary" @click="showDailyChart"
                      :disabled="dailyChartParams.day === null">显示</el-button>
-          <el-button @click="exportImage(dailyChart)"
+          <el-button @click="exportImage(dailyChart, '日负荷曲线.png')"
                      :disabled="dailyChart === undefined">导出图像</el-button>
-          <el-button @click="exportImageAsTable(dailyChartData)"
+          <el-button @click="exportImageAsTable(dailyChartData, '日负荷曲线.csv')"
                      :disabled="dailyChart === undefined">导出数据</el-button>
         </el-form-item>
       </el-form>
@@ -193,9 +193,9 @@
                      :disabled="dailyTypicalChartParams.category === null
                       || dailyTypicalChartParams.period === null
                       || dailyTypicalChartParams.year === null">显示</el-button>
-          <el-button @click="exportImage(dailyTypicalChart)"
+          <el-button @click="exportImage(dailyTypicalChart, '典型日负荷曲线.png')"
                      :disabled="dailyTypicalChart === undefined">导出图像</el-button>
-          <el-button @click="exportImageAsTable(dailyTypicalChartData)"
+          <el-button @click="exportImageAsTable(dailyTypicalChartData, '典型日负荷曲线.csv')"
                      :disabled="dailyTypicalChart === undefined">导出数据</el-button>
         </el-form-item>
       </el-form>
@@ -223,9 +223,9 @@
           <el-button type="primary" @click="showMonthlyChart"
                      :disabled="monthlyChartParams.category === null
                       || monthlyChartParams.year === null">显示</el-button>
-          <el-button @click="exportImage(monthlyChart)"
+          <el-button @click="exportImage(monthlyChart, '月负荷曲线.png')"
                      :disabled="monthlyChart === undefined">导出图像</el-button>
-          <el-button @click="exportImageAsTable(monthlyChartData)"
+          <el-button @click="exportImageAsTable(monthlyChartData, '月负荷曲线.csv')"
                      :disabled="monthlyChart === undefined">导出数据</el-button>
         </el-form-item>
       </el-form>
@@ -254,9 +254,9 @@
                      :disabled="yearlyChartParams.category === null
                       || yearlyChartParams.beginYear === null
                       || yearlyChartParams.endYear === null">显示</el-button>
-          <el-button @click="exportImage(yearlyChart)"
+          <el-button @click="exportImage(yearlyChart, '年负荷曲线.png')"
                      :disabled="yearlyChart === undefined">导出图像</el-button>
-          <el-button @click="exportImageAsTable(yearlyChartData)"
+          <el-button @click="exportImageAsTable(yearlyChartData, '年复合曲线.csv')"
                      :disabled="yearlyChart === undefined">导出数据</el-button>
         </el-form-item>
       </el-form>
@@ -399,22 +399,22 @@ export default {
     },
     exportDayTableData() {
       this.exportTableSheet(this.$data.dayTableData, ['day', 'dayMaxPayload', 'dayAveragePayload',
-        'dayMinPayloadRate', 'dayPeekValleyDiff', 'dayPeekValleyDiffRate']);
+        'dayMinPayloadRate', 'dayPeekValleyDiff', 'dayPeekValleyDiffRate'], '日负荷数据.csv');
     },
     exportMonthTableData() {
       this.exportTableSheet(this.$data.monthTableData, ['month', 'monthAverageDailyPayload', 'monthMaxPeekValleyDiff',
-        'monthAverageDailyPayloadRate', 'monthMinPayloadRate', 'monthMaxPeekValleyDiffRate']);
+        'monthAverageDailyPayloadRate', 'monthMinPayloadRate', 'monthMaxPeekValleyDiffRate'], '月负荷数据.csv');
     },
     exportYearTableData() {
       this.exportTableSheet(this.$data.yearTableData, ['year', 'yearMaxPayload', 'yearAverageDailyPayloadRate',
-        'seasonImbaRate', 'yearMaxPeekValleyDiff', 'yearMaxPeekValleyDiffRate', 'yearMaxPayloadUsageHours']);
+        'seasonImbaRate', 'yearMaxPeekValleyDiff', 'yearMaxPeekValleyDiffRate', 'yearMaxPayloadUsageHours'], '年负荷数据.csv');
     },
-    exportTableSheet(rawData, fields) {
+    exportTableSheet(rawData, fields, name = 'database.csv') {
       const data = json2csv.parse(rawData, {
         fields,
       });
       const blob = new Blob([data], { type: 'text/csv' });
-      saveAs(blob, 'database.csv');
+      saveAs(blob, name);
     },
     dayDataRequest() {
       const params = this.$data.dayParams;
@@ -486,12 +486,12 @@ export default {
       };
       chart.setOption(initializeOption, true);
     },
-    exportImage(chart) {
+    exportImage(chart, name = 'chart.png') {
       const content = chart.getDataURL();
       const blob = base64ToBlob(content);
-      saveAs(blob, 'chart.png');
+      saveAs(blob, name);
     },
-    exportImageAsTable(raw) {
+    exportImageAsTable(raw, name = 'database.csv') {
       console.log(raw);
 
       const fields = [];
@@ -505,7 +505,7 @@ export default {
         fields: ['time', 'payload'],
       });
       const blob = new Blob([data], { type: 'text/csv' });
-      saveAs(blob, 'database.csv');
+      saveAs(blob, name);
     },
   },
 };
