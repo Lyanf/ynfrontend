@@ -84,7 +84,7 @@
         <el-form-item>
           <el-button
             :disabled="sokuTableData.length === 0"
-            @click="exportTableSheet(sokuTableData)">
+            @click="exportTableSheet(sokuTableData, '搜库法预测结果.csv')">
             导出表格
           </el-button>
         </el-form-item>
@@ -176,7 +176,7 @@
         <el-form-item>
           <el-button
             :disabled="clampTableData.length === 0"
-            @click="exportTableSheet(clampTableData)">
+            @click="exportTableSheet(clampTableData, '夹逼法预测结果.csv')">
             导出表格
           </el-button>
         </el-form-item>
@@ -268,7 +268,7 @@
         <el-form-item>
           <el-button
             :disabled="interpTableData.length === 0"
-            @click="exportTableSheet(interpTableData)">
+            @click="exportTableSheet(interpTableData, '分形插值法预测结果.csv')">
             导出表格
           </el-button>
         </el-form-item>
@@ -336,7 +336,7 @@
         <el-form-item>
           <el-button
             :disabled="yearContTableData.length === 0"
-            @click="exportTableSheet(yearContTableData)">
+            @click="exportTableSheet(yearContTableData, '年持续负荷预测结果.csv')">
             导出表格
           </el-button>
         </el-form-item>
@@ -631,12 +631,12 @@ export default {
     loadYearContDefault() {
       // not exist
     },
-    exportTableSheet(rawData) {
+    exportTableSheet(rawData, name = 'database.csv') {
       const data = json2csv.parse(rawData, {
         fields: ['time', 'payload'],
       });
       const blob = new Blob([data], { type: 'text/csv' });
-      saveAs(blob, 'database.csv');
+      saveAs(blob, name);
     },
   },
   computed: {
