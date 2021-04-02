@@ -315,7 +315,7 @@ export default {
           } else {
             // whatever
             this.$data.requiredParams.push(object);
-            if (object.default) {
+            if (object.default !== undefined) {
               this.$set(this.postParams, object.key, object.default);
             }
           }
