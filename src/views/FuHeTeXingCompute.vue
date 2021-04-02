@@ -315,7 +315,7 @@ export default {
         year: null,
         category: null,
       },
-      knownMonthCategories: [ '月平均日负荷曲线', '月平均日负荷率曲线', '月最大峰谷差曲线', '月最大峰谷差率曲线', '月不均衡系数曲线'],
+      knownMonthCategories: ['月平均日负荷曲线', '月平均日负荷率曲线', '月最大峰谷差曲线', '月最大峰谷差率曲线', '月不均衡系数曲线'],
       yearlyChartData: [],
       yearlyChartVisible: false,
       yearlyChart: undefined,

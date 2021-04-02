@@ -38,16 +38,20 @@
               </el-select>
             </el-form-item>
             <el-form-item label="预测最大负荷：">
-              <el-input clearable type="number" placeholder="请输入" v-model="sokuParams.maxPayload"/>
+              <el-input :step="1"
+                clearable type="number" placeholder="请输入" v-model="sokuParams.maxPayload"/>
             </el-form-item>
             <el-form-item label="预测日电量：">
-              <el-input clearable type="number" placeholder="请输入" v-model="sokuParams.dailyAmount"/>
+              <el-input :step="1"
+                clearable type="number" placeholder="请输入" v-model="sokuParams.dailyAmount"/>
             </el-form-item>
             <el-form-item label="Gamma 值：">
-              <el-input clearable type="number" placeholder="请输入" v-model="sokuParams.gamma"/>
+              <el-input :step="0.001"
+                clearable type="number" placeholder="请输入" v-model="sokuParams.gamma"/>
             </el-form-item>
             <el-form-item label="Beta 值：">
-              <el-input clearable type="number" placeholder="请输入" v-model="sokuParams.beta"/>
+              <el-input :step="0.001"
+                clearable type="number" placeholder="请输入" v-model="sokuParams.beta"/>
             </el-form-item>
             <el-form-item label="方案标签：">
               <el-input clearable placeholder="可留空" v-model="sokuParams.tag">
@@ -133,11 +137,11 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="预测最大负荷：">
-                <el-input clearable type="number"
+                <el-input clearable type="number" :step="1"
                           placeholder="请输入" v-model="clampParams.maxPayload"></el-input>
               </el-form-item>
               <el-form-item label="预测日电量：">
-                <el-input clearable type="number"
+                <el-input clearable type="number" :step="1"
                           placeholder="请输入" v-model="clampParams.dailyAmount"></el-input>
               </el-form-item>
               <el-form-item label="方案标签：">
@@ -225,11 +229,11 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="预测最大负荷：">
-                <el-input clearable type="number"
+                <el-input clearable type="number" :step="1"
                           placeholder="请输入" v-model="interpParams.maxPayload"></el-input>
               </el-form-item>
               <el-form-item label="预测日电量：">
-                <el-input clearable type="number"
+                <el-input clearable type="number" :step="1"
                           placeholder="请输入" v-model="interpParams.dailyAmount"></el-input>
               </el-form-item>
               <el-form-item label="方案标签：">
@@ -297,7 +301,7 @@
 <!--                </el-button>-->
 <!--              </el-form-item>-->
               <el-form-item label="预测最大负荷：">
-                <el-input clearable type="number"
+                <el-input clearable type="number" :step="1"
                           placeholder="请输入" v-model="yearContParams.maxPayload"></el-input>
               </el-form-item>
               <el-form-item label="方案标签：">
