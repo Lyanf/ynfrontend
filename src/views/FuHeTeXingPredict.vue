@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="8" :offset="1">
           <el-form label-width="124px">
-            <el-form-item label="年份：">
+            <el-form-item label="历史年份：">
               <year-range-selector
                 :begin-year.sync="sokuParams.beginYear"
                 :end-year.sync="sokuParams.endYear"
@@ -98,7 +98,7 @@
         <el-col :span="8" :offset="1">
           <el-form label-width="124px">
             <el-row>
-              <el-form-item label="年份：">
+              <el-form-item label="历史年份：">
                 <year-range-selector
                   :begin-year.sync="clampParams.beginYear"
                   :end-year.sync="clampParams.endYear"
@@ -190,7 +190,7 @@
         <el-col :span="8" :offset="1">
           <el-form label-width="124px">
             <el-row>
-              <el-form-item label="年份：">
+              <el-form-item label="历史年份：">
                 <year-range-selector
                   :begin-year.sync="interpParams.beginYear"
                   :end-year.sync="interpParams.endYear"
@@ -282,7 +282,7 @@
         <el-col :span="8" :offset="1">
           <el-form label-width="124px">
             <el-row>
-              <el-form-item label="年份：">
+              <el-form-item label="历史年份：">
                 <year-range-selector
                   :begin-year.sync="yearContParams.beginYear"
                   :end-year.sync="yearContParams.endYear"
