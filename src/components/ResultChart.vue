@@ -129,9 +129,9 @@ export default {
         } else if (elem.time) {
           xData.push(elem.time);
         }
-        if (elem.predict) {
+        if (elem.predict !== undefined) {
           yData.push(elem.predict);
-        } else if (elem.payload) {
+        } else if (elem.payload !== undefined) {
           yData.push(elem.payload);
         }
       });

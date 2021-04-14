@@ -20,10 +20,10 @@ Vue.use(Print);
 Vue.component('LoadingView', LoadingView);
 
 const axios = axiosApi.create({
-  baseURL: 'http://dclab.club:18000/api',
+  baseURL: 'http://localhost:18000/api',
 });
 
-axios.defaults.timeout = 30000;
+axios.defaults.timeout = 142857;
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
