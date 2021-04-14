@@ -116,7 +116,7 @@
             <el-table-column prop="year" label="年份"></el-table-column>
             <el-table-column prop="yearMaxPayload" label="年最大负荷"></el-table-column>
             <el-table-column prop="yearRate" label="年负载率"></el-table-column>
-            <el-table-column prop="yearAverageDailyPayloadRate" label="年平均日负荷"></el-table-column>
+            <el-table-column prop="yearAveragePayload" label="年平均负荷"></el-table-column>
             <el-table-column prop="seasonImbaRate" label="季不均衡系数"></el-table-column>
             <el-table-column prop="monthImbaRate" label="月不均衡系数"></el-table-column>
             <el-table-column prop="yearMaxPeekValleyDiff" label="年最大峰谷差率"></el-table-column>
