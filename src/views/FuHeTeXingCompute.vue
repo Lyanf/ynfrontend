@@ -315,7 +315,7 @@ export default {
         year: null,
         category: null,
       },
-      knownMonthCategories: ['月平均日负荷曲线', '月平均日负荷率曲线', '月最大峰谷差曲线', '月最大峰谷差率曲线', '月不均衡系数曲线'],
+      knownMonthCategories: ['月平均日负荷曲线', '月平均日负荷率曲线', '月最大峰谷差曲线', '月最大峰谷差率曲线'],
       yearlyChartData: [],
       yearlyChartVisible: false,
       yearlyChart: undefined,
@@ -324,7 +324,7 @@ export default {
         endYear: null,
         category: null,
       },
-      knownYearCategories: ['历年最大负荷曲线', '历年平均日负荷率曲线', '历年最大峰谷差曲线', '历年最大峰谷差率曲线', '历年季不平衡系数曲线'],
+      knownYearCategories: ['历年最大负荷曲线', '历年平均负荷曲线', '历年最大峰谷差率曲线', '历年最大峰谷差率曲线', '历年季不平衡系数曲线', '历年月不均衡系数曲线'],
       selectedDayEntry: null,
       dayParams: {
         dayRange: null,
@@ -406,7 +406,7 @@ export default {
         'monthAverageDailyPayloadRate', 'monthMinPayloadRate', 'monthMaxPeekValleyDiffRate'], '月负荷数据.csv');
     },
     exportYearTableData() {
-      this.exportTableSheet(this.$data.yearTableData, ['year', 'yearMaxPayload', 'yearAverageDailyPayloadRate',
+      this.exportTableSheet(this.$data.yearTableData, ['year', 'yearMaxPayload', 'yearAveragePayload',
         'seasonImbaRate', 'yearMaxPeekValleyDiff', 'yearMaxPeekValleyDiffRate', 'yearMaxPayloadUsageHours'], '年负荷数据.csv');
     },
     exportTableSheet(rawData, fields, name = 'database.csv') {
