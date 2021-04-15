@@ -1,4 +1,3 @@
-// import devtools from '@vue/devtools';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axiosApi from 'axios';

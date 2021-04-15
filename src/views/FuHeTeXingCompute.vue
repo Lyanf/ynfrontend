@@ -324,7 +324,7 @@ export default {
         endYear: null,
         category: null,
       },
-      knownYearCategories: ['历年最大负荷曲线', '历年平均负荷曲线', '历年最大峰谷差率曲线', '历年最大峰谷差率曲线', '历年季不平衡系数曲线', '历年月不均衡系数曲线'],
+      knownYearCategories: ['历年最大负荷曲线', '历年平均负荷曲线', '历年最大峰谷差率曲线', '历年季不平衡曲线', '历年月不平衡曲线'],
       selectedDayEntry: null,
       dayParams: {
         dayRange: null,
