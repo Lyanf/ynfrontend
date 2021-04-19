@@ -27,7 +27,7 @@
 <script>
 import ResultChart from '@/components/ResultChart.vue';
 import ResultTable from '@/components/ResultTable.vue';
-import MutableForm from '@/components/SelectForm/MutableForm.vue';
+import MutableForm from '@/components/SelectForm/NoHistoryMutableForm.vue';
 
 export default {
   name: 'BigUserPrediction',

@@ -149,6 +149,8 @@ export default {
 
       assigns.append('PreStartYear', this.$data.postParams.beginYear);
       assigns.append('PreEndYear', this.$data.postParams.endYear);
+      assigns.append('StartYear', this.$data.postParams.beginYear);
+      assigns.append('EndYear', this.$data.postParams.endYear);
 
       Object.keys(this.$data.rawFiles).forEach((key) => {
         assigns.append(key, this.$data.rawFiles[key]);
