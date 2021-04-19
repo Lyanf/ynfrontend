@@ -110,7 +110,7 @@ export default {
       }
       const content = this.currentChart.getDataURL();
       const blob = base64ToBlob(content);
-      saveAs(blob, 'chart.png');
+      saveAs(blob, '预测图像.png');
     },
     exportTableSheet(rawData, fields) {
       const data = json2csv.parse(rawData, {

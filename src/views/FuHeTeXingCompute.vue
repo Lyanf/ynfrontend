@@ -486,12 +486,12 @@ export default {
       };
       chart.setOption(initializeOption, true);
     },
-    exportImage(chart, name = 'chart.png') {
+    exportImage(chart, name = '预测图像.png') {
       const content = chart.getDataURL();
       const blob = base64ToBlob(content);
       saveAs(blob, name);
     },
-    exportImageAsTable(raw, name = 'database.csv') {
+    exportImageAsTable(raw, name = '数据表.csv') {
       console.log(raw);
 
       const fields = [];

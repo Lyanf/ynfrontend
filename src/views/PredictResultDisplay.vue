@@ -148,7 +148,7 @@ export default {
       }
       const content = this.currentChart.getDataURL();
       const blob = base64ToBlob(content);
-      saveAs(blob, 'chart.png');
+      saveAs(blob, '预测图像.png');
     },
     loadTags() {
       this.$axios.get('/predict/results/query').then((response) => {
