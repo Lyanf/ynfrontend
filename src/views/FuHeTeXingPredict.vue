@@ -189,7 +189,7 @@
       </el-form>
     </el-tab-pane>
 
-    <el-tab-pane label="分型插值法">
+    <el-tab-pane label="分形插值法">
       <el-row>
         <el-col :span="8" :offset="1">
           <el-form label-width="124px">
