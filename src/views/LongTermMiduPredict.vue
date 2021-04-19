@@ -53,6 +53,7 @@ export default {
       this.$refs.resultTable.tableTwoData = value;
     },
   },
+  // stupid windows CRLF
 };
 </script>
 
