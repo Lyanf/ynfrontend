@@ -25,7 +25,7 @@
 
 <script>
 import MutableForm from '@/components/SelectForm/NoHistoryMutableForm.vue';
-import ResultChart from '@/components/ResultChart.vue';
+import ResultChart from '@/components/MutableChart.vue';
 import ResultTable from '@/components/ResultTable.vue';
 
 export default {
@@ -40,14 +40,31 @@ export default {
   },
   watch: {
     graphData(value) {
-      this.$refs.resultChart.graphData = value;
+      console.log(value);
+      this.$refs.resultChart.xName = '年份';
+      this.$refs.resultChart.yName = '预测值（MW）';
+      this.$refs.resultChart.xData = value.xData;
+      this.$refs.resultChart.yData = value.yData;
       this.$refs.resultChart.refreshChart();
     },
     tableOneData(value) {
       this.$refs.resultTable.tableOneData = value;
     },
     tableTwoData(value) {
-      this.$refs.resultTable.tableTwoData = value;
+      const oldStyleTable = [];
+
+      for (let i = 0; i < value.yData.length; i += 1) {
+        let j = 0;
+        value.yData[i].data.forEach((elem) => {
+          oldStyleTable.push({
+            year: `${value.xData[j].toString()}（${value.yData[i].name}）`,
+            predict: elem,
+          });
+          j += 1;
+        });
+      }
+
+      this.$refs.resultTable.tableTwoData = oldStyleTable;
     },
   },
 };
