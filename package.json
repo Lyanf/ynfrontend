@@ -1,6 +1,6 @@
 {
-  "name": "untitled1",
-  "version": "0.1.0",
+  "name": "yunnan-power-system",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
