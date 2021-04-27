@@ -41,7 +41,7 @@ export default {
     performPrediction() {
       const assigns = new FormData();
       assigns.append('proposedata', this.rawFile);
-
+      assigns.append('method', '大用户法');
       this.$axios.post('/predict/bigdata', assigns).then((response) => {
         this.$data.graphDataInternal = response.data.data.tableTwoData;
         this.$data.tableThreeDataInternal = response.data.data.tableThreeData;

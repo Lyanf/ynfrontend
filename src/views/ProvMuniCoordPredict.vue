@@ -21,27 +21,12 @@
             <el-table :data="tableFourData">
               <el-table-column label="年份" prop="year"></el-table-column>
               <el-table-column label="地区" prop="region"></el-table-column>
-              <el-table-column label="协调前预测值" prop="predictBefore"></el-table-column>
-              <el-table-column label="协调后预测值" prop="predictAfter"></el-table-column>
+              <el-table-column label="预测值" prop="predict"></el-table-column>
             </el-table>
           </el-form-item>
           <el-form-item>
             <el-button @click="exportResultSheet"
                        :disabled="tableFourData.length === 0">导出预测结果表</el-button>
-          </el-form-item>
-          <el-form-item label="历史年份协调预测误差校核：">
-            <el-table :data="tableThreeData">
-              <el-table-column label="年份" prop="year"></el-table-column>
-              <el-table-column label="地区" prop="region"></el-table-column>
-              <el-table-column label="协调前预测值" prop="predictValueBefore"></el-table-column>
-              <el-table-column label="协调前预测误差" prop="predictErrorBefore"></el-table-column>
-              <el-table-column label="协调后预测值" prop="predictValueAfter"></el-table-column>
-              <el-table-column label="协调后预测误差" prop="predictErrorAfter"></el-table-column>
-            </el-table>
-          </el-form-item>
-          <el-form-item>
-            <el-button @click="exportErrorSheet"
-            :disabled="tableThreeData.length === 0">导出历史误差表</el-button>
           </el-form-item>
         </el-form>
       </el-col>
