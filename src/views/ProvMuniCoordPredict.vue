@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="8">
+      <el-col :span="7" :offset="1">
         <ProvMuniPredictSelectForm
         :table-three-data.sync="tableThreeData"
         :table-four-data.sync="tableFourData">
