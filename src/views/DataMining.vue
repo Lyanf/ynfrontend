@@ -42,7 +42,7 @@
           </el-select>
         </el-form-item>
         <div v-for="param in requiredParams" :key="param.key">
-          <el-form-item :label="param.label + '：'">
+          <el-form-item :label="param.label + '：'" v-if="param.key !== 'econamelist'">
             <el-input v-if="param.kind === 'int'" :step="1" type="number"
                       clearable v-model="postParams[param.key]"
                       placeholder="请输入整数数字"></el-input>
