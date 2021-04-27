@@ -1,4 +1,4 @@
 #!/usr/bin/env bash 
 
-docker build . -t yuxiqian/frontend:latest
-docker push yuxiqian/frontend:latest
+docker build . -t yuxiqian/ynfrontend:latest
+docker push yuxiqian/ynfrontend:latest
