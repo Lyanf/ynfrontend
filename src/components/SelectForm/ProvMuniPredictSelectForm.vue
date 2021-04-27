@@ -42,7 +42,7 @@ export default {
       const assigns = new FormData();
       assigns.append('file', this.rawFile);
       assigns.append('method', '省市总分协调算法');
-      this.$axios.post('/predict/bigdata', assigns).then((response) => {
+      this.$axios.post('/predict/provmuni', assigns).then((response) => {
         this.$data.graphDataInternal = response.data.data.tableTwoData;
         this.$data.tableThreeDataInternal = response.data.data.tableThreeData;
         this.$data.tableFourDataInternal = response.data.data.tableFourData;
