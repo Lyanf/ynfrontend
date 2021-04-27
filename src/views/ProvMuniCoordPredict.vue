@@ -18,15 +18,15 @@
             <el-button v-on:click="exportImage">导出图像</el-button>
           </el-form-item>
           <el-form-item label="预测年份的协调预测结果：">
-            <el-table :data="tableFourData">
+            <el-table :data="displayTableData">
               <el-table-column label="年份" prop="year"></el-table-column>
               <el-table-column label="地区" prop="region"></el-table-column>
-              <el-table-column label="预测值" prop="predict"></el-table-column>
+              <el-table-column label="预测值" prop="payload"></el-table-column>
             </el-table>
           </el-form-item>
           <el-form-item>
             <el-button @click="exportResultSheet"
-                       :disabled="tableFourData.length === 0">导出预测结果表</el-button>
+                       :disabled="displayTableData.length === 0">导出预测结果表</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -62,20 +62,36 @@ export default {
       currentChart: undefined,
       tableThreeData: [],
       tableFourData: [],
+      displayTableData: [],
     };
   },
   methods: {
+    generateTable() {
+      this.$data.displayTableData = [];
+      const rawData = this.$data.tableThreeData;
+      rawData.values.forEach((list) => {
+        let regionIndex = 1;
+        const year = list[0];
+        rawData.series.slice(1).forEach((region) => {
+          this.$data.displayTableData.push({
+            year,
+            region,
+            payload: list[regionIndex],
+          });
+          regionIndex += 1;
+        });
+      });
+    },
     refreshChart() {
-      console.log('called!');
-      const data = this.$data.tableFourData;
+      const data = this.$data.displayTableData;
       if (this.currentChart === undefined) {
         this.currentChart = echarts.init(document.getElementById('pieChart'));
       }
       const pieData = [];
       data.forEach((elem) => {
         pieData.push({
-          name: elem.region,
-          value: elem.predictAfter,
+          name: `${elem.region}, ${elem.year} 年`,
+          value: elem.payload,
         });
       });
       this.currentChart.setOption({
@@ -88,6 +104,9 @@ export default {
           },
         ],
       }, true);
+    },
+    exportResultSheet() {
+      this.exportTableSheet(this.$data.displayTableData, ['year', 'region', 'payload']);
     },
     exportImage() {
       if (!this.currentChart) {
@@ -102,33 +121,14 @@ export default {
         fields,
       });
       const blob = new Blob([data], { type: 'text/csv' });
-      saveAs(blob, 'database.csv');
-    },
-    exportErrorSheet() {
-      this.exportTableSheet(this.$data.tableThreeData,
-        [
-          'year',
-          'region',
-          'predictValueBefore',
-          'predictErrorBefore',
-          'predictValueAfter',
-          'predictErrorAfter',
-        ]);
-    },
-    exportResultSheet() {
-      this.exportTableSheet(this.$data.tableFourData,
-        [
-          'year',
-          'region',
-          'predictBefore',
-          'predictAfter',
-        ]);
+      saveAs(blob, '数据表格.csv');
     },
   },
   components: { ProvMuniPredictSelectForm },
   watch: {
-    tableFourData: {
+    tableThreeData: {
       handler() {
+        this.generateTable();
         this.refreshChart();
       },
       deep: true,

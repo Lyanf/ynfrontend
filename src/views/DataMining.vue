@@ -158,7 +158,9 @@ export default {
       });
     },
     commitMining() {
-      this.$axios.post('/mining/request', this.$data.postParams).then((response) => {
+      const params = this.$data.postParams;
+      params.econamelist = this.$data.postParams.factors;
+      this.$axios.post('/mining/request', params).then((response) => {
         this.$messenger.success('数据挖掘成功。');
         this.$data.miningResults = response.data.data;
       });
@@ -196,6 +198,7 @@ export default {
     };
   },
   watch: {
+    // eslint-disable-next-line func-names
     'postParams.method': function (value) {
       this.$data.requiredParams = [];
       this.$axios.get('/get/args', {
