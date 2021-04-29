@@ -477,7 +477,7 @@ export default {
           xTag: 'xData',
           yTag: 'yData',
           xName: '时间',
-          yName: '负载',
+          yName: '负载（单位：MW）',
         };
         this.$refs.sokuResultChart.refreshChartDirty();
       });
@@ -508,7 +508,7 @@ export default {
           xTag: 'time',
           yTag: 'payload',
           xName: '时间',
-          yName: '负载',
+          yName: '负载（单位：MW）',
         };
         this.$refs.clampResultChart.refreshChartDirty();
       });
@@ -539,7 +539,7 @@ export default {
           xTag: 'time',
           yTag: 'payload',
           xName: '时间',
-          yName: '负载',
+          yName: '负载（单位：MW）',
         };
         this.$refs.interpResultChart.refreshChartDirty();
       });
@@ -577,7 +577,7 @@ export default {
           xTag: 'time',
           yTag: 'payload',
           xName: '时间',
-          yName: '负载',
+          yName: '负载（单位：MW）',
         };
         this.$refs.yearContResultChart.refreshChart();
       });
