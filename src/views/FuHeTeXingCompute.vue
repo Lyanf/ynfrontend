@@ -26,11 +26,11 @@
               </template>
             </el-table-column>
             <el-table-column prop="day" label="日期"></el-table-column>
-            <el-table-column prop="dayMaxPayload" label="日最大负荷"></el-table-column>
-            <el-table-column prop="dayAveragePayload" label="日平均负荷"></el-table-column>
+            <el-table-column prop="dayMaxPayload" label="日最大负荷（MW）"></el-table-column>
+            <el-table-column prop="dayAveragePayload" label="日平均负荷（MW）"></el-table-column>
             <el-table-column prop="dayPayloadRate" label="日负荷率"></el-table-column>
             <el-table-column prop="dayMinPayloadRate" label="日最小负荷率"></el-table-column>
-            <el-table-column prop="dayPeekValleyDiff" label="日峰谷差"></el-table-column>
+            <el-table-column prop="dayPeekValleyDiff" label="日峰谷差（MW）"></el-table-column>
             <el-table-column prop="dayPeekValleyDiffRate" label="日峰谷差率"></el-table-column>
           </el-table>
         </el-row>
@@ -71,8 +71,8 @@
         <el-row>
           <el-table title='月负荷特性指标表' :data="monthTableData">
             <el-table-column prop="month" label="月份"></el-table-column>
-            <el-table-column prop="monthAverageDailyPayload" label="月平均日负荷"></el-table-column>
-            <el-table-column prop="monthMaxPeekValleyDiff" label="月最大峰谷差"></el-table-column>
+            <el-table-column prop="monthAverageDailyPayload" label="月平均日负荷（MW）"></el-table-column>
+            <el-table-column prop="monthMaxPeekValleyDiff" label="月最大峰谷差（MW）"></el-table-column>
             <el-table-column prop="monthAverageDailyPayloadRate" label="月平均日负荷率"></el-table-column>
 <!--            <el-table-column prop="monthImbaRate" label="月不均衡率系数"></el-table-column>-->
             <el-table-column prop="monthMinPayloadRate" label="月最小负荷率"></el-table-column>
@@ -114,13 +114,13 @@
         <el-row>
           <el-table title='年负荷特性指标表' :data="yearTableData">
             <el-table-column prop="year" label="年份"></el-table-column>
-            <el-table-column prop="yearMaxPayload" label="年最大负荷"></el-table-column>
+            <el-table-column prop="yearMaxPayload" label="年最大负荷（MW）"></el-table-column>
             <el-table-column prop="yearRate" label="年负载率"></el-table-column>
-            <el-table-column prop="yearAveragePayload" label="年平均负荷"></el-table-column>
+            <el-table-column prop="yearAveragePayload" label="年平均负荷（MW）"></el-table-column>
             <el-table-column prop="seasonImbaRate" label="季不均衡系数"></el-table-column>
             <el-table-column prop="monthImbaRate" label="月不均衡系数"></el-table-column>
             <el-table-column prop="yearMaxPeekValleyDiff" label="年最大峰谷差率"></el-table-column>
-            <el-table-column prop="yearMinPayload" label="年最小负载"></el-table-column>
+            <el-table-column prop="yearMinPayload" label="年最小负荷（MW）"></el-table-column>
           </el-table>
         </el-row>
         <el-form>
