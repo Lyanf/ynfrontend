@@ -25,13 +25,17 @@
     <div v-for="param in requiredParams" :key="param.key">
       <el-form-item :label="param.label + '：'">
         <el-input v-if="param.kind === 'int'" :step="1" type="number"
+                  :min="param.limits.min_value"
+                  :max="param.limits.max_value"
                   clearable v-model="postParams[param.key]"
                   placeholder="请输入整数数字"></el-input>
         <el-input v-else-if="param.kind === 'float'" :step="0.01" type="number"
+                  :min="param.limits.min_value"
+                  :max="param.limits.max_value"
                   clearable v-model="postParams[param.key]"
                   placeholder="请输入数字"></el-input>
         <el-select v-else-if="param.kind.startsWith('option')" placeholder="请选择一项"
-                  v-model="postParams[param.key]">
+                   v-model="postParams[param.key]">
           <el-option
             v-for="item in param.value"
             :key="item"
@@ -40,7 +44,8 @@
           </el-option>
         </el-select>
         <el-select v-else-if="param.kind.startsWith('multioption')" multiple
-                   placeholder="请选择数项" v-model="postParams[param.key]">
+                   placeholder="请选择数项" v-model="postParams[param.key]"
+                   :multiple-limit="param.limits.max_choice">
           <el-option
             v-for="item in param.value"
             :key="item"
@@ -54,9 +59,6 @@
         </el-checkbox>
         <el-input v-else placeholder="请输入" v-model="postParams[param.key]">
         </el-input>
-<!--        <el-button style="margin-left: 8px"-->
-<!--                   type="danger"-->
-<!--        @click="postParams.parameters.remove(index, index)">×</el-button>-->
       </el-form-item>
     </div>
     <el-form-item label="方案标签：">
