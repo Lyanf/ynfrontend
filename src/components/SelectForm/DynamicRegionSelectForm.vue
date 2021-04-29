@@ -48,6 +48,10 @@
             :value="item">
           </el-option>
         </el-select>
+        <el-checkbox v-else-if="param.kind === 'bool'"
+                     v-model="postParams[param.key]"
+                     :true-label="1" :false-label="0">
+        </el-checkbox>
         <el-input v-else placeholder="请输入" v-model="postParams[param.key]">
         </el-input>
 <!--        <el-button style="margin-left: 8px"-->

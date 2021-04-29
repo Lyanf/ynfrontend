@@ -58,6 +58,10 @@
           <el-button slot="trigger" size="small" type="primary">选择文件</el-button>
           <div v-if="rawFileNames[param.key]"> {{ rawFileNames[param.key] }} </div>
         </el-upload>
+        <el-checkbox v-else-if="param.kind === 'bool'"
+                     v-model="postParams[param.key]"
+                     :true-label="1" :false-label="0">
+        </el-checkbox>
         <el-input v-else placeholder="请输入" v-model="postParams[param.key]">
         </el-input>
       </el-form-item>
