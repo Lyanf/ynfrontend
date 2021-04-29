@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <LoadingView v-if="$store.state.isLoading"></LoadingView>
-    <TopMenu style="margin-bottom: 1em"></TopMenu>
+    <TopMenu></TopMenu>
 <!--    <div id="nav">-->
 <!--      <router-link to="/">Home</router-link> |-->
 <!--      <router-link to="/about">About</router-link>-->
@@ -43,6 +43,14 @@ export default {
 
 .el-tabs__item {
   color: #aaaaaa;
+}
+
+#app {
+  position:absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 /*#nav {*/
