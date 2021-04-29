@@ -23,7 +23,7 @@
             <el-table :data="displayTableData">
               <el-table-column label="年份" prop="year"></el-table-column>
               <el-table-column label="地区" prop="region"></el-table-column>
-              <el-table-column label="预测值" prop="payload"></el-table-column>
+              <el-table-column label="预测值（单位：MW）" prop="payload"></el-table-column>
             </el-table>
           </el-form-item>
           <el-form-item>
