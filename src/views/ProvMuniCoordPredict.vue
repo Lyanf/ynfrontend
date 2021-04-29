@@ -16,6 +16,8 @@
           </el-form-item>
           <el-form-item v-show="currentChart !== undefined">
             <el-button v-on:click="exportImage">导出图像</el-button>
+            <el-button @click="exportResultSheet"
+                       :disabled="displayTableData.length === 0">导出预测结果表</el-button>
           </el-form-item>
           <el-form-item label="预测年份的协调预测结果：">
             <el-table :data="displayTableData">
@@ -25,8 +27,7 @@
             </el-table>
           </el-form-item>
           <el-form-item>
-            <el-button @click="exportResultSheet"
-                       :disabled="displayTableData.length === 0">导出预测结果表</el-button>
+
           </el-form-item>
         </el-form>
       </el-col>
@@ -114,14 +115,14 @@ export default {
       }
       const content = this.currentChart.getDataURL();
       const blob = base64ToBlob(content);
-      saveAs(blob, '预测图像.png');
+      saveAs(blob, '协调预测结果图像.png');
     },
     exportTableSheet(rawData, fields) {
       const data = json2csv.parse(rawData, {
         fields,
       });
       const blob = new Blob([data], { type: 'text/csv' });
-      saveAs(blob, '数据表格.csv');
+      saveAs(blob, '协调预测结果表格.csv');
     },
   },
   components: { ProvMuniPredictSelectForm },
