@@ -155,7 +155,7 @@ export default {
           year: i,
         };
         params.rejectlsit.forEach((elem) => {
-          bloc[elem] = '';
+          bloc[elem] = null;
         });
         raw.push(bloc);
       }
