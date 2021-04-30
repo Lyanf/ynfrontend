@@ -83,6 +83,13 @@ export default {
       });
 
       const initializeOption = {
+        color: ['#3398DB'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+          },
+        },
         xAxis: {
           type: 'category',
           name: this.$data.xName,

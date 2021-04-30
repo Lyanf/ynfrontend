@@ -90,6 +90,13 @@ export default {
       const yData = this.graphData.yData[0].data;
 
       const initializeOption = {
+        color: ['#3398DB'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+          },
+        },
         xAxis: {
           type: 'category',
           name: param.xName,
@@ -140,6 +147,13 @@ export default {
       });
 
       const initializeOption = {
+        color: ['#3398DB'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+          },
+        },
         xAxis: {
           type: 'category',
           name: param.xName,
@@ -184,6 +198,13 @@ export default {
       });
 
       const initializeOption = {
+        color: ['#3398DB'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+          },
+        },
         xAxis: {
           type: 'category',
           name: param.xName,
