@@ -43,16 +43,21 @@
             :value="item">
           </el-option>
         </el-select>
-        <el-select v-else-if="param.kind.startsWith('multioption')" multiple
-                   placeholder="请选择数项" v-model="postParams[param.key]"
-                   :multiple-limit="param.limits.max_choice">
-          <el-option
-            v-for="item in param.value"
-            :key="item"
-            :label="item"
-            :value="item">
-          </el-option>
-        </el-select>
+        <div v-else-if="param.kind.startsWith('multioption')">
+          <el-select multiple
+                     placeholder="请选择数项" v-model="postParams[param.key]"
+                     :multiple-limit="param.limits.max_choice">
+            <el-option
+              v-for="item in param.value"
+              :key="item"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+          <el-button v-if="param.label === '要剔除的行业名单'"
+                     :disabled="postParams.beginYear === null || postParams.endYear === null"
+            @click="generateTemplate" style="margin-left: 20px">生成模版</el-button>
+        </div>
         <el-upload v-else-if="param.kind === 'file'"
           ref="upload"
           action="/"
@@ -97,6 +102,8 @@
 
 <script>
 import YearRangeSelector from '@/components/YearRangeSelector.vue';
+import * as json2csv from 'json2csv';
+import { saveAs } from 'file-saver';
 
 export default {
   name: 'SinglePredictSelectForm',
@@ -140,6 +147,26 @@ export default {
     this.loadTags();
   },
   methods: {
+    generateTemplate() {
+      const raw = [];
+      const params = this.$data.postParams;
+      for (let i = params.beginYear; i <= params.endYear; i += 1) {
+        const bloc = {
+          year: i,
+        };
+        params.rejectlsit.forEach((elem) => {
+          bloc[elem] = '';
+        });
+        raw.push(bloc);
+      }
+      console.log(raw);
+      console.log(['year'] + params.rejectlsit);
+      const data = json2csv.parse(raw, {
+        fields: ['year'].concat(params.rejectlsit),
+      });
+      const blob = new Blob([data], { type: 'text/csv' });
+      saveAs(blob, '剔除数据模版.csv');
+    },
     getUploader(key, param, raw) {
       const vm = this;
       return function (file) {
