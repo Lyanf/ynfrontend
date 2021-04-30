@@ -113,7 +113,7 @@ export default {
           value: 'RMSE',
         },
         {
-          label: '预测功率值（MVW）',
+          label: '预测功率值（MW）',
           value: 'predictMVW',
         },
       ],

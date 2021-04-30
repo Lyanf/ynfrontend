@@ -15,7 +15,7 @@
     <el-form-item label="年份 − 预测值表：">
       <el-table :data="tableTwoData">
         <el-table-column prop="year" label="年份"></el-table-column>
-        <el-table-column prop="predict" label="预测值（MVW）"></el-table-column>
+        <el-table-column prop="predict" label="预测值（MW）"></el-table-column>
       </el-table>
     </el-form-item>
     <el-form-item>
