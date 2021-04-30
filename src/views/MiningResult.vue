@@ -4,7 +4,7 @@
       <el-col :span="5">
         <el-form>
           <el-form-item label="方案选择：">
-            <el-select multiple v-model="selectedPlans" placeholder="请选择">
+            <el-select v-model="selectedPlan" placeholder="请选择">
               <el-option
                 v-for="item in miningResults"
                 :key="item.id"
@@ -15,17 +15,52 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="updateTableDisplay"
-            :disabled="selectedPlans.length === 0">确定</el-button>
-            <el-button v-on:click="exportTableSheet"
-                       :disabled="displayTable.length === 0">表格导出</el-button>
+            :disabled="selectedPlan.length === 0">确定</el-button>
           </el-form-item>
         </el-form>
       </el-col>
       <el-col :offset="2" :span="12">
-        <el-table :data="displayTable">
-          <el-table-column prop="planName" label="方案"></el-table-column>
-          <el-table-column prop="factors" label="挖掘结果"></el-table-column>
-        </el-table>
+        <el-form>
+        <div v-if="method === 'K均值算法'">
+          <el-form-item>
+            <el-button @click="exportKMeansData"
+                       :disabled="kMeansData.length === 0">导出表格</el-button>
+          </el-form-item>
+          <el-form-item label="挖掘结果表：">
+            <el-table :data="kMeansData">
+              <el-table-column prop="index" label="类别序号"></el-table-column>
+              <el-table-column prop="members" label="成员"></el-table-column>
+            </el-table>
+          </el-form-item>
+        </div>
+        <div v-if="method === '主成分分析算法'">
+          <el-form-item>
+            <el-button @click="exportPCAData"
+                       :disabled="pcaData.length === 0">导出表格</el-button>
+          </el-form-item>
+          <el-form-item label="挖掘结果表：">
+            <el-table :data="pcaData">
+              <el-table-column prop="index" label="主成分编号"></el-table-column>
+              <el-table-column prop="percentage" label="所占比例"></el-table-column>
+              <el-table-column prop="name" label="影响因素名称"></el-table-column>
+              <el-table-column prop="factor" label="影响因素对应系数"></el-table-column>
+            </el-table>
+          </el-form-item>
+        </div>
+        <div v-if="method === '关联规则分析算法'">
+          <el-form-item>
+            <el-button @click="exportAprioriData"
+                       :disabled="aprioriData.length === 0">导出表格</el-button>
+          </el-form-item>
+          <el-form-item label="挖掘结果表：">
+            <el-table :data="aprioriData">
+              <el-table-column prop="name" label="影响因素名称"></el-table-column>
+              <el-table-column prop="score" label="影响因素强弱得分"></el-table-column>
+              <el-table-column prop="confidence" label="置信度"></el-table-column>
+            </el-table>
+          </el-form-item>
+        </div>
+        </el-form>
       </el-col>
     </el-row>
   </div>
@@ -39,9 +74,12 @@ export default {
   name: 'MiningResult',
   data() {
     return {
-      selectedPlans: [],
+      selectedPlan: '',
       miningResults: [],
-      displayTable: [],
+      kMeansData: [],
+      pcaData: [],
+      aprioriData: [],
+      method: '',
     };
   },
   mounted() {
@@ -54,26 +92,68 @@ export default {
       });
     },
     updateTableDisplay() {
-      this.$data.displayTable = [];
-      this.$data.selectedPlans.forEach((planName) => {
-        console.log(planName);
-        this.$data.miningResults.forEach((line) => {
-          console.log(line);
-          if (line.plan === planName) {
-            this.$data.displayTable.push({
-              planName,
-              factors: line.results.join('、'),
+      this.$axios.get('/predict/results/detail', {
+        params: {
+          tag: this.$data.selectedPlan,
+        },
+      }).then((paramrp) => {
+        const params = paramrp.data.data.parameters;
+        this.method = params.method;
+        this.$axios.post('/mining/request', params).then((response) => {
+          if (params.method === 'K均值算法') {
+            this.$data.kMeansData = [];
+            let index = 1;
+            response.data.data.Clusters.forEach((elem) => {
+              this.$data.kMeansData.push({
+                index,
+                members: elem.join('、'),
+              });
+              index += 1;
             });
+          } else if (params.method === '主成分分析算法') {
+            this.$data.pcaData = [];
+            for (let factorIndex = 0;
+              factorIndex < response.data.data.N_components.length;
+              factorIndex += 1) {
+              for (let innerIndex = 0;
+                innerIndex < response.data.data.FactorName.length;
+                innerIndex += 1) {
+                this.$data.pcaData.push({
+                  index: factorIndex + 1,
+                  percentage: response.data.data.ComponetRatio[factorIndex],
+                  name: response.data.data.FactorName[innerIndex],
+                  factor: response.data.data.Vectors[factorIndex][innerIndex],
+                });
+              }
+            }
+          } else if (params.method === '关联规则分析算法') {
+            this.$data.aprioriData = [];
+            for (let i = 0; i < response.data.data.FactorsName.length; i += 1) {
+              this.$data.aprioriData.push({
+                name: response.data.data.FactorsName[i],
+                score: response.data.data.Score[i],
+                confidence: response.data.data.Confidence[i],
+              });
+            }
           }
         });
       });
     },
-    exportTableSheet() {
-      const data = json2csv.parse(this.$data.displayTable, {
-        fields: ['planName', 'factors'],
+    exportTableSheet(raw, fields) {
+      const data = json2csv.parse(raw, {
+        fields,
       });
       const blob = new Blob([data], { type: 'text/csv' });
-      saveAs(blob, 'mining_result.csv');
+      saveAs(blob, '挖掘结果表.csv');
+    },
+    exportKMeansData() {
+      this.exportTableSheet(this.$data.kMeansData, ['index', 'members']);
+    },
+    exportPCAData() {
+      this.exportTableSheet(this.$data.pcaData, ['index', 'percentage', 'name', 'factor']);
+    },
+    exportAprioriData() {
+      this.exportTableSheet(this.$data.aprioriData, ['name', 'score', 'confidence']);
     },
   },
 };

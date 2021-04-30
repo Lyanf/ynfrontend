@@ -146,6 +146,8 @@
 
 <script>
 import YearRangeSelector from '@/components/YearRangeSelector.vue';
+import * as json2csv from 'json2csv';
+import { saveAs } from 'file-saver';
 
 export default {
   name: 'DataMining',
@@ -247,13 +249,20 @@ export default {
       window.location = '/#/miningResult';
     },
     exportKMeansData() {
-
+      this.exportTableSheet(this.$data.kMeansData, ['index', 'members']);
     },
     exportPCAData() {
-
+      this.exportTableSheet(this.$data.pcaData, ['index', 'percentage', 'name', 'factor']);
     },
     exportAprioriData() {
-
+      this.exportTableSheet(this.$data.aprioriData, ['name', 'score', 'confidence']);
+    },
+    exportTableSheet(rawData, fields) {
+      const data = json2csv.parse(rawData, {
+        fields,
+      });
+      const blob = new Blob([data], { type: 'text/csv' });
+      saveAs(blob, 'database.csv');
     },
   },
   data() {
