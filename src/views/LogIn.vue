@@ -7,7 +7,7 @@
       <LogInDialog></LogInDialog>
     </el-row>
     <div class="footer" style="text-align: center; margin: 0px">
-      上海交通大学大数据工程技术中心 © 2021
+      上海交通大学大数据工程技术研究中心 © 2021
     </div>
   </div>
 </template>
