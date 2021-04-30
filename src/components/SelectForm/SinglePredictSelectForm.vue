@@ -288,7 +288,7 @@ export default {
       });
     },
     judgeDepends(depend) {
-      if (depend === undefined) {
+      if (depend === undefined || depend === null) {
         return false;
       }
       return !this.$data.postParams[depend];
