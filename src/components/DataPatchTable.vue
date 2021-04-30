@@ -43,7 +43,7 @@ export default {
         title: '地区',
         key: 'region',
       }, {
-        title: '键',
+        title: '时间',
         key: 'key',
       }, {
         title: '当前值',

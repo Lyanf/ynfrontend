@@ -352,7 +352,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .top-warning {
   margin: 2px;
   color: white;
@@ -363,5 +363,10 @@ export default {
   margin: 2px;
   color: white;
   background-color: darkblue;
+}
+
+.el-submenu__title {
+  font-size: 20px !important;
+  font-weight: bold !important;
 }
 </style>

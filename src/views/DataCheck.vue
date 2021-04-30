@@ -18,13 +18,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="粒度选择：">
-          <el-select placeholder="请选择" v-model="postParams.grain">
-            <el-option
-              v-for="item in knownGrains"
-              :key="item"
-              :label="item"
-              :value="item">
-            </el-option>
+          <el-select placeholder="请选择" value="年" :disabled="true">
+<!--            <el-option-->
+<!--              v-for="item in knownGrains"-->
+<!--              :key="item"-->
+<!--              :label="item"-->
+<!--              :value="item">-->
+<!--            </el-option>-->
           </el-select>
         </el-form-item>
         <el-form-item label="年份选择：">
@@ -67,7 +67,7 @@ export default {
       postParams: {
         category: [],
         region: null,
-        grain: null,
+        grain: '年',
         beginYear: null,
         endYear: null,
       },

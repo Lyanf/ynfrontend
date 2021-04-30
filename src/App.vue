@@ -35,6 +35,8 @@ export default {
 
 .el-form-item__label {
   color: #cccccc;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .el-submenu__title {

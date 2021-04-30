@@ -469,6 +469,9 @@ export default {
           type: 'category',
           name: data.xName,
           data: data.xData,
+          axisTick: {
+            alignWithLabel: true,
+          },
         },
         yAxis: {
           type: 'value',

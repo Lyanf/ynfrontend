@@ -87,6 +87,9 @@ export default {
           type: 'category',
           name: this.$data.xName,
           data: this.$data.xData,
+          axisTick: {
+            alignWithLabel: true,
+          },
         },
         yAxis: {
           type: 'value',

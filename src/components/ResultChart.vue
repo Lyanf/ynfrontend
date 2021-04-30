@@ -94,6 +94,9 @@ export default {
           type: 'category',
           name: param.xName,
           data: xD,
+          axisTick: {
+            alignWithLabel: true,
+          },
         },
         yAxis: {
           type: 'value',
@@ -141,6 +144,9 @@ export default {
           type: 'category',
           name: param.xName,
           data: xData,
+          axisTick: {
+            alignWithLabel: true,
+          },
         },
         yAxis: {
           type: 'value',
@@ -182,6 +188,9 @@ export default {
           type: 'category',
           name: param.xName,
           data: xData,
+          axisTick: {
+            alignWithLabel: true,
+          },
         },
         yAxis: {
           type: 'value',
@@ -238,7 +247,7 @@ export default {
       return 'globalChart';
     },
   },
-  props: ['typee', 'uid'],
+  props: ['typee', 'uid', 'title'],
 };
 </script>
 

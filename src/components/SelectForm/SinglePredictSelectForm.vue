@@ -32,19 +32,22 @@
            :end-year.sync="postParams.endYear">
          </year-range-selector>
        </el-form-item>
-<div v-for="param in requiredParams" :key="param.key">
+    <div v-for="param in requiredParams" :key="param.key">
       <el-form-item :label="param.label + '：'">
         <el-input v-if="param.kind === 'int'" :step="1" type="number"
                   :min="param.limits.min_value"
                   :max="param.limits.max_value"
                   clearable v-model="postParams[param.key]"
-                  placeholder="请输入整数数字"></el-input>
+                  placeholder="请输入整数数字"
+                  :disabled="judgeDepends(param.limits.depends)"></el-input>
         <el-input v-else-if="param.kind === 'float'" :step="0.01" type="number"
                   :min="param.limits.min_value"
                   :max="param.limits.max_value"
                   clearable v-model="postParams[param.key]"
-                  placeholder="请输入数字"></el-input>
+                  placeholder="请输入数字"
+                  :disabled="judgeDepends(param.limits.depends)"></el-input>
         <el-select v-else-if="param.kind.startsWith('option')" placeholder="请选择一项"
+                   :disabled="judgeDepends(param.limits.depends)"
                    v-model="postParams[param.key]">
           <el-option
             v-for="item in param.value"
@@ -55,6 +58,7 @@
         </el-select>
         <el-select v-else-if="param.kind.startsWith('multioption')" multiple
                    placeholder="请选择数项" v-model="postParams[param.key]"
+                   :disabled="judgeDepends(param.limits.depends)"
                    :multiple-limit="param.limits.max_choice">
           <el-option
             v-for="item in param.value"
@@ -65,9 +69,11 @@
         </el-select>
         <el-checkbox v-else-if="param.kind === 'bool'"
                      v-model="postParams[param.key]"
-                     :true-label="1" :false-label="0">
+                     :true-label="1" :false-label="0"
+                     :disabled="judgeDepends(param.limits.depends)">
         </el-checkbox>
-        <el-input v-else placeholder="请输入" v-model="postParams[param.key]">
+        <el-input v-else placeholder="请输入" v-model="postParams[param.key]"
+                  :disabled="judgeDepends(param.limits.depends)">
         </el-input>
       </el-form-item>
     </div>
@@ -281,8 +287,11 @@ export default {
         this.$data.originalAllMethodsForPlace = response.data.data;
       });
     },
-    validateFactor(factor) {
-      return factor.name.length !== 0;
+    judgeDepends(depend) {
+      if (depend === undefined) {
+        return false;
+      }
+      return !this.$data.postParams[depend];
     },
     performPrediction() {
       const assigns = Object.assign(this.$data.postParams, this.$data.parameters);
@@ -306,6 +315,13 @@ export default {
     },
     tableTwoDataInternal(value) {
       this.$emit('update:tableTwoData', value);
+    },
+    postParams: {
+      handler() {
+        // eslint-disable-next-line no-underscore-dangle
+        this._watcher.update();
+      },
+      deep: true,
     },
     'postParams.method': function (value) {
       this.$data.requiredParams = [];
