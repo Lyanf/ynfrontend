@@ -97,7 +97,7 @@ export default {
           axisTick: {
             alignWithLabel: true,
           },
-          boundaryGap: false,
+          boundaryGap: this.$data.currentDisplayMethod === 'bar',
           onZero: true,
         },
         yAxis: {
