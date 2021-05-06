@@ -184,6 +184,8 @@ export default {
           axisTick: {
             alignWithLabel: true,
           },
+          boundaryGap: false,
+          onZero: true,
         },
         yAxis: {
           type: 'value',
