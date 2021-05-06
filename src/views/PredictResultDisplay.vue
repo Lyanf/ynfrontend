@@ -184,12 +184,36 @@ export default {
           axisTick: {
             alignWithLabel: true,
           },
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#ffffff',
+              fontSize: 14,
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ffffff',
+            },
+          },
           boundaryGap: this.$data.currentDisplayMethod === 'bar',
           onZero: true,
         },
         yAxis: {
           type: 'value',
           name: data.yName,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#ffffff',
+              fontSize: 14,
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ffffff',
+            },
+          },
         },
         series,
         legend: {

@@ -99,10 +99,34 @@ export default {
           },
           boundaryGap: this.$data.currentDisplayMethod === 'bar',
           onZero: true,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#ffffff',
+              fontSize: 14,
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ffffff',
+            },
+          },
         },
         yAxis: {
           type: 'value',
           name: this.$data.yName,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#ffffff',
+              fontSize: 14,
+            },
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#ffffff',
+            },
+          },
         },
         series: ySeries,
         legend: {
