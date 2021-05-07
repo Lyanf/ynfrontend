@@ -51,12 +51,18 @@ export default {
       if (this.$data.path.length < 2) {
         return;
       }
-      this.$axios.post('/db/metadata/delete', {
-        path: this.$data.path,
-      }).then((response) => {
-        console.log(response);
-        this.$messenger.success('元数据节点删除成功。');
-        this.loadMetadata();
+      this.$confirm('删除元数据会一并删除其下的数据，且无法恢复。确定要删除吗？', '严重警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(() => {
+        this.$axios.post('/db/metadata/delete', {
+          path: this.$data.path,
+        }).then((response) => {
+          console.log(response);
+          this.$messenger.success('元数据节点删除成功。');
+          this.loadMetadata();
+        });
       });
     },
     loadMetadata() {

@@ -17,7 +17,7 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary"
-                 :disabled="name.length === 0 || path.length === 0"
+                 :disabled="name.length === 0 || path.length !== 1"
                  @click="createNewNode">
         新建
       </el-button>
@@ -42,6 +42,9 @@ export default {
     promptText() {
       if (this.$data.path.length === 0) {
         return '请指定要插入节点的父节点。';
+      }
+      if (this.$data.path.length !== 1) {
+        return '只能插入二级节点。';
       }
       if (this.$data.name.length === 0) {
         return '请填写新节点名称。';
