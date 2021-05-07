@@ -83,7 +83,7 @@ export default {
       });
 
       const initializeOption = {
-        color: ['#3398DB'],
+        color: ['#DBDA39'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {

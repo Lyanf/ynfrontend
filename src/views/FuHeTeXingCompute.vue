@@ -465,7 +465,7 @@ export default {
         });
       });
       const initializeOption = {
-        color: ['#3398DB'],
+        color: ['#EE0000'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {

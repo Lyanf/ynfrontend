@@ -90,7 +90,7 @@ export default {
       const yData = this.graphData.yData[0].data;
 
       const initializeOption = {
-        color: ['#3398DB'],
+        color: ['#DBDA39'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -173,7 +173,7 @@ export default {
       });
 
       const initializeOption = {
-        color: ['#3398DB'],
+        color: ['#DBDA39'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -250,7 +250,7 @@ export default {
       });
 
       const initializeOption = {
-        color: ['#3398DB'],
+        color: ['#DBDA39'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
