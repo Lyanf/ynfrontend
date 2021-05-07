@@ -83,7 +83,7 @@ export default {
       });
 
       const initializeOption = {
-        color: ['#DBDA39'],
+        // color: ['#DBDA39'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -136,6 +136,10 @@ export default {
           x: 'center',
           // y 设置垂直安放位置，默认全图顶端，可选值：'top' ¦ 'bottom' ¦ 'center' ¦ {number}（y坐标，单位px）
           y: 'top',
+          textStyle: {
+            color: '#ffffff',
+            fontSize: 16,
+          },
         },
       };
       this.currentChart.setOption(initializeOption, true);
