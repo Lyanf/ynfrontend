@@ -29,10 +29,10 @@
 
       <el-submenu index="2" :disabled="menuDisabled">
         <template slot="title">数据库</template>
-        <!-- <el-menu-item index="2-1">增加元数据节点</el-menu-item> -->
+         <el-menu-item index="2-1">增加元数据节点</el-menu-item>
         <el-menu-item index="2-2">重命名元数据节点</el-menu-item>
         <el-menu-item index="2-3">删除元数据节点</el-menu-item>
-        <!-- <el-menu-item index="2-6">导入元数据…</el-menu-item> -->
+         <el-menu-item index="2-6">生成数据模板</el-menu-item>
         <el-divider></el-divider>
         <el-menu-item index="2-4">全部数据</el-menu-item>
         <el-menu-item index="2-5">数据监测与更正</el-menu-item>
@@ -106,18 +106,18 @@
     </el-dialog>
     <el-dialog title="元数据管理" :visible.sync="metaDataDialogFormVisible">
       <el-tabs v-model="activeMetadataName" type="card" @tab-click="triggerReloadMetas">
-        <!-- <el-tab-pane label="新建节点" name="2-1">
+        <el-tab-pane label="新建节点" name="2-1">
           <CreateNewNode ref="newMetaView"></CreateNewNode>
-        </el-tab-pane> -->
+        </el-tab-pane>
         <el-tab-pane label="修改节点名称" name="2-2">
           <RenameNode ref="renameMetaView"></RenameNode>
         </el-tab-pane>
         <el-tab-pane label="删除节点" name="2-3">
           <DeleteNode ref="deleteMetaView"></DeleteNode>
         </el-tab-pane>
-        <!-- <el-tab-pane label="导入元数据" name="2-6">
+        <el-tab-pane label="生成数据模板" name="2-6">
           <UploadData ref="uploadMetaView"></UploadData>
-        </el-tab-pane> -->
+        </el-tab-pane>
       </el-tabs>
     </el-dialog>
     <el-dialog title="导入数据" :visible.sync="uploadDialogFormVisible">
@@ -128,10 +128,10 @@
 </template>
 
 <script>
-// import CreateNewNode from '@/components/MetadataCRUD/CreateNewNode.vue';
+import CreateNewNode from '@/components/MetadataCRUD/CreateNewNode.vue';
 import RenameNode from '@/components/MetadataCRUD/RenameNode.vue';
 import DeleteNode from '@/components/MetadataCRUD/DeleteNode.vue';
-// import UploadData from '@/components/MetadataCRUD/UploadData.vue';
+import UploadData from '@/components/MetadataCRUD/UploadData.vue';
 import UpdateSchema from '@/components/SchemaCRUD/UpdateSchema.vue';
 import DeleteSchema from '@/components/SchemaCRUD/DeleteSchema.vue';
 import UploadDataBase from '@/components/UploadDataBase.vue';
@@ -141,10 +141,10 @@ import { saveAs } from 'file-saver';
 export default {
   name: 'TopMenu',
   components: {
-    // CreateNewNode,
+    CreateNewNode,
     RenameNode,
     DeleteNode,
-    // UploadData,
+    UploadData,
     DeleteSchema,
     UpdateSchema,
     UploadDataBase,
