@@ -7,7 +7,7 @@
         <el-button type="danger" @click="removeAllData">删除所有数据</el-button>
       </el-form-item>
       <el-form-item>
-        <el-button type="danger" @click="removeWenHonglinData">删除非电力电量预测的数据</el-button>
+        <el-button type="danger" @click="removeWenHonglinData">删除「温洪林博士」的数据</el-button>
       </el-form-item>
       <el-form-item>
         <el-button type="danger" @click="initializeDatabase">初始化数据库</el-button>
@@ -32,13 +32,13 @@ export default {
       });
     },
     removeWenHonglinData() {
-      this.$confirm('删除这部分数据之后无法恢复。确定要删除所有 WHL 部分的数据吗？', '警告', {
+      this.$confirm('删除这部分数据之后无法恢复。确定要删除「温洪林博士」的数据吗？', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(() => {
         this.$axios.post('/danger/remove/whl/data').then(() => {
-          this.$messenger.success('清除 WHL 部分数据成功。');
+          this.$messenger.success('清除「温洪林博士」的数据成功。');
         });
       });
     },
