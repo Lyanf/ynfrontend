@@ -1,6 +1,6 @@
 <template>
   <el-form>
-    <el-form-item label="评价指标表：">
+    <el-form-item label="评价指标表：" v-if="nomapermse === undefined">
       <el-table :data="tableOneData">
 <!--        <el-table-column prop="index" label="评价指标"></el-table-column>-->
 <!--        <el-table-column prop="r2" label="R2"></el-table-column>-->
@@ -8,7 +8,7 @@
         <el-table-column prop="rmse" label="RMSE"></el-table-column>
       </el-table>
     </el-form-item>
-    <el-form-item>
+    <el-form-item v-if="nomapermse === undefined">
       <el-button @click="exportTableOneSheet"
                  :disabled="tableOneData.length === 0">导出评价指标表</el-button>
     </el-form-item>
@@ -31,6 +31,7 @@ import { saveAs } from 'file-saver';
 
 export default {
   name: 'ResultTable',
+  props: ['nomapermse'],
   data() {
     return {
       tableOneData: [],
