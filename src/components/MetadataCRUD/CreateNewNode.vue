@@ -43,8 +43,8 @@ export default {
       if (this.$data.path.length === 0) {
         return '请指定要插入节点的父节点。';
       }
-      if (this.$data.path.length !== 1) {
-        return '只能插入二级节点。';
+      if (this.$data.path.length > 2) {
+        return '只能插入一级或二级节点。';
       }
       if (this.$data.name.length === 0) {
         return '请填写新节点名称。';
@@ -68,7 +68,11 @@ export default {
     },
     loadMetadata() {
       this.$axios.get('/db/metadata').then((response) => {
-        this.$data.metaDataTree = response.data.data;
+        this.$data.metaDataTree = {
+          value: '根节点',
+          label: '根节点',
+          children: response.data.data,
+        };
       });
     },
   },

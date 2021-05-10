@@ -7,10 +7,13 @@
         :on-success="onSuccess"
         :on-error="onFailure"
         :before-upload="beforeUpload"
-        :action="baseURL + '/db/upload'"
+        :action="uploadURL"
       >
         <el-button type="primary" :disabled="!enabledUploadButton">上传</el-button>
       </el-upload>
+    </el-form-item>
+    <el-form-item>
+      <el-checkbox v-model="autoCreate">自动创建不存在的元数据节点</el-checkbox>
     </el-form-item>
   </el-form>
 </template>
@@ -21,11 +24,15 @@ export default {
   data() {
     return {
       enabledUploadButton: true,
+      autoCreate: false,
     };
   },
   computed: {
-    baseURL() {
-      return this.$axios.defaults.baseURL;
+    uploadURL() {
+      if (this.$data.autoCreate) {
+        return `${this.$axios.defaults.baseURL}/db/upload/autocreate`;
+      }
+      return `${this.$axios.defaults.baseURL}/db/upload`;
     },
   },
   methods: {
