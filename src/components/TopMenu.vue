@@ -208,6 +208,7 @@ export default {
         this.$refs.createMetaView,
         this.$refs.renameMetaView,
         this.$refs.deleteMetaView,
+        this.$refs.uploadMetaView,
       ];
       metaViews.forEach((item) => {
         if (item !== undefined) {
