@@ -17,7 +17,7 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary"
-                 :disabled="name.length === 0 || path.length !== 1"
+                 :disabled="name.length === 0 || path.length > 2"
                  @click="createNewNode">
         新建
       </el-button>
@@ -68,11 +68,11 @@ export default {
     },
     loadMetadata() {
       this.$axios.get('/db/metadata').then((response) => {
-        this.$data.metaDataTree = {
+        this.$data.metaDataTree = [{
           value: '根节点',
           label: '根节点',
           children: response.data.data,
-        };
+        }];
       });
     },
   },
