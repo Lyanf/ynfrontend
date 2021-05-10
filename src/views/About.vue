@@ -30,8 +30,8 @@ export default {
         type: 'warning',
       }).then(() => {
         this.$axios.post('/danger/remove/all/data').then(() => {
-          this.$messenger.success('清除所有数据成功。');
           this.refreshPage();
+          this.$messenger.success('清除所有数据成功。');
         });
       });
     },
@@ -42,8 +42,8 @@ export default {
         type: 'warning',
       }).then(() => {
         this.$axios.post('/danger/remove/whl/data').then(() => {
-          this.$messenger.success('清除「温洪林博士」的数据成功。');
           this.refreshPage();
+          this.$messenger.success('清除「温洪林博士」的数据成功。');
         });
       });
     },
@@ -54,8 +54,8 @@ export default {
         type: 'warning',
       }).then(() => {
         this.$axios.post('/danger/init/db').then(() => {
-          this.$messenger.success('数据库初始化成功。');
           this.refreshPage();
+          this.$messenger.success('数据库初始化成功。');
         });
       });
     },
