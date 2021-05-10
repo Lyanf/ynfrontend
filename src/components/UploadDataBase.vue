@@ -2,14 +2,13 @@
   <el-form label-position="right" label-width="14%">
     <el-form-item label="上传文件">
       <el-upload
-        style="display: inline"
-        :show-file-list="false"
+        :show-file-list="true"
+        :multiple="true"
         :on-success="onSuccess"
         :on-error="onFailure"
-        :before-upload="beforeUpload"
         :action="uploadURL"
       >
-        <el-button type="primary" :disabled="!enabledUploadButton">上传</el-button>
+        <el-button type="primary">上传</el-button>
       </el-upload>
     </el-form-item>
     <el-form-item>
@@ -23,7 +22,6 @@ export default {
   name: 'UploadDataBase',
   data() {
     return {
-      enabledUploadButton: true,
       autoCreate: false,
     };
   },
@@ -36,16 +34,11 @@ export default {
     },
   },
   methods: {
-    onSuccess() {
-      this.$data.enabledUploadButton = true;
-      this.$messenger.success('上传成功。');
+    onSuccess(_, file) {
+      this.$messenger.success(`上传「${file.name}」成功。`);
     },
-    onFailure() {
-      this.$data.enabledUploadButton = true;
-      this.$messenger.error('上传失败。');
-    },
-    beforeUpload() {
-      this.$data.enabledUploadButton = false;
+    onFailure(_, file) {
+      this.$messenger.error(`上传「${file.name}」失败。`);
     },
   },
 };
