@@ -52,7 +52,6 @@
 import YearRangeSelector from '@/components/YearRangeSelector.vue';
 import * as json2csv from 'json2csv';
 import { saveAs } from 'file-saver';
-import * as iconv from 'iconv-lite';
 
 export default {
   name: 'UploadData',
