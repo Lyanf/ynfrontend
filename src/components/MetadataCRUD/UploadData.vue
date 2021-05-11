@@ -1,10 +1,42 @@
 <template>
   <el-form label-position="right" label-width="14%">
-    <el-form-item label="数据年份">
+    <el-form-item label="粒度">
+      <el-select v-model="currentGrain">
+        <el-option v-for="item in knownGrains"
+                   :key="item"
+                   :value="item">
+        </el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item v-if="currentGrain === '年'" label="数据年份">
       <year-range-selector
         :begin-year.sync='beginYear'
         :end-year.sync="endYear">
       </year-range-selector>
+    </el-form-item>
+    <el-form-item v-if="currentGrain === '月'" label="数据月份">
+      <el-date-picker type="monthrange"
+                      range-separator="至"
+                      start-placeholder="起始月份"
+                      end-placeholder="终止月份"
+                      v-model="monthRange"
+      ></el-date-picker>
+    </el-form-item>
+    <el-form-item v-if="currentGrain === '日'" label="数据日期">
+      <el-date-picker type="daterange"
+                      range-separator="至"
+                      start-placeholder="起始日期"
+                      end-placeholder="终止日期"
+                      v-model="dateRange"
+      ></el-date-picker>
+    </el-form-item>
+    <el-form-item v-if="currentGrain === '时'" label="数据时间">
+      <el-date-picker type="daterange"
+                      range-separator="至"
+                      start-placeholder="起始时间"
+                      end-placeholder="终止时间"
+                      v-model="timeRange"
+      ></el-date-picker>
     </el-form-item>
     <el-form-item label="一级类型">
       <el-select v-model="currentMajorCategory">
@@ -25,14 +57,6 @@
     <el-form-item label="地区">
       <el-select v-model="currentRegion">
         <el-option v-for="item in knownRegions"
-                   :key="item"
-                   :value="item">
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item label="粒度">
-      <el-select v-model="currentGrain">
-        <el-option v-for="item in knownGrains"
                    :key="item"
                    :value="item">
         </el-option>
@@ -68,6 +92,9 @@ export default {
       knownRegions: [],
       beginYear: null,
       endYear: null,
+      monthRange: [],
+      dateRange: [],
+      timeRange: [],
       zh2enGrainMapper: {
         年: 'year',
         月: 'month',
@@ -101,18 +128,71 @@ export default {
 ${this.$data.zh2enGrainMapper[this.$data.currentGrain]}_\
 ${this.$data.currentMajorCategory}`;
       const raw = [];
-      for (let i = this.$data.beginYear; i <= this.$data.endYear; i += 1) {
-        const bloc = {
-          year: i,
-        };
-        this.$data.currentMinorCategory.forEach((elem) => {
-          bloc[elem] = null;
+      let data = null;
+      if (this.$data.currentGrain === '年') {
+        for (let i = this.$data.beginYear; i <= this.$data.endYear; i += 1) {
+          const bloc = {
+            year: i,
+          };
+          this.$data.currentMinorCategory.forEach((elem) => {
+            bloc[elem] = null;
+          });
+          raw.push(bloc);
+        }
+        data = json2csv.parse(raw, {
+          fields: ['year'].concat(this.$data.currentMinorCategory),
         });
-        raw.push(bloc);
+      } else if (this.$data.currentGrain === '月') {
+        const from = this.$data.monthRange[0];
+        const to = this.$data.monthRange[1];
+
+        for (let month = from; month <= to; month.setMonth(month.getMonth() + 1)) {
+          const bloc = {
+            month: month.format('yyyy-MM'),
+          };
+          this.$data.currentMinorCategory.forEach((elem) => {
+            bloc[elem] = null;
+          });
+          raw.push(bloc);
+        }
+        data = json2csv.parse(raw, {
+          fields: ['month'].concat(this.$data.currentMinorCategory),
+        });
+      } else if (this.$data.currentGrain === '日') {
+        const from = this.$data.dateRange[0];
+        const to = this.$data.dateRange[1];
+
+        for (let day = from; day <= to; day.setDate(day.getDate() + 1)) {
+          const bloc = {
+            day: day.format('yyyy-MM-dd'),
+          };
+          this.$data.currentMinorCategory.forEach((elem) => {
+            bloc[elem] = null;
+          });
+          raw.push(bloc);
+        }
+        data = json2csv.parse(raw, {
+          fields: ['day'].concat(this.$data.currentMinorCategory),
+        });
+      } else if (this.$data.currentGrain === '时') {
+        const from = this.$data.timeRange[0];
+        const to = this.$data.timeRange[1];
+
+        for (let day = from; day <= to; day.setDate(day.getDate() + 1)) {
+          for (let hour = 0; hour < 24; hour += 1) {
+            const bloc = {
+              time: `${day.format('yyyy-MM-dd')} ${hour}:00`,
+            };
+            this.$data.currentMinorCategory.forEach((elem) => {
+              bloc[elem] = null;
+            });
+            raw.push(bloc);
+          }
+        }
+        data = json2csv.parse(raw, {
+          fields: ['time'].concat(this.$data.currentMinorCategory),
+        });
       }
-      const data = json2csv.parse(raw, {
-        fields: ['year'].concat(this.$data.currentMinorCategory),
-      });
       const blob = new Blob([`\ufeff${data}`], { type: 'text/csv;charset=utf-8' });
       saveAs(blob, fileName);
     },
@@ -136,8 +216,22 @@ ${this.$data.currentMajorCategory}`;
       if (this.$data.currentMinorCategory.length === 0) {
         return false;
       }
-      if (this.$data.beginYear === null || this.$data.endYear === null) {
-        return false;
+      if (this.$data.currentGrain === '年') {
+        if (this.$data.beginYear === null || this.$data.endYear === null) {
+          return false;
+        }
+      } else if (this.$data.currentGrain === '月') {
+        if (this.$data.monthRange.length === 0) {
+          return false;
+        }
+      } else if (this.$data.currentGrain === '日') {
+        if (this.$data.dateRange.length === 0) {
+          return false;
+        }
+      } else if (this.$data.currentGrain === '时') {
+        if (this.$data.timeRange.length === 0) {
+          return false;
+        }
       }
       return true;
     },
