@@ -1,6 +1,6 @@
 {
   "name": "yunnan-power-system",
-  "version": "0.1.21",
+  "version": "0.1.23",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -16,6 +16,7 @@
     "echarts": "^4.8.0",
     "element-ui": "^2.13.2",
     "file-saver": "^2.0.5",
+    "iconv-lite": "^0.6.2",
     "json2csv": "^5.0.5",
     "moment": "^2.27.0",
     "socket.io": "^3.1.0",

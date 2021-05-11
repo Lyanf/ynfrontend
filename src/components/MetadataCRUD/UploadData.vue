@@ -52,6 +52,7 @@
 import YearRangeSelector from '@/components/YearRangeSelector.vue';
 import * as json2csv from 'json2csv';
 import { saveAs } from 'file-saver';
+import * as iconv from 'iconv-lite';
 
 export default {
   name: 'UploadData',
@@ -113,7 +114,7 @@ ${this.$data.currentMajorCategory}`;
       const data = json2csv.parse(raw, {
         fields: ['year'].concat(this.$data.currentMinorCategory),
       });
-      const blob = new Blob([data], { type: 'text/csv' });
+      const blob = new Blob([iconv.encode(data, 'gbk')], { type: 'text/csv' });
       saveAs(blob, fileName);
     },
   },

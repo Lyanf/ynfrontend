@@ -104,6 +104,7 @@
 import YearRangeSelector from '@/components/YearRangeSelector.vue';
 import * as json2csv from 'json2csv';
 import { saveAs } from 'file-saver';
+import * as iconv from 'iconv-lite';
 
 export default {
   name: 'SinglePredictSelectForm',
@@ -164,7 +165,8 @@ export default {
       const data = json2csv.parse(raw, {
         fields: ['year'].concat(params.rejectlsit),
       });
-      const blob = new Blob([data], { type: 'text/csv' });
+      alert(data);
+      const blob = new Blob([iconv.encode(data, 'gbk')], { type: 'text/csv;charset=utf-8' });
       saveAs(blob, '剔除数据模版.csv');
     },
     getUploader(key, param, raw) {
