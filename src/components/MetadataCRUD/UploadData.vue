@@ -135,7 +135,7 @@ export default {
     generateTemplate() {
       const fileName = `${this.$data.currentRegion}_\
 ${this.$data.zh2enGrainMapper[this.$data.currentGrain]}_\
-${this.$data.currentMajorCategory}`;
+${this.$data.currentMajorCategory}.csv`;
       const raw = [];
       let data = null;
       if (this.$data.currentGrain === '年') {
