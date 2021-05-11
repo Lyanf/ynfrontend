@@ -103,46 +103,44 @@ export default {
             tag,
           },
         }).then((paramrp) => {
-          const params = paramrp.data.data.parameters;
-          this.$axios.post('/mining/request', params)
-            .then((response) => {
-              if (params.method === 'K均值算法') {
-                let index = 1;
-                response.data.data.Clusters.forEach((elem) => {
-                  this.$data.kMeansData.push({
-                    tag,
-                    index,
-                    members: elem.join('、'),
-                  });
-                  index += 1;
-                });
-              } else if (params.method === '主成分分析算法') {
-                for (let factorIndex = 0;
-                  factorIndex < response.data.data.N_components.length;
-                  factorIndex += 1) {
-                  for (let innerIndex = 0;
-                    innerIndex < response.data.data.FactorName.length;
-                    innerIndex += 1) {
-                    this.$data.pcaData.push({
-                      tag,
-                      index: factorIndex + 1,
-                      percentage: response.data.data.ComponetRatio[factorIndex],
-                      name: response.data.data.FactorName[innerIndex],
-                      factor: response.data.data.Vectors[factorIndex][innerIndex],
-                    });
-                  }
-                }
-              } else if (params.method === '关联规则分析算法') {
-                for (let i = 0; i < response.data.data.FactorsName.length; i += 1) {
-                  this.$data.aprioriData.push({
-                    tag,
-                    name: response.data.data.FactorsName[i],
-                    score: response.data.data.Score[i],
-                    confidence: response.data.data.Confidence[i],
-                  });
-                }
-              }
+          const { result } = paramrp.data.data;
+          const { arg } = paramrp.data.data;
+          if (arg.method === 'K均值算法') {
+            let index = 1;
+            result.Clusters.forEach((elem) => {
+              this.$data.kMeansData.push({
+                tag,
+                index,
+                members: elem.join('、'),
+              });
+              index += 1;
             });
+          } else if (arg.method === '主成分分析算法') {
+            for (let factorIndex = 0;
+              factorIndex < result.N_components.length;
+              factorIndex += 1) {
+              for (let innerIndex = 0;
+                innerIndex < result.FactorName.length;
+                innerIndex += 1) {
+                this.$data.pcaData.push({
+                  tag,
+                  index: factorIndex + 1,
+                  percentage: result.ComponetRatio[factorIndex],
+                  name: result.FactorName[innerIndex],
+                  factor: result.Vectors[factorIndex][innerIndex],
+                });
+              }
+            }
+          } else if (arg.method === '关联规则分析算法') {
+            for (let i = 0; i < result.FactorsName.length; i += 1) {
+              this.$data.aprioriData.push({
+                tag,
+                name: result.FactorsName[i],
+                score: result.Score[i],
+                confidence: result.Confidence[i],
+              });
+            }
+          }
         });
       });
     },
