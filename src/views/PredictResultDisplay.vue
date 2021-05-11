@@ -33,7 +33,7 @@
         <el-row>
           <div id="compareChart" style="height: 500px"></div>
         </el-row>
-        <el-row>
+        <el-row v-if="currentChart !== undefined">
           <el-form>
             <el-form-item>
               <el-button v-on:click="exportImage">导出图像</el-button>
