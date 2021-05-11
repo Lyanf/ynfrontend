@@ -2,7 +2,7 @@
   <div>
     <el-row type="flex" justify="center">
       <el-col :span="11" :offset="1">
-        <MutableForm        tag-url="LONGTERM"
+        <MutableForm        tag-type="LONGTERM"
                             :graph-data.sync="graphData"
                             :table-one-data.sync="tableOneData"
                             :table-two-data.sync="tableTwoData"
