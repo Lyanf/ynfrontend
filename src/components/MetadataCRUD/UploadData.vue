@@ -62,6 +62,14 @@
         </el-option>
       </el-select>
     </el-form-item>
+    <el-form-item label="分隔符" v-if="currentGrain !== '' && currentGrain !== '年'">
+      <el-radio v-model="separator" label="/">/</el-radio>
+      <el-radio v-model="separator" label="-">-</el-radio>
+      <label style="font-size: 12px; color: #777777">
+        形如 {{ (currentGrain === '月' ? [2000, 1] : [2017, 1, 25]).join(separator) }}
+        {{ currentGrain === '时' ? '12:00': '' }}
+      </label>
+    </el-form-item>
     <el-form-item>
       <el-button type="primary"
                  :disabled="!canCommitGenerate"
@@ -101,6 +109,7 @@ export default {
         日: 'day',
         时: 'hour',
       },
+      separator: '-',
     };
   },
   methods: {
@@ -143,12 +152,12 @@ ${this.$data.currentMajorCategory}`;
           fields: ['year'].concat(this.$data.currentMinorCategory),
         });
       } else if (this.$data.currentGrain === '月') {
-        const from = this.$data.monthRange[0];
-        const to = this.$data.monthRange[1];
+        const from = new Date(this.$data.monthRange[0]);
+        const to = new Date(this.$data.monthRange[1]);
 
         for (let month = from; month <= to; month.setMonth(month.getMonth() + 1)) {
           const bloc = {
-            month: month.format('yyyy-MM'),
+            month: month.format(`yyyy${this.$data.separator}MM`),
           };
           this.$data.currentMinorCategory.forEach((elem) => {
             bloc[elem] = null;
@@ -159,12 +168,12 @@ ${this.$data.currentMajorCategory}`;
           fields: ['month'].concat(this.$data.currentMinorCategory),
         });
       } else if (this.$data.currentGrain === '日') {
-        const from = this.$data.dateRange[0];
-        const to = this.$data.dateRange[1];
+        const from = new Date(this.$data.dateRange[0]);
+        const to = new Date(this.$data.dateRange[1]);
 
         for (let day = from; day <= to; day.setDate(day.getDate() + 1)) {
           const bloc = {
-            day: day.format('yyyy-MM-dd'),
+            day: day.format(`yyyy${this.$data.separator}MM${this.$data.separator}dd`),
           };
           this.$data.currentMinorCategory.forEach((elem) => {
             bloc[elem] = null;
@@ -175,13 +184,13 @@ ${this.$data.currentMajorCategory}`;
           fields: ['day'].concat(this.$data.currentMinorCategory),
         });
       } else if (this.$data.currentGrain === '时') {
-        const from = this.$data.timeRange[0];
-        const to = this.$data.timeRange[1];
+        const from = new Date(this.$data.timeRange[0]);
+        const to = new Date(this.$data.timeRange[1]);
 
         for (let day = from; day <= to; day.setDate(day.getDate() + 1)) {
           for (let hour = 0; hour < 24; hour += 1) {
             const bloc = {
-              hour: `${day.format('yyyy-MM-dd')} ${hour}:00`,
+              hour: `${day.format(`yyyy${this.$data.separator}MM${this.$data.separator}dd`)} ${hour}:00`,
             };
             this.$data.currentMinorCategory.forEach((elem) => {
               bloc[elem] = null;
