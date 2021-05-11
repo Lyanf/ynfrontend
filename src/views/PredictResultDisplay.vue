@@ -101,10 +101,6 @@ export default {
       knownTags: [],
       knownTraits: [
         {
-          label: 'R2 值',
-          value: 'R2',
-        },
-        {
           label: 'MAPE 值',
           value: 'MAPE',
         },

@@ -2,7 +2,7 @@
   <div>
     <el-row>
       <el-col :span="22" :offset="1">
-        <el-form inline>
+        <el-form>
           <el-form-item label="方案标签：">
             <el-select v-model="selectedTag">
               <el-option v-for="item in knownTags"
@@ -17,41 +17,31 @@
             <el-button type="primary" :disabled="selectedTag === null"
                        @click="preformQuery">查询</el-button>
           </el-form-item>
+          <el-form-item label="方案参数：" v-if="jsonContent !== undefined" />
+          <json-viewer v-if="jsonContent !== undefined" :value="jsonContent" copyable></json-viewer>
+
+          <el-form-item label="预测结果：" v-if="predictContent !== undefined" />
+          <json-viewer v-if="predictContent !== undefined"
+                       :value="predictContent" copyable></json-viewer>
         </el-form>
-        <el-form label-position="right" label-width="auto">
-          <el-col :span="8">
-            <el-form-item v-for="pair in knownKVs" :label="pair.key + '：'" :key="pair.key">
-              <a>{{pair.value}}</a>
-            </el-form-item>
-          </el-col>
-        </el-form>
       </el-col>
-      <el-col :span="12">
-        <el-row>
-          <ResultChart ref="resultChart"></ResultChart>
-        </el-row>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :span="22" :offset="1">
-        <ResultTable ref="resultTable"></ResultTable>
-      </el-col>
+
     </el-row>
   </div>
 </template>
 
 <script>
-import ResultChart from '@/components/ResultChart.vue';
-import ResultTable from '@/components/ResultTable.vue';
+import JsonViewer from 'vue-json-viewer';
 
 export default {
   name: 'PredictResultQuery',
-  components: { ResultTable, ResultChart },
+  components: { JsonViewer },
   data() {
     return {
       knownTags: [],
       selectedTag: null,
-      knownKVs: [],
+      jsonContent: undefined,
+      predictContent: undefined,
       typeName: {
         MINING: '数据挖掘方案',
         STATIC_REGIONAL: '地区单预测方案',
@@ -81,19 +71,8 @@ export default {
           tag: this.$data.selectedTag,
         },
       }).then((response) => {
-        this.$data.knownKVs = [];
-        Object.keys(response.data.data.parameters).forEach((key) => {
-          if (response.data.data.parameters[key]) {
-            this.$data.knownKVs.push({
-              key,
-              value: response.data.data.parameters[key],
-            });
-          }
-        });
-        this.$refs.resultChart.graphData = response.data.data.graphData;
-        this.$refs.resultChart.refreshChart();
-        this.$refs.resultTable.tableOneData = response.data.data.tableOneData;
-        this.$refs.resultTable.tableTwoData = response.data.data.tableTwoData;
+        this.$data.jsonContent = response.data.data.arg;
+        this.$data.predictContent = response.data.data.result;
       });
     },
   },

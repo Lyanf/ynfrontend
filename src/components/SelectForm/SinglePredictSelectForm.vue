@@ -188,16 +188,6 @@ export default {
         region: '',
         industry: '',
         method: '',
-        factor1: {
-          name: '',
-          hasValue: true,
-          value: 0.5,
-        },
-        factor2: {
-          name: '',
-          hasValue: true,
-          value: 0.5,
-        },
         tag: null,
         tagType: 'STATIC_REGIONAL',
       },

@@ -181,7 +181,7 @@ ${this.$data.currentMajorCategory}`;
         for (let day = from; day <= to; day.setDate(day.getDate() + 1)) {
           for (let hour = 0; hour < 24; hour += 1) {
             const bloc = {
-              time: `${day.format('yyyy-MM-dd')} ${hour}:00`,
+              hour: `${day.format('yyyy-MM-dd')} ${hour}:00`,
             };
             this.$data.currentMinorCategory.forEach((elem) => {
               bloc[elem] = null;
@@ -190,7 +190,7 @@ ${this.$data.currentMajorCategory}`;
           }
         }
         data = json2csv.parse(raw, {
-          fields: ['time'].concat(this.$data.currentMinorCategory),
+          fields: ['hour'].concat(this.$data.currentMinorCategory),
         });
       }
       const blob = new Blob([`\ufeff${data}`], { type: 'text/csv;charset=utf-8' });
