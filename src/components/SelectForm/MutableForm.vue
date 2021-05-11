@@ -165,7 +165,7 @@ export default {
       const data = json2csv.parse(raw, {
         fields: ['year'].concat(params.rejectlsit),
       });
-      const blob = new Blob([iconv.encode(data, 'gbk')], { type: 'text/csv' });
+      const blob = new Blob([`\ufeff${data}`], { type: 'text/csv;charset=utf-8' });
       saveAs(blob, '剔除数据模版.csv');
     },
     getUploader(key, param, raw) {

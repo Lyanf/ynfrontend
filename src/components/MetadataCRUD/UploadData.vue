@@ -114,7 +114,7 @@ ${this.$data.currentMajorCategory}`;
       const data = json2csv.parse(raw, {
         fields: ['year'].concat(this.$data.currentMinorCategory),
       });
-      const blob = new Blob([iconv.encode(data, 'gbk')], { type: 'text/csv' });
+      const blob = new Blob([`\ufeff${data}`], { type: 'text/csv;charset=utf-8' });
       saveAs(blob, fileName);
     },
   },
