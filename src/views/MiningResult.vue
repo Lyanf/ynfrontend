@@ -7,9 +7,9 @@
             <el-select v-model="selectedPlans" multiple placeholder="请选择">
               <el-option
                 v-for="item in miningResults"
-                :key="item.id"
-                :label="item.id"
-                :value="item.id">
+                :key="item.tag"
+                :label="item.tag"
+                :value="item.tag">
               </el-option>
             </el-select>
           </el-form-item>

@@ -79,9 +79,9 @@
           <el-select placeholder="选择标签" v-model="currentTag" size="small" style="width: 50%">
             <el-option
               v-for="item in knownTags"
-              :key="item.id"
-              :label="item.id"
-              :value="item.id">
+              :key="item.tag"
+              :label="item.tag"
+              :value="item.tag">
             </el-option>
           </el-select>
           <el-button size="small" @click="loadParameters"

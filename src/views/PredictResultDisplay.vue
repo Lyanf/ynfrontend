@@ -6,9 +6,9 @@
           <el-form-item label="对比方案标签：">
             <el-select v-model="postParams.tags" multiple>
               <el-option v-for="item in knownTags"
-                         :key="item.id"
-                         :value="item.id">
-                <span style="float: left">{{ item.id }}</span>
+                         :key="item.tag"
+                         :value="item.tag">
+                <span style="float: left">{{ item.tag }}</span>
                 <span style="float: right; color: #8492a6;">{{ typeName[item.tagType] }}</span>
               </el-option>
             </el-select>

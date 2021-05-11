@@ -62,9 +62,9 @@
                          v-model="currentSokuTag" size="small" style="width: 50%">
                 <el-option
                   v-for="item in knownSokuTags"
-                  :key="item.id"
-                  :label="item.id"
-                  :value="item.id">
+                  :key="item.tag"
+                  :label="item.tag"
+                  :value="item.tag">
                 </el-option>
               </el-select>
               <el-button size="small" @click="loadSokuParameters"
@@ -153,9 +153,9 @@
                            v-model="currentClampTag" size="small" style="width: 50%">
                   <el-option
                     v-for="item in knownClampTags"
-                    :key="item.id"
-                    :label="item.id"
-                    :value="item.id">
+                    :key="item.tag"
+                    :label="item.tag"
+                    :value="item.tag">
                   </el-option>
                 </el-select>
                 <el-button size="small" @click="loadClampParameters"
@@ -245,9 +245,9 @@
                            v-model="currentInterpTag" size="small" style="width: 50%">
                   <el-option
                     v-for="item in knownInterpTags"
-                    :key="item.id"
-                    :label="item.id"
-                    :value="item.id">
+                    :key="item.tag"
+                    :label="item.tag"
+                    :value="item.tag">
                   </el-option>
                 </el-select>
                 <el-button size="small" @click="loadInterpParameters"
@@ -313,9 +313,9 @@
                            v-model="currentYearContTag" size="small" style="width: 50%">
                   <el-option
                     v-for="item in knownYearContTags"
-                    :key="item.id"
-                    :label="item.id"
-                    :value="item.id">
+                    :key="item.tag"
+                    :label="item.tag"
+                    :value="item.tag">
                   </el-option>
                 </el-select>
                 <el-button size="small" @click="loadYearContParameters"
