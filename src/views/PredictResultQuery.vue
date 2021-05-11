@@ -149,7 +149,9 @@ export default {
           rmse: content.result.RMSE,
         };
         const years = [];
-        for (let i = content.arg.PreStartYear; i <= content.arg.PreEndYear; i += 1) {
+        for (let i = parseInt(content.arg.PreStartYear, 10);
+          i <= parseInt(content.arg.PreEndYear, 10);
+          i += 1) {
           years.push(i);
         }
         this.$data.chartData = {
@@ -164,10 +166,11 @@ export default {
         };
         this.refreshChart();
         const takeTwoData = [];
-        for (let i = content.arg.PreStartYear; i <= content.arg.PreEndYear; i += 1) {
+        for (let i = parseInt(content.arg.PreStartYear, 10);
+          i <= parseInt(content.arg.PreEndYear, 10); i += 1) {
           takeTwoData.push({
             year: i,
-            predict: content.result.preresult[i - content.arg.PreStartYear],
+            predict: content.result.preresult[i - parseInt(content.arg.PreStartYear, 10)],
           });
         }
         this.$refs.resultTable.tableOneData = [this.$data.predictTokens];
