@@ -18,9 +18,7 @@ Vue.use(Vuex);
 Vue.use(Print);
 Vue.component('LoadingView', LoadingView);
 
-const axios = axiosApi.create({
-  baseURL: 'http://localhost:18000/api',
-});
+const axios = axiosApi.create();
 
 axios.defaults.timeout = 142857;
 
@@ -32,6 +30,7 @@ const store = new Vuex.Store({
   state: {
     isLogin: false,
     isLoading: false,
+    isOnline: true,
   },
   mutations: {
     login(state) {
@@ -45,6 +44,12 @@ const store = new Vuex.Store({
     },
     finishLoad(state) {
       state.isLoading = false;
+    },
+    switchOnline(state) {
+      state.isOnline = true;
+    },
+    switchOffline(state) {
+      state.isOnline = false;
     },
   },
   plugins: [vuexLocal.plugin],
@@ -130,6 +135,12 @@ Date.prototype.format = function (inFmt) {
   }
   return fmt;
 };
+
+if (store.state.isOnline) {
+  axios.defaults.baseURL = 'http://dclab.club:18000/api';
+} else {
+  axios.defaults.baseURL = 'http://localhost:18000/api';
+}
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$messenger = messenger;
