@@ -95,7 +95,7 @@ export default {
             fields,
           });
           const blob = new Blob([data], { type: 'text/csv' });
-          saveAs(blob, 'database.csv');
+          saveAs(blob, '数据库表格.csv');
         },
         handleRowAdd(row, done) {
           this.$axios.post('/db/create', {

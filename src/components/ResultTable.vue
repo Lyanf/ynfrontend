@@ -43,7 +43,7 @@ export default {
         fields,
       });
       const blob = new Blob([data], { type: 'text/csv' });
-      saveAs(blob, 'database.csv');
+      saveAs(blob, '预测结果表.csv');
     },
     exportTableOneSheet() {
       this.exportTableSheet(this.$data.tableOneData, ['mape', 'rmse']);

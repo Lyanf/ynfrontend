@@ -262,7 +262,7 @@ export default {
         fields,
       });
       const blob = new Blob([data], { type: 'text/csv' });
-      saveAs(blob, 'database.csv');
+      saveAs(blob, '数据挖掘表.csv');
     },
   },
   data() {
