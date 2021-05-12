@@ -15,7 +15,7 @@
     </el-row>
     <el-row>
       <el-col :span="22" :offset="1">
-        <ResultTable nomapermse="true" ref="resultTable"></ResultTable>
+        <ResultTable ref="resultTable"></ResultTable>
       </el-col>
     </el-row>
   </div>
