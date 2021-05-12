@@ -93,7 +93,13 @@ axios.interceptors.response.use(
     if (response.data.code === 200) {
       return response;
     }
-    messenger.error(`请求失败！服务器报告了一个 ${response.data.msg} 错误。`);
+    const message = response.data.msg;
+    if (message.includes('Error(\'')) {
+      const messageBody = message.split('Error(\'').slice(-1)[0].replace('\')', '');
+      messenger.error(messageBody);
+    } else {
+      messenger.error(`请求失败！服务器报告了一个 ${response.data.msg} 内部错误。`);
+    }
     return Promise.reject(response);
   },
   (error) => {
