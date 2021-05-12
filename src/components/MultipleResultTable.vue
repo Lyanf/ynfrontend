@@ -5,6 +5,8 @@
       <el-table :data="tableOneData">
 <!--        <el-table-column prop="index" label="评价指标"></el-table-column>-->
 <!--        <el-table-column prop="r2" label="R2"></el-table-column>-->
+        <el-table-column prop="name" label="名称">
+        </el-table-column>
         <el-table-column prop="mape" label="MAPE（%）">
           <template slot-scope="scope">
             {{scope.row.mape.toFixed(2) }}
@@ -59,10 +61,10 @@ export default {
       saveAs(blob, '预测结果表.csv');
     },
     exportTableOneSheet() {
-      this.exportTableSheet(this.$data.tableOneData, ['mape', 'rmse']);
+      this.exportTableSheet(this.$data.tableOneData, ['name', 'mape', 'rmse']);
     },
     exportTableTwoSheet() {
-      this.exportTableSheet(this.$data.tableTwoData, ['year', 'predict']);
+      this.exportTableSheet(this.$data.tableTwoData, ['year', 'tag', 'predict']);
     },
   },
 };

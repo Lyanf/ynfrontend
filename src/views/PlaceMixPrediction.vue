@@ -17,7 +17,7 @@
     </el-row>
     <el-row>
       <el-col :span="22" :offset="1">
-        <ResultTable nomapermse="true" ref="resultTable"></ResultTable>
+        <ResultTable ref="resultTable"></ResultTable>
       </el-col>
     </el-row>
   </div>
@@ -52,7 +52,6 @@ export default {
     },
     tableTwoData(value) {
       const oldStyleTable = [];
-
       for (let i = 0; i < value.yData.length; i += 1) {
         let j = 0;
         value.yData[i].data.forEach((elem) => {
