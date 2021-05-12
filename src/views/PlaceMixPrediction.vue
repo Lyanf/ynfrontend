@@ -26,7 +26,7 @@
 <script>
 import MutableForm from '@/components/SelectForm/NoHistoryMutableForm.vue';
 import ResultChart from '@/components/MutableChart.vue';
-import ResultTable from '@/components/ResultTable.vue';
+import ResultTable from '@/components/MultipleResultTable.vue';
 
 export default {
   name: 'PlaceMixPrediction',
@@ -57,7 +57,8 @@ export default {
         let j = 0;
         value.yData[i].data.forEach((elem) => {
           oldStyleTable.push({
-            year: `${value.xData[j].toString()}（${value.yData[i].name}）`,
+            year: value.xData[j],
+            tag: value.yData[i].name,
             predict: elem,
           });
           j += 1;
