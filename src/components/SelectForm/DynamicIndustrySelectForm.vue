@@ -112,6 +112,16 @@ export default {
       knownTags: [],
       currentTag: null,
       parameters: {},
+      onlyThosePostParams: {
+        industry: '',
+        method: '',
+        beginYear: null,
+        endYear: null,
+        historyBeginYear: null,
+        historyEndYear: null,
+        tag: null,
+        tagType: 'DYNAMIC_INDUSTRIAL',
+      },
       postParams: {
         industry: '',
         method: '',
@@ -205,6 +215,12 @@ export default {
       this.$emit('update:tableTwoData', value);
     },
     'postParams.method': function (value) {
+      const validKeys = Object.keys(this.$data.onlyThosePostParams);
+      Object.keys(this.$data.postParams).forEach((key) => {
+        if (!validKeys.includes(key)) {
+          this.$delete(this.postParams, key);
+        }
+      });
       this.$data.requiredParams = [];
       this.$axios.get('/get/args', {
         params: {

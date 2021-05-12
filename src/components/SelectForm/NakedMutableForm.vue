@@ -97,6 +97,13 @@ export default {
       rawFiles: {},
       rawFileNames: {},
       allMethods: [],
+      onlyThosePostParams: {
+        beginYear: null,
+        endYear: null,
+        method: '',
+        tag: null,
+        tagType: this.tagType,
+      },
       postParams: {
         beginYear: null,
         endYear: null,
@@ -184,6 +191,12 @@ export default {
       this.$emit('update:tableTwoData', value);
     },
     'postParams.method': function (value) {
+      const validKeys = Object.keys(this.$data.onlyThosePostParams);
+      Object.keys(this.$data.postParams).forEach((key) => {
+        if (!validKeys.includes(key)) {
+          this.$delete(this.postParams, key);
+        }
+      });
       this.$data.requiredParams = [];
       this.$axios.get('/get/args', {
         params: {

@@ -104,6 +104,16 @@ export default {
       knownTags: [],
       currentTag: null,
       parameters: {},
+      onlyThosePostParams: {
+        region: '',
+        method: '',
+        beginYear: null,
+        endYear: null,
+        historyBeginYear: null,
+        historyEndYear: null,
+        tag: null,
+        tagType: 'LONGTERM',
+      },
       postParams: {
         region: '',
         method: '',
@@ -210,6 +220,12 @@ export default {
       this.$emit('update:tableTwoData', value);
     },
     'postParams.method': function (value) {
+      const validKeys = Object.keys(this.$data.onlyThosePostParams);
+      Object.keys(this.$data.postParams).forEach((key) => {
+        if (!validKeys.includes(key)) {
+          this.$delete(this.postParams, key);
+        }
+      });
       this.$data.requiredParams = [];
       this.$axios.get('/get/args', {
         params: {

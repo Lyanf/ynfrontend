@@ -110,6 +110,15 @@ export default {
   components: { YearRangeSelector },
   data() {
     return {
+      onlyThosePostParams: {
+        historyBeginYear: null,
+        historyEndYear: null,
+        beginYear: null,
+        endYear: null,
+        method: '',
+        tag: null,
+        tagType: this.tagType,
+      },
       graphDataInternal: [],
       tableOneDataInternal: [],
       tableTwoDataInternal: [],
@@ -229,6 +238,12 @@ export default {
       this.$emit('update:tableTwoData', value);
     },
     'postParams.method': function (value) {
+      const validKeys = Object.keys(this.$data.onlyThosePostParams);
+      Object.keys(this.$data.postParams).forEach((key) => {
+        if (!validKeys.includes(key)) {
+          this.$delete(this.postParams, key);
+        }
+      });
       this.$data.requiredParams = [];
       this.$axios.get('/get/args', {
         params: {

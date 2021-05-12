@@ -180,6 +180,17 @@ export default {
       tableTwoDataInternal: [],
       requiredParams: [],
       parameters: {},
+      onlyThosePostParams: {
+        historyBeginYear: null,
+        historyEndYear: null,
+        beginYear: null,
+        endYear: null,
+        region: '',
+        industry: '',
+        method: '',
+        tag: null,
+        tagType: 'STATIC_REGIONAL',
+      },
       postParams: {
         historyBeginYear: null,
         historyEndYear: null,
@@ -314,6 +325,12 @@ export default {
       deep: true,
     },
     'postParams.method': function (value) {
+      const validKeys = Object.keys(this.$data.onlyThosePostParams);
+      Object.keys(this.$data.postParams).forEach((key) => {
+        if (!validKeys.includes(key)) {
+          this.$delete(this.postParams, key);
+        }
+      });
       this.$data.requiredParams = [];
       this.$axios.get('/get/args', {
         params: {
