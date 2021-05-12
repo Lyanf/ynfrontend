@@ -20,7 +20,7 @@ Vue.component('LoadingView', LoadingView);
 
 const axios = axiosApi.create();
 
-axios.defaults.timeout = 142857;
+axios.defaults.timeout = 14285714;
 
 const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
