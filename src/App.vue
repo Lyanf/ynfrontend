@@ -65,7 +65,7 @@ export default {
 
 .el-checkbox__label {
   color: #cccccc;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .el-form-item__label {
