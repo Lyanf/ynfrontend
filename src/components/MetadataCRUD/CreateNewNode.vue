@@ -64,6 +64,7 @@ export default {
       this.$axios.post('/db/metadata/create', {
         path: this.$data.path,
         name: this.$data.name,
+        unit: this.$data.unit,
       }).then((response) => {
         console.log(response);
         this.$messenger.success('元数据节点添加成功。');
