@@ -198,6 +198,18 @@ export default {
           axisPointer: {
             type: 'shadow',
           },
+          formatter(dataa) {
+            let returnData = '';
+            // console.log(dataa);
+            for (let i = 0; i < dataa.length; i += 1) {
+              if (dataa[i].seriesName !== '' && dataa[i].value !== undefined) {
+                const indexColor = dataa[i].color;
+                returnData += `<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background:${indexColor}"></span>`;
+                returnData += `${dataa[i].seriesName} - ${parseFloat(dataa[i].value).toFixed(2)}</br>`;
+              }
+            }
+            return returnData;
+          },
         },
         xAxis: {
           type: 'category',

@@ -32,7 +32,8 @@
           </el-option>
         </el-select>
         <el-select v-else-if="param.kind.startsWith('multioption')" multiple
-                   placeholder="请选择数项" v-model="postParams[param.key]"
+                   :placeholder="generateMultipleChoicePlaceholder(param.limits)"
+                   v-model="postParams[param.key]"
                    :multiple-limit="param.limits.max_choice">
           <el-option
             v-for="item in param.value"
@@ -178,6 +179,21 @@ export default {
       }).then((response) => {
         this.$data.postParams = response.data.data;
       });
+    },
+    generateMultipleChoicePlaceholder(limits) {
+      if (limits.min_choice && limits.max_choice) {
+        if (limits.min_choice === limits.max_choice) {
+          return `请选择 ${limits.max_choice} 项`;
+        }
+        return `请选择 ${limits.min_choice} 到 ${limits.max_choice} 项`;
+      }
+      if (limits.max_choice) {
+        return `请选择不超过 ${limits.max_choice} 项`;
+      }
+      if (limits.min_choice) {
+        return `请选择至少 ${limits.min_choice} 项`;
+      }
+      return '请选择至少 1 项';
     },
   },
   watch: {
