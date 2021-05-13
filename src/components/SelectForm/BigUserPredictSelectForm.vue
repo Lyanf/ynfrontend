@@ -179,6 +179,9 @@ export default {
         this.$data.graphDataInternal = response.data.data.graphData;
         this.$data.tableOneDataInternal = response.data.data.tableOneData;
         this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
+        if (response.data.data.unit) {
+          this.$emit('update:unit', response.data.data.unit);
+        }
       });
     },
     handleDelete(index) {
@@ -232,6 +235,7 @@ export default {
     'graphData',
     'tableOneData',
     'tableTwoData',
+    'unit',
   ],
 };
 </script>

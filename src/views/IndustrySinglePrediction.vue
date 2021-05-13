@@ -5,7 +5,8 @@
         <DynamicSelectForm
           :graph-data.sync="graphData"
           :table-one-data.sync="tableOneData"
-          :table-two-data.sync="tableTwoData"></DynamicSelectForm>
+          :table-two-data.sync="tableTwoData"
+          :unit.sync="unit"></DynamicSelectForm>
       </el-col>
       <el-col :span="12">
         <el-row>
@@ -38,6 +39,7 @@ export default {
       graphData: [],
       tableOneData: [],
       tableTwoData: [],
+      unit: '',
     };
   },
   watch: {
@@ -50,6 +52,10 @@ export default {
     },
     tableTwoData(value) {
       this.$refs.resultTable.tableTwoData = value;
+    },
+    unit(value) {
+      this.$refs.resultChart.unit = value;
+      this.$refs.resultTable.unit = value;
     },
   },
 };

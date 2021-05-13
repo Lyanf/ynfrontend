@@ -6,6 +6,7 @@
           :graph-data.sync="graphData"
           :table-one-data.sync="tableOneData"
           :table-two-data.sync="tableTwoData"
+          :unit.sync="unit"
            wired-method="大用户法"
            tag-type="BIGUSER">
         </MutableForm>
@@ -37,6 +38,7 @@ export default {
       graphData: [],
       tableOneData: [],
       tableTwoData: [],
+      unit: '',
     };
   },
   watch: {
@@ -49,6 +51,10 @@ export default {
     },
     tableTwoData(value) {
       this.$refs.resultTable.tableTwoData = value;
+    },
+    unit(value) {
+      this.$refs.resultChart.unit = value;
+      this.$refs.resultTable.unit = value;
     },
   },
 };

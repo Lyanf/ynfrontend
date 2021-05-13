@@ -6,7 +6,8 @@
           placeOrIndustry="place"
           :graph-data.sync="graphData"
           :table-one-data.sync="tableOneData"
-          :table-two-data.sync="tableTwoData"></PredictSelectForm>
+          :table-two-data.sync="tableTwoData"
+          :unit.sync="unit"></PredictSelectForm>
       </el-col>
       <el-col :span="12">
         <el-row>
@@ -39,10 +40,12 @@ export default {
       graphData: [],
       tableOneData: [],
       tableTwoData: [],
+      unit: '',
     };
   },
   watch: {
     graphData(value) {
+      this.$refs.resultChart.unit = this.unit;
       this.$refs.resultChart.graphData = value;
       this.$refs.resultChart.refreshChart();
     },
@@ -51,6 +54,10 @@ export default {
     },
     tableTwoData(value) {
       this.$refs.resultTable.tableTwoData = value;
+    },
+    unit(value) {
+      this.$refs.resultChart.unit = value;
+      this.$refs.resultTable.unit = value;
     },
   },
 };

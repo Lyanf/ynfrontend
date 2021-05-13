@@ -177,6 +177,9 @@ export default {
         this.$data.graphDataInternal = response.data.data.tableTwoData;
         this.$data.tableOneDataInternal = response.data.data.tableOneData;
         this.$data.tableTwoDataInternal = response.data.data.tableTwoData;
+        if (response.data.data.unit) {
+          this.$emit('update:unit', response.data.data.unit);
+        }
       });
     },
     loadParameters() {
@@ -248,6 +251,7 @@ export default {
     'tableTwoData',
     'wiredMethod',
     'tagType',
+    'unit',
   ],
 };
 </script>

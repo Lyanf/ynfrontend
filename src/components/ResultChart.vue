@@ -1,5 +1,6 @@
 <template>
   <div style="margin-left: 20px" v-show="graphData.length !== 0 || graphData.yData !== undefined">
+    <div v-if="unit">单位：{{ unit }}</div>
     <el-row>
       <div :id="uniqueId" style="width: 680px;height: 300px"></div>
     </el-row>
@@ -46,6 +47,7 @@ export default {
   data() {
     return {
       currentChart: undefined,
+      unit: '',
       graphData: [],
       params1st: {
         xTag: 'xName',
@@ -133,7 +135,7 @@ export default {
         },
         yAxis: {
           type: 'value',
-          name: param.yName,
+          name: this.$data.unit ? `预测值（${this.$data.unit}）` : param.yName,
           axisLabel: {
             show: true,
             textStyle: {

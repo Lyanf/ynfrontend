@@ -6,6 +6,7 @@
                             :graph-data.sync="graphData"
                             :table-one-data.sync="tableOneData"
                             :table-two-data.sync="tableTwoData"
+                            :unit.sync="unit"
                             wired-method="负荷密度法"></MutableForm>
       </el-col>
       <el-col :span="12" >
@@ -39,6 +40,7 @@ export default {
       graphData: [],
       tableOneData: [],
       tableTwoData: [],
+      unit: '',
     };
   },
   watch: {
@@ -51,6 +53,10 @@ export default {
     },
     tableTwoData(value) {
       this.$refs.resultTable.tableTwoData = value;
+    },
+    unit(value) {
+      this.$refs.resultChart.unit = value;
+      this.$refs.resultTable.unit = value;
     },
   },
   // stupid windows CRLF

@@ -6,7 +6,8 @@
                      tag-type="MIX"
                      :graph-data.sync="graphData"
                      :table-one-data.sync="tableOneData"
-                     :table-two-data.sync="tableTwoData">
+                     :table-two-data.sync="tableTwoData"
+                     :unit.sync="unit">
         </MutableForm>
       </el-col>
       <el-col :span="12">
@@ -36,6 +37,7 @@ export default {
       graphData: [],
       tableOneData: [],
       tableTwoData: [],
+      unit: '',
     };
   },
   watch: {
@@ -66,6 +68,10 @@ export default {
       }
 
       this.$refs.resultTable.tableTwoData = oldStyleTable;
+    },
+    unit(value) {
+      this.$refs.resultChart.unit = value;
+      this.$refs.resultTable.unit = value;
     },
   },
 };
