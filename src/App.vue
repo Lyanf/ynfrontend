@@ -63,6 +63,11 @@ export default {
   background-color: #4f58db;
 }
 
+.el-checkbox__label {
+  color: #cccccc;
+  font-size: 10px;
+}
+
 .el-form-item__label {
   color: #cccccc;
   font-size: 16px;

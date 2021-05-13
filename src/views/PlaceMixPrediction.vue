@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import MutableForm from '@/components/SelectForm/NoHistoryMutableForm.vue';
+import MutableForm from '@/components/SelectForm/UglyNoHistoryMutableForm.vue';
 import ResultChart from '@/components/MutableChart.vue';
 import ResultTable from '@/components/MultipleResultTable.vue';
 
