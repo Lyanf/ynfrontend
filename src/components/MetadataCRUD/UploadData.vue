@@ -48,9 +48,9 @@
     </el-form-item>
     <el-form-item label="二级类型">
       <el-select multiple v-model="currentMinorCategory">
-        <el-option v-for="item in minorCategories[currentMajorCategory]"
-                   :key="item[0]"
-                   :value="item[0]">
+        <el-option v-for="item in parseFormat(minorCategories[currentMajorCategory])"
+                   :key="item"
+                   :value="item">
         </el-option>
       </el-select>
     </el-form-item>
@@ -204,6 +204,20 @@ ${this.$data.currentMajorCategory}.csv`;
       }
       const blob = new Blob([`\ufeff${data}`], { type: 'text/csv;charset=utf-8' });
       saveAs(blob, fileName);
+    },
+    parseFormat(minors) {
+      if (!minors) {
+        return [];
+      }
+      const results = [];
+      minors.forEach((tuple) => {
+        if (tuple[1]) {
+          results.push(`${tuple[0]}（${tuple[1]}）`);
+        } else {
+          results.push(tuple[0]);
+        }
+      });
+      return results;
     },
   },
   mounted() {
