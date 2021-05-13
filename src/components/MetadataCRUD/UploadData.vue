@@ -49,8 +49,8 @@
     <el-form-item label="二级类型">
       <el-select multiple v-model="currentMinorCategory">
         <el-option v-for="item in minorCategories[currentMajorCategory]"
-                   :key="item"
-                   :value="item">
+                   :key="item[0]"
+                   :value="item[0]">
         </el-option>
       </el-select>
     </el-form-item>

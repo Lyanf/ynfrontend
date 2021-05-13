@@ -10,7 +10,7 @@
     <el-form-item label="节点名称">
       <el-input clearable v-model="name" placeholder="请输入"></el-input>
     </el-form-item>
-    <el-form-item label="数据单位">
+    <el-form-item label="数据单位" v-if="path.length === 2">
       <el-input clearable v-model="unit" placeholder="请输入"></el-input>
     </el-form-item>
     <el-form-item>
@@ -20,7 +20,7 @@
     </el-form-item>
     <el-form-item>
       <el-button type="primary"
-                 :disabled="name.length === 0 || unit.length === 0 || path.length > 2"
+                 :disabled="name.length === 0 || path.length > 2"
                  @click="createNewNode">
         新建
       </el-button>
