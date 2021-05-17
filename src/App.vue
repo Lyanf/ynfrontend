@@ -82,6 +82,14 @@ export default {
   color: #aaaaaa;
 }
 
+.el-form-item {
+  margin-bottom: 12px;
+}
+
+.el-date-editor--yearrange {
+  width: 100%;
+}
+
 #app {
   top: 0;
   right: 0;

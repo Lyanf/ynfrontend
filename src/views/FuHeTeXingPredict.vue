@@ -59,7 +59,7 @@
             </el-form-item>
             <el-form-item label="加载方案：">
               <el-select placeholder="选择标签"
-                         v-model="currentSokuTag" size="small" style="width: 50%">
+                         v-model="currentSokuTag" size="small" style="width: 60%">
                 <el-option
                   v-for="item in knownSokuTags"
                   :key="item.tag"
@@ -150,7 +150,7 @@
               </el-form-item>
               <el-form-item label="加载方案：">
                 <el-select placeholder="选择标签"
-                           v-model="currentClampTag" size="small" style="width: 50%">
+                           v-model="currentClampTag" size="small" style="width: 60%">
                   <el-option
                     v-for="item in knownClampTags"
                     :key="item.tag"
@@ -242,7 +242,7 @@
               </el-form-item>
               <el-form-item label="加载方案：">
                 <el-select placeholder="选择标签"
-                           v-model="currentInterpTag" size="small" style="width: 50%">
+                           v-model="currentInterpTag" size="small" style="width: 60%">
                   <el-option
                     v-for="item in knownInterpTags"
                     :key="item.tag"
@@ -310,7 +310,7 @@
               </el-form-item>
               <el-form-item label="加载方案：">
                 <el-select placeholder="选择标签"
-                           v-model="currentYearContTag" size="small" style="width: 50%">
+                           v-model="currentYearContTag" size="small" style="width: 60%">
                   <el-option
                     v-for="item in knownYearContTags"
                     :key="item.tag"

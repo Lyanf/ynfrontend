@@ -76,7 +76,7 @@
           </el-input>
         </el-form-item>
         <el-form-item label="加载方案：">
-          <el-select placeholder="选择标签" v-model="currentTag" size="small" style="width: 50%">
+          <el-select placeholder="选择标签" v-model="currentTag" size="small" style="width: 60%">
             <el-option
               v-for="item in knownTags"
               :key="item.tag"
