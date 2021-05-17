@@ -54,11 +54,20 @@ export default {
         return;
       }
       this.$emit('update:endYear', parseInt(value, 10));
-      // if (this.$data.beginYearInternal === null
-      //   || this.$data.beginYearInternal > value) {
-      //   this.$data.beginYearInternal = value;
-      //   this.$emit('update:beginYear', value.getFullYear());
-      // }
+    },
+    beginYear(value) {
+      if (value !== null) {
+        this.beginYearInternal = value;
+      } else {
+        this.beginYearInternal = null;
+      }
+    },
+    endYear(value) {
+      if (value !== null) {
+        this.endYearInternal = value;
+      } else {
+        this.endYearInternal = null;
+      }
     },
   },
   computed: {
