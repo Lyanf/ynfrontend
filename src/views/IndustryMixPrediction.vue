@@ -44,7 +44,7 @@ export default {
     graphData(value) {
       console.log(value);
       this.$refs.resultChart.xName = '年份';
-      this.$refs.resultChart.yName = '预测值（MW）';
+      this.$refs.resultChart.yName = '预测值';
       this.$refs.resultChart.xData = value.xData;
       this.$refs.resultChart.yData = value.yData;
       this.$refs.resultChart.refreshChart();

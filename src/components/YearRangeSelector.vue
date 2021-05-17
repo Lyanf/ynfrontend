@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 60%"
+  <div :style="getStyle"
     class="el-date-editor el-range-editor el-input__inner el-date-editor--year"
     ref="reference">
     <i :class="['el-input__icon', 'el-range__icon']"></i>
@@ -59,6 +59,14 @@ export default {
       //   this.$data.beginYearInternal = value;
       //   this.$emit('update:beginYear', value.getFullYear());
       // }
+    },
+  },
+  computed: {
+    getStyle() {
+      if (this.expand) {
+        return 'width: 100%';
+      }
+      return 'width: 60%';
     },
   },
 };

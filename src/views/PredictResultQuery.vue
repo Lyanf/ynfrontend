@@ -157,7 +157,7 @@ export default {
         this.$data.chartData = {
           xName: '年份',
           xData: years,
-          yName: '预测值（MW）',
+          yName: '预测值',
           yData: [
             {
               data: content.result.preresult,

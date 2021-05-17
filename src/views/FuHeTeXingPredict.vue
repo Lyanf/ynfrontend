@@ -59,7 +59,7 @@
             </el-form-item>
             <el-form-item label="加载方案：">
               <el-select placeholder="选择标签"
-                         v-model="currentSokuTag" size="small" style="width: 60%">
+                         v-model="currentSokuTag" size="small" style="width: 100%">
                 <el-option
                   v-for="item in knownSokuTags"
                   :key="item.tag"
@@ -68,8 +68,7 @@
                 </el-option>
               </el-select>
               <el-button size="small" @click="loadSokuParameters"
-                         :disabled="currentSokuTag === null"
-                         style="margin-left: 10px">加载</el-button>
+                         :disabled="currentSokuTag === null">加载</el-button>
             </el-form-item>
             <el-form-item>
               <el-button :disabled="!sokuSubmittable" @click="sokuPredict">计算</el-button>
@@ -150,7 +149,7 @@
               </el-form-item>
               <el-form-item label="加载方案：">
                 <el-select placeholder="选择标签"
-                           v-model="currentClampTag" size="small" style="width: 60%">
+                           v-model="currentClampTag" size="small">
                   <el-option
                     v-for="item in knownClampTags"
                     :key="item.tag"
@@ -159,8 +158,7 @@
                   </el-option>
                 </el-select>
                 <el-button size="small" @click="loadClampParameters"
-                           :disabled="currentClampTag === null"
-                           style="margin-left: 10px">加载</el-button>
+                           :disabled="currentClampTag === null">加载</el-button>
               </el-form-item>
               <el-form-item>
                 <el-button :disabled="!clampSubmittable" @click="clampPredict">计算</el-button>
@@ -242,7 +240,7 @@
               </el-form-item>
               <el-form-item label="加载方案：">
                 <el-select placeholder="选择标签"
-                           v-model="currentInterpTag" size="small" style="width: 60%">
+                           v-model="currentInterpTag" size="small">
                   <el-option
                     v-for="item in knownInterpTags"
                     :key="item.tag"
@@ -251,8 +249,7 @@
                   </el-option>
                 </el-select>
                 <el-button size="small" @click="loadInterpParameters"
-                           :disabled="currentInterpTag === null"
-                           style="margin-left: 10px">加载</el-button>
+                           :disabled="currentInterpTag === null">加载</el-button>
               </el-form-item>
               <el-form-item>
                 <el-button :disabled="!interpSubmittable" @click="interpPredict">计算</el-button>
@@ -310,7 +307,7 @@
               </el-form-item>
               <el-form-item label="加载方案：">
                 <el-select placeholder="选择标签"
-                           v-model="currentYearContTag" size="small" style="width: 60%">
+                           v-model="currentYearContTag" size="small">
                   <el-option
                     v-for="item in knownYearContTags"
                     :key="item.tag"
@@ -319,8 +316,7 @@
                   </el-option>
                 </el-select>
                 <el-button size="small" @click="loadYearContParameters"
-                           :disabled="currentYearContTag === null"
-                           style="margin-left: 10px">加载</el-button>
+                           :disabled="currentYearContTag === null">加载</el-button>
               </el-form-item>
               <el-form-item>
                 <el-button :disabled="!yearContSubmittable" @click="yearContPredict">计算</el-button>
@@ -703,5 +699,7 @@ export default {
 </script>
 
 <style scoped>
-
+.el-input, .el-select {
+  width: 100%
+}
 </style>
