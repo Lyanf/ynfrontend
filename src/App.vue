@@ -9,7 +9,7 @@
 <!--    <RouteLinker></RouteLinker>-->
       <router-view></router-view>
     <div style="text-align: center; margin: 20px">
-      <el-radio-group v-model="serverType">
+      <el-radio-group v-model="serverType" v-show="false">
         <el-radio-button label="online">在线版</el-radio-button>
         <el-radio-button label="offline">离线版</el-radio-button>
       </el-radio-group>

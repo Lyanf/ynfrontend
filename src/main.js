@@ -151,6 +151,8 @@ if (store.state.isOnline) {
 Vue.prototype.$axios = axios;
 Vue.prototype.$messenger = messenger;
 
+store.commit('switchOffline');
+
 new Vue({
   router,
   render: (h) => h(App),
