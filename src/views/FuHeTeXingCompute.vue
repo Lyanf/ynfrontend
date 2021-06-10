@@ -496,7 +496,7 @@ export default {
         },
         yAxis: {
           type: 'value',
-          name: data.yName,
+          name: data.xName.endsWith('（MW）') ? '单位：MW' : '',
         },
         series,
         legend: {
