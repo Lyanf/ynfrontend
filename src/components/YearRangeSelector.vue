@@ -37,7 +37,7 @@ export default {
   },
   watch: {
     beginYearInternal(value) {
-      if (value === null) {
+      if (value === null || Number.isNaN(parseInt(value, 10))) {
         this.$emit('update:beginYear', null);
         return;
       }
@@ -49,7 +49,7 @@ export default {
       // }
     },
     endYearInternal(value) {
-      if (value === null) {
+      if (value === null || Number.isNaN(parseInt(value, 10))) {
         this.$emit('update:endYear', null);
         return;
       }
