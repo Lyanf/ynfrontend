@@ -23,7 +23,7 @@
     <el-form-item label="年份 − 预测值表：" v-if="tableTwoData.length !== 0">
       <el-table :data="tableTwoData">
         <el-table-column prop="year" label="年份"></el-table-column>
-        <el-table-column prop="predict" :label="unit ? `预测值（${unit}）` : '预测值'">
+        <el-table-column prop="predict" :label="unit ? `预测值（${unit.unitname}）` : '预测值'">
           <template slot-scope="scope">
             {{scope.row.predict.toFixed(0) }}
           </template>

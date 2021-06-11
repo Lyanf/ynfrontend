@@ -1,6 +1,5 @@
 <template>
   <div style="margin-left: 20px" v-show="graphData.length !== 0 || graphData.yData !== undefined">
-    <div v-if="unit">单位：{{ unit }}</div>
     <el-row>
       <div :id="uniqueId" style="width: 680px;height: 300px"></div>
     </el-row>
@@ -171,6 +170,11 @@ export default {
     },
     refreshChart() {
       const param = this.$data.params1st;
+      if (this.unit) {
+        param.xName = '年份';
+        param.yName = `${this.unit.typee}（${this.unit.unitname}）`;
+        param.yTag = `${this.unit.method}下${this.unit.typee}的预测结果`;
+      }
       if (this.currentChart === undefined) {
         this.currentChart = echarts.init(document.getElementById(this.uniqueId));
       }
@@ -250,7 +254,7 @@ export default {
         },
         series: [{
           data: yData,
-          name: param.yName,
+          name: param.yTag,
           type: this.$data.currentDisplayMethod,
         }],
         legend: {
